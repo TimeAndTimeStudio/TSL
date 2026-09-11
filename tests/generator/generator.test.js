@@ -413,4 +413,263 @@ test("strips inline block comments", () => {
   assertEqual(js, `let x = 1;`);
 });
 
+// === Phase 9 — Function Generator Tests ===
+
+test("generates function declaration with single parameter", () => {
+  const source = `function double(x):
+  return x * 2`;
+  const js = compile(source);
+  assertEqual(js, `function double(x) {\n  return (x * 2);\n}`);
+});
+
+test("generates function declaration with multiple parameters", () => {
+  const source = `function add(a, b):
+  return a + b`;
+  const js = compile(source);
+  assertEqual(js, `function add(a, b) {\n  return (a + b);\n}`);
+});
+
+test("generates function declaration with three parameters", () => {
+  const source = `function sum(a, b, c):
+  return a + b + c`;
+  const js = compile(source);
+  assertEqual(js, `function sum(a, b, c) {\n  return ((a + b) + c);\n}`);
+});
+
+test("generates function call with single argument", () => {
+  const source = `double(5)`;
+  const js = compile(source);
+  assertEqual(js, `double(5);`);
+});
+
+test("generates function call with multiple arguments", () => {
+  const source = `add(1, 2)`;
+  const js = compile(source);
+  assertEqual(js, `add(1, 2);`);
+});
+
+test("generates function call assigned to variable", () => {
+  const source = `result = add(10, 20)`;
+  const js = compile(source);
+  assertEqual(js, `let result = add(10, 20);`);
+});
+
+test("generates nested function calls", () => {
+  const source = `result = add(double(5), 10)`;
+  const js = compile(source);
+  assertEqual(js, `let result = add(double(5), 10);`);
+});
+
+test("generates function with multiple statements", () => {
+  const source = `function max(a, b):
+  if a > b:
+    return a
+  return b`;
+  const js = compile(source);
+  assertEqual(js, `function max(a, b) {\n  if ((a > b)) {\n    return a;\n  }\n  return b;\n}`);
+});
+
+test("generates empty function", () => {
+  const source = `function empty():
+  pass`;
+  const tokens = tokenize(source, '<test>');
+  const parser = createParser(tokens, '<test>');
+  const statements = parser.parseStatements();
+  const loc = new Location(1, 0, 1, 0);
+  const ast = Program(statements, loc);
+  const validator = createValidator();
+  validator.validate(ast);
+  const generator = createGenerator();
+  const js = generator.generate(ast);
+  assertEqual(js, `function empty() {\n  pass;\n}`);
+});
+
+test("generates function with local variables", () => {
+  const source = `function compute(x):
+  y = x * 2
+  z = y + 1
+  return z`;
+  const js = compile(source);
+  assertEqual(js, `function compute(x) {\n  let y = (x * 2);\n  let z = (y + 1);\n  return z;\n}`);
+});
+
+test("generates function with reassignment of parameter", () => {
+  const source = `function adjust(x):
+  x = x + 1
+  return x`;
+  const js = compile(source);
+  assertEqual(js, `function adjust(x) {\n  x = (x + 1);\n  return x;\n}`);
+});
+
+test("generates multiple function declarations", () => {
+  const source = `function add(a, b):
+  return a + b
+
+function sub(a, b):
+  return a - b`;
+  const js = compile(source);
+  assertEqual(js, `function add(a, b) {\n  return (a + b);\n}\nfunction sub(a, b) {\n  return (a - b);\n}`);
+});
+
+test("generates function call after function declaration", () => {
+  const source = `function add(a, b):
+  return a + b
+
+result = add(3, 4)`;
+  const js = compile(source);
+  assertEqual(js, `function add(a, b) {\n  return (a + b);\n}\nlet result = add(3, 4);`);
+});
+
+test("generates function with for loop body", () => {
+  const source = `function sum_array(arr):
+  total = 0
+  for item in arr:
+    total = total + item
+  return total`;
+  const js = compile(source);
+  assertEqual(js, `function sum_array(arr) {\n  let total = 0;\n  for (let item of arr) {\n    total = (total + item);\n  }\n  return total;\n}`);
+});
+
+test("generates function with while loop body", () => {
+  const source = `function countdown(n):
+  while n > 0:
+    print(n)
+    n = n - 1`;
+  const js = compile(source);
+  assertEqual(js, `function countdown(n) {\n  while ((n > 0)) {\n    print(n);\n    n = (n - 1);\n  }\n}`);
+});
+
+test("generates function with break", () => {
+  const source = `function find(items, target):
+  for item in items:
+    if item == target:
+      return item
+  return null`;
+  const js = compile(source);
+  assertEqual(js, `function find(items, target) {\n  for (let item of items) {\n    if ((item == target)) {\n      return item;\n    }\n  }\n  return null;\n}`);
+});
+
+test("generates function with nested function call in return", () => {
+  const source = `function outer(x):
+  return inner(x + 1)`;
+  const js = compile(source);
+  assertEqual(js, `function outer(x) {\n  return inner((x + 1));\n}`);
+});
+
+test("generates function with multiple returns", () => {
+  const source = `function abs(x):
+  if x < 0:
+    return 0 - x
+  return x`;
+  const js = compile(source);
+  assertEqual(js, `function abs(x) {\n  if ((x < 0)) {\n    return (0 - x);\n  }\n  return x;\n}`);
+});
+
+test("generates function call with nested call as argument", () => {
+  const source = `result = add(multiply(2, 3), 4)`;
+  const js = compile(source);
+  assertEqual(js, `let result = add(multiply(2, 3), 4);`);
+});
+
+test("generates function with array in return", () => {
+  const source = `function make_pair(a, b):
+  return [a, b]`;
+  const js = compile(source);
+  assertEqual(js, `function make_pair(a, b) {\n  return [a, b];\n}`);
+});
+
+test("generates function with object in return", () => {
+  const source = `function make_point(x, y):
+  return { x: x, y: y }`;
+  const js = compile(source);
+  assertEqual(js, `function make_point(x, y) {\n  return { x: x, y: y };\n}`);
+});
+
+test("generates function call with expression arguments", () => {
+  const source = `result = add(1 + 2, 3 * 4)`;
+  const js = compile(source);
+  assertEqual(js, `let result = add((1 + 2), (3 * 4));`);
+});
+
+test("generates function with member access in body", () => {
+  const source = `function get_x(obj):
+  return obj.x`;
+  const js = compile(source);
+  assertEqual(js, `function get_x(obj) {\n  return obj.x;\n}`);
+});
+
+test("generates function with member assignment in body", () => {
+  const source = `function set_x(obj, val):
+  obj.x = val`;
+  const js = compile(source);
+  assertEqual(js, `function set_x(obj, val) {\n  obj.x = val;\n}`);
+});
+
+test("generates function with logical operators in condition", () => {
+  const source = `function check(x, y):
+  if x > 0 and y > 0:
+    return true
+  return false`;
+  const js = compile(source);
+  assertEqual(js, `function check(x, y) {\n  if (((x > 0) and (y > 0))) {\n    return true;\n  }\n  return false;\n}`);
+});
+
+test("generates function with not operator", () => {
+  const source = `function not_empty(x):
+  if not x:
+    return false
+  return true`;
+  const js = compile(source);
+  assertEqual(js, `function not_empty(x) {\n  if ((not x)) {\n    return false;\n  }\n  return true;\n}`);
+});
+
+test("generates function with return of null", () => {
+  const source = `function nothing():
+  return null`;
+  const js = compile(source);
+  assertEqual(js, `function nothing() {\n  return null;\n}`);
+});
+
+test("generates function with return of boolean", () => {
+  const source = `function is_ready():
+  return true`;
+  const js = compile(source);
+  assertEqual(js, `function is_ready() {\n  return true;\n}`);
+});
+
+test("generates function with string literal in return", () => {
+  const source = `function greet():
+  return "hello"
+`;
+  const js = compile(source);
+  assertEqual(js, `function greet() {\n  return "hello";\n}`);
+});
+
+test("generates function call with array argument", () => {
+  const source = `process([1, 2, 3])`;
+  const js = compile(source);
+  assertEqual(js, `process([1, 2, 3]);`);
+});
+
+test("generates function call with object argument", () => {
+  const source = `process({ x: 10, y: 20 })`;
+  const js = compile(source);
+  assertEqual(js, `process({ x: 10, y: 20 });`);
+});
+
+test("generates function call with nested array access", () => {
+  const source = `result = items[0]`;
+  const js = compile(source);
+  assertEqual(js, `let result = items[0];`);
+});
+
+test("generates function with nested function calls in parameters", () => {
+  const source = `function combine(a, b):
+  return a + b
+
+result = combine(add(1, 2), multiply(3, 4))`;
+  const js = compile(source);
+  assertEqual(js, `function combine(a, b) {\n  return (a + b);\n}\nlet result = combine(add(1, 2), multiply(3, 4));`);
+});
+
 console.log("\nAll generator tests passed!");

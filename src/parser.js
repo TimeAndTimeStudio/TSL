@@ -13,6 +13,7 @@ const {
   BinaryExpression,
   CallExpression,
   MemberExpression,
+  ArrayAccess,
   Assignment,
   IfStatement,
   WhileStatement,
@@ -199,6 +200,15 @@ function createParser(tokens, filename = '<anonymous>') {
         advance();
         const args = parseArgumentList();
         expr = CallExpression(expr, args, makeLocation(token));
+        continue;
+      }
+
+      // Array access: [...]
+      if (token.type === TokenType.LBRACKET) {
+        advance();
+        const index = parseExpression();
+        expect(TokenType.RBRACKET);
+        expr = ArrayAccess(expr, index, makeLocation(token));
         continue;
       }
 

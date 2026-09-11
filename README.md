@@ -10,7 +10,7 @@ node src/cli.js <file.tsl>
 
 ## Status
 
-Phase 8 — Control Flow Generator (40%)
+Phase 9 — Function Generator (45%)
 
 ## Compiler Pipeline
 
@@ -27,7 +27,7 @@ AST
     ↓
 Validator
     ↓
-Control Flow Generator ← Current Phase
+Function Generator ← Current Phase
     ↓
 JavaScript Generator
     ↓
@@ -47,7 +47,7 @@ JavaScript
 | 6 | Validator | ✓ Done |
 | 7 | JS Generator Core | Done |
 | 8 | Control Flow Generator | ✓ Done |
-| 9 | Function Generator | Pending |
+| 9 | Function Generator | ✓ Done |
 | 10 | Variable Semantics | Pending |
 | 11 | Data Types | Pending |
 | 12 | Runtime | Pending |

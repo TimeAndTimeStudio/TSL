@@ -103,6 +103,13 @@ function MemberExpression(object, property, location) {
   return node;
 }
 
+function ArrayAccess(object, index, location) {
+  const node = new ASTNode('ArrayAccess', location);
+  node.object = object;
+  node.index = index;
+  return node;
+}
+
 // Statements
 function Assignment(left, right, location) {
   const node = new ASTNode('Assignment', location);
@@ -173,6 +180,7 @@ module.exports = {
   BinaryExpression,
   CallExpression,
   MemberExpression,
+  ArrayAccess,
   Assignment,
   IfStatement,
   WhileStatement,

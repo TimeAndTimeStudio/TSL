@@ -44,6 +44,7 @@ function createGenerator(filename = '<anonymous>') {
       ObjectExpression: generateObjectExpression,
       Property: generateProperty,
       MemberExpression: generateMemberExpression,
+      ArrayAccess: generateArrayAccess,
       Assignment: generateAssignment,
       IfStatement: generateIfStatement,
       WhileStatement: generateWhileStatement,
@@ -119,6 +120,14 @@ function createGenerator(filename = '<anonymous>') {
     return `${obj}.${prop}`;
   }
 
+  // === Array Access ===
+
+  function generateArrayAccess(node) {
+    const obj = generateNode(node.object);
+    const idx = generateNode(node.index);
+    return `${obj}[${idx}]`;
+  }
+
   // === Binary Expression ===
 
   function generateBinaryExpression(node) {
@@ -175,7 +184,7 @@ function createGenerator(filename = '<anonymous>') {
 
     // Check if variable was already declared in this scope
     const varName = node.left.name;
-    const isDeclaration = !inFunction ? !declaredVars.has(varName) : true;
+    const isDeclaration = !declaredVars.has(varName);
 
     if (isDeclaration) {
       declaredVars.add(varName);
@@ -260,7 +269,8 @@ function createGenerator(filename = '<anonymous>') {
     const prevInFunction = inFunction;
     inFunction = true;
     const prevDeclaredVars = declaredVars;
-    declaredVars = new Set();
+    const newDeclaredVars = new Set(node.parameters.map(p => p.name));
+    declaredVars = newDeclaredVars;
     const prevIndentLevel = indentLevel;
     indentLevel++;
 
