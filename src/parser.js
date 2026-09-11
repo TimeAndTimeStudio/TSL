@@ -13,6 +13,14 @@ const {
   BinaryExpression,
   CallExpression,
   MemberExpression,
+  Assignment,
+  IfStatement,
+  WhileStatement,
+  ForStatement,
+  FunctionDeclaration,
+  ReturnStatement,
+  BreakStatement,
+  ContinueStatement,
 } = require('./ast');
 const { TokenType } = require('./lexer');
 
@@ -49,7 +57,7 @@ function createParser(tokens, filename = '<anonymous>') {
   function skipStructural() {
     while (pos < tokens.length) {
       const t = tokens[pos];
-      if (t.type === TokenType.NEWLINE || t.type === TokenType.INDENT || t.type === TokenType.DEDENT) {
+      if (t.type === TokenType.NEWLINE) {
         pos++;
       } else {
         break;
@@ -394,6 +402,149 @@ function createParser(tokens, filename = '<anonymous>') {
     return new Location(token.line, token.column, token.line, token.column + (token.value ? String(token.value).length : 0));
   }
 
+  // === Block parsing ===
+  function parseBlock() {
+    const statements = [];
+    const token = current();
+
+    // Expect colon
+    if (token.type !== TokenType.COLON) {
+      throw new ParserError(
+        `Expected ':' at start of block`,
+        token.line,
+        token.column,
+        token.value,
+        filename
+      );
+    }
+    advance();
+
+    // Expect INDENT
+    const indentToken = expect(TokenType.INDENT);
+
+    // Parse statements in block
+    while (peek().type !== TokenType.DEDENT && peek().type !== TokenType.EOF) {
+      statements.push(parseStatement());
+    }
+
+    // Expect DEDENT
+    expect(TokenType.DEDENT);
+
+    return statements;
+  }
+
+  // === Assignment ===
+  function parseAssignment() {
+    // Parse left-hand side: identifier or member access (e.g., player.x)
+    const nameToken = advance(TokenType.IDENTIFIER);
+    let left = Identifier(nameToken.value, makeLocation(nameToken));
+
+    // Handle member access (e.g., player.x = 100)
+    while (peek().type === TokenType.DOT) {
+      advance(TokenType.DOT);
+      const propToken = expect(TokenType.IDENTIFIER);
+      left = MemberExpression(left, Identifier(propToken.value, makeLocation(propToken)), makeLocation(propToken));
+    }
+
+    expect(TokenType.EQUAL);
+    const value = parseExpression();
+    return Assignment(left, value, makeLocation(nameToken));
+  }
+
+  // === If statement ===
+  function parseIf() {
+    const ifToken = advance(TokenType.IF);
+    const condition = parseExpression();
+    const consequent = parseBlock();
+
+    let alternate = null;
+    // Skip structural tokens to find else
+    while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT || peek().type === TokenType.DEDENT) {
+      if (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
+        pos++;
+      } else {
+        break;
+      }
+    }
+
+    if (peek().type === TokenType.ELSE) {
+      advance(TokenType.ELSE);
+      alternate = parseBlock();
+    }
+
+    return IfStatement(condition, consequent, alternate, makeLocation(ifToken));
+  }
+
+  // === For statement ===
+  function parseFor() {
+    const forToken = advance(TokenType.FOR);
+    const varToken = expect(TokenType.IDENTIFIER);
+    expect(TokenType.IN);
+    const iterable = parseExpression();
+    const body = parseBlock();
+    return ForStatement(Identifier(varToken.value, makeLocation(varToken)), iterable, body, makeLocation(forToken));
+  }
+
+  // === While statement ===
+  function parseWhile() {
+    const whileToken = advance(TokenType.WHILE);
+    const condition = parseExpression();
+    const body = parseBlock();
+    return WhileStatement(condition, body, makeLocation(whileToken));
+  }
+
+  // === Function declaration ===
+  function parseFunction() {
+    const funcToken = advance(TokenType.FUNCTION);
+    const nameToken = expect(TokenType.IDENTIFIER);
+    expect(TokenType.LPAREN);
+    const params = parseParameterList();
+    const body = parseBlock();
+    return FunctionDeclaration(Identifier(nameToken.value, makeLocation(nameToken)), params, body, makeLocation(funcToken));
+  }
+
+  function parseParameterList() {
+    const params = [];
+    while (!match(TokenType.RPAREN)) {
+      if (params.length > 0) {
+        expect(TokenType.COMMA);
+      }
+      const paramToken = expect(TokenType.IDENTIFIER);
+      params.push(Identifier(paramToken.value, makeLocation(paramToken)));
+    }
+    return params;
+  }
+
+  // === Return statement ===
+  function parseReturn() {
+    const retToken = advance(TokenType.RETURN);
+    let argument = null;
+
+    const next = current();
+    if (
+      next.type !== TokenType.NEWLINE &&
+      next.type !== TokenType.DEDENT &&
+      next.type !== TokenType.EOF &&
+      next.type !== TokenType.COLON
+    ) {
+      argument = parseExpression();
+    }
+
+    return ReturnStatement(argument, makeLocation(retToken));
+  }
+
+  // === Break statement ===
+  function parseBreak() {
+    advance(TokenType.BREAK);
+    return BreakStatement(makeLocation(current()));
+  }
+
+  // === Continue statement ===
+  function parseContinue() {
+    advance(TokenType.CONTINUE);
+    return ContinueStatement(makeLocation(current()));
+  }
+
   // === Top-level: parse statements (for Phase 5) ===
   function parseStatements() {
     const statements = [];
@@ -406,19 +557,67 @@ function createParser(tokens, filename = '<anonymous>') {
   function parseStatement() {
     const token = current();
 
-    // Expression statement
+    // Keywords that start statements
+    if (token.type === TokenType.IF) {
+      return parseIf();
+    }
+    if (token.type === TokenType.FOR) {
+      return parseFor();
+    }
+    if (token.type === TokenType.WHILE) {
+      return parseWhile();
+    }
+    if (token.type === TokenType.FUNCTION) {
+      return parseFunction();
+    }
+    if (token.type === TokenType.RETURN) {
+      return parseReturn();
+    }
+    if (token.type === TokenType.BREAK) {
+      return parseBreak();
+    }
+    if (token.type === TokenType.CONTINUE) {
+      return parseContinue();
+    }
+
+    // Assignment: identifier = expression
+    if (token.type === TokenType.IDENTIFIER) {
+      // Look ahead: check if next non-structural token is EQUAL
+      // Handle member access (e.g., player.x = 100)
+      let scan = pos + 1;
+      while (scan < tokens.length) {
+        const st = tokens[scan];
+        if (st.type === TokenType.NEWLINE || st.type === TokenType.INDENT || st.type === TokenType.DEDENT) {
+          scan++;
+          continue;
+        }
+        if (st.type === TokenType.DOT) {
+          scan += 2; // Skip DOT and the following identifier
+          continue;
+        }
+        break;
+      }
+
+      if (scan < tokens.length && tokens[scan].type === TokenType.EQUAL) {
+        return parseAssignment();
+      }
+
+      // Expression statement (call, identifier reference, etc.)
+      return { type: 'ExpressionStatement', expression: parseExpression() };
+    }
+
+    // Expression statements
     if (
       token.type === TokenType.NUMBER ||
       token.type === TokenType.STRING ||
       token.type === TokenType.TRUE ||
       token.type === TokenType.FALSE ||
       token.type === TokenType.NULL ||
-      token.type === TokenType.IDENTIFIER ||
       token.type === TokenType.LBRACKET ||
       token.type === TokenType.LBRACE ||
       token.type === TokenType.LPAREN
     ) {
-      return { expression: parseExpression() };
+      return { type: 'ExpressionStatement', expression: parseExpression() };
     }
 
     throw new ParserError(
@@ -430,7 +629,7 @@ function createParser(tokens, filename = '<anonymous>') {
     );
   }
 
-  return { parseExpression, parseStatements, parsePrimary, parseUnary };
+  return { parseExpression, parseStatements, parsePrimary, parseUnary, parseStatement, parseBlock };
 }
 
 module.exports = {

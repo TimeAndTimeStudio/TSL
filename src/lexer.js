@@ -321,6 +321,13 @@ function createLexer(source, filename = '<anonymous>') {
       if (pendingNewline) {
         tokens.push(new Token(TokenType.NEWLINE, '\n', pendingNewlineLine, pendingNewlineColumn));
         pendingNewline = false;
+
+        // Emit DEDENT tokens for any open indentation levels
+        // This handles cases where the next line starts with non-whitespace
+        while (indentStack.length > 1) {
+          indentStack.pop();
+          tokens.push(new Token(TokenType.DEDENT, '', line, column));
+        }
       }
 
       // String literals
