@@ -251,7 +251,89 @@ test("generates continue statement", () => {
   assertEqual(js, `while (true) {\n  continue;\n}`);
 });
 
-// Block statements
+// Nested control flow
+test("generates nested if statements", () => {
+  const source = `if (a):
+  if (b):
+    print(1)`;
+  const js = compile(source);
+  assertEqual(js, `if (a) {\n  if (b) {\n    print(1);\n  }\n}`);
+});
+
+test("generates if-else with nested if-else", () => {
+  const source = `if (a):
+  print(1)
+else:
+  if (b):
+    print(2)
+  else:
+    print(3)`;
+  const js = compile(source);
+  assertEqual(js, `if (a) {\n  print(1);\n} else {\n  if (b) {\n    print(2);\n  } else {\n    print(3);\n  }\n}`);
+});
+
+test("generates for loop with range", () => {
+  const source = `for i in range(10):
+  print(i)`;
+  const js = compile(source);
+  assertEqual(js, `for (let i of range(10)) {\n  print(i);\n}`);
+});
+
+test("generates while loop with break", () => {
+  const source = `while (true):
+  break`;
+  const js = compile(source);
+  assertEqual(js, `while (true) {\n  break;\n}`);
+});
+
+test("generates while loop with continue", () => {
+  const source = `counter = 10
+while (counter):
+  counter = counter - 1
+  continue`;
+  const js = compile(source);
+  assertEqual(js, `let counter = 10;\nwhile (counter) {\n  counter = (counter - 1);\n  continue;\n}`);
+});
+
+test("generates for loop with multiple statements", () => {
+  const source = `total = 0
+for i in items:
+  print(i)
+  total = total + i`;
+  const js = compile(source);
+  assertEqual(js, `let total = 0;\nfor (let i of items) {\n  print(i);\n  total = (total + i);\n}`);
+});
+
+test("generates nested for loops", () => {
+  const source = `for i in range(10):
+  for j in range(10):
+    print(i + j)`;
+  const js = compile(source);
+  assertEqual(js, `for (let i of range(10)) {\n  for (let j of range(10)) {\n    print((i + j));\n  }\n}`);
+});
+
+test("generates if with complex condition", () => {
+  const source = `if (x > 10 and y < 5):
+  print("big")`;
+  const js = compile(source);
+  assertEqual(js, `if (((x > 10) and (y < 5))) {\n  print("big");\n}`);
+});
+
+test("generates while with break and continue together", () => {
+  const source = `while (true):
+  if (done):
+    break
+  continue`;
+  const js = compile(source);
+  assertEqual(js, `while (true) {\n  if (done) {\n    break;\n  }\n  continue;\n}`);
+});
+
+test("generates for loop with array", () => {
+  const source = `for item in [1, 2, 3]:
+  print(item)`;
+  const js = compile(source);
+  assertEqual(js, `for (let item of [1, 2, 3]) {\n  print(item);\n}`);
+});
 
 
 // Empty statement

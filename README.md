@@ -10,7 +10,7 @@ node src/cli.js <file.tsl>
 
 ## Status
 
-Phase 6 — Validator (30%)
+Phase 8 — Control Flow Generator (40%)
 
 ## Compiler Pipeline
 
@@ -25,7 +25,9 @@ Parser
     ↓
 AST
     ↓
-Validator ← Current Phase
+Validator
+    ↓
+Control Flow Generator ← Current Phase
     ↓
 JavaScript Generator
     ↓
@@ -44,7 +46,7 @@ JavaScript
 | 5 | Parser — Statements | ✓ Done |
 | 6 | Validator | ✓ Done |
 | 7 | JS Generator Core | Done |
-| 8 | Control Flow Generator | Pending |
+| 8 | Control Flow Generator | ✓ Done |
 | 9 | Function Generator | Pending |
 | 10 | Variable Semantics | Pending |
 | 11 | Data Types | Pending |
