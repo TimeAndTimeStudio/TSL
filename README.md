@@ -43,7 +43,7 @@ JavaScript
 | 4 | Parser — Expressions | ✓ Done |
 | 5 | Parser — Statements | ✓ Done |
 | 6 | Validator | ✓ Done |
-| 7 | JS Generator Core | Pending |
+| 7 | JS Generator Core | Done |
 | 8 | Control Flow Generator | Pending |
 | 9 | Function Generator | Pending |
 | 10 | Variable Semantics | Pending |
