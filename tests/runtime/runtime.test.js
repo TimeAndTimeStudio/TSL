@@ -1,4 +1,4 @@
-const { print, range } = require("../../runtime/runtime.js");
+const { print, range, clear, draw_rect, draw_circle, draw_line } = require("../../runtime/runtime.js");
 
 function test(name, fn) {
   try {
@@ -95,6 +95,44 @@ test("range works with for-of iteration", () => {
     result.push(i);
   }
   assertEqual(result, [0, 1, 2]);
+});
+
+// === Phase 14 — Engine API Tests ===
+
+test("clear() does not throw", () => {
+  clear();
+});
+
+test("draw_rect() does not throw", () => {
+  draw_rect(10, 20, 50, 50);
+});
+
+test("draw_rect() with zero values does not throw", () => {
+  draw_rect(0, 0, 0, 0);
+});
+
+test("draw_rect() with negative values does not throw", () => {
+  draw_rect(-10, -20, 50, 50);
+});
+
+test("draw_circle() does not throw", () => {
+  draw_circle(100, 100, 25);
+});
+
+test("draw_circle() with zero radius does not throw", () => {
+  draw_circle(0, 0, 0);
+});
+
+test("draw_line() does not throw", () => {
+  draw_line(0, 0, 100, 100);
+});
+
+test("draw_line() with same points does not throw", () => {
+  draw_line(5, 5, 5, 5);
+});
+
+test("draw_line() with negative coordinates does not throw", () => {
+  draw_line(-10, -10, 10, 10);
 });
 
 console.log("\nAll runtime tests passed!");
