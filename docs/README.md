@@ -18,12 +18,6 @@ Comprehensive documentation for the TSL language.
 - [Arrays](arrays.md) — Array creation, access, and manipulation
 - [Objects](objects.md) — Object creation, access, and manipulation
 
-## Engine API
-
-- [Engine API](engine-api.md) — Runtime helpers and engine integration
-- [Graphics](graphics.md) — Graphics engine integration
-- [Render Loop](render-loop.md) — Game loop and render patterns
-
 ## Reference
 
 - [Specification](specification.md) — Quick specification reference
