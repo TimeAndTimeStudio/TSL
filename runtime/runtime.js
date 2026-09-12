@@ -1,7 +1,50 @@
 'use strict';
 
+let canvas = null;
+let ctx = null;
+let canvasWidth = 800;
+let canvasHeight = 600;
+
+function initCanvas(width, height) {
+    if (typeof document !== 'undefined') {
+        canvas = document.createElement('canvas');
+        canvas.width = width || 800;
+        canvas.height = height || 600;
+        canvas.style.position = 'absolute';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        document.body.appendChild(canvas);
+        ctx = canvas.getContext('2d');
+        canvasWidth = canvas.width;
+        canvasHeight = canvas.height;
+    }
+    return { width: canvasWidth, height: canvasHeight };
+}
+
+function getCanvas() {
+    return canvas;
+}
+
+function getCtx() {
+    return ctx;
+}
+
+function setCanvasSize(width, height) {
+    if (canvas) {
+        canvas.width = width;
+        canvas.height = height;
+        canvasWidth = width;
+        canvasHeight = height;
+    }
+}
+
 function print(value) {
-    console.log(value);
+    if (typeof console !== 'undefined') {
+        console.log(value);
+    }
+    if (typeof document !== 'undefined' && canvas) {
+        // Could add console to canvas here if needed
+    }
 }
 
 function range(n) {
@@ -9,19 +52,39 @@ function range(n) {
 }
 
 function clear() {
-    console.log('[Engine] Clearing canvas');
+    if (ctx) {
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    }
 }
 
 function draw_rect(x, y, width, height) {
-    console.log(`[Engine] draw_rect(${x}, ${y}, ${width}, ${height})`);
+    if (ctx) {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(x, y, width, height);
+    }
 }
 
 function draw_circle(x, y, radius) {
-    console.log(`[Engine] draw_circle(${x}, ${y}, ${radius})`);
+    if (ctx) {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.closePath();
+    }
 }
 
 function draw_line(x1, y1, x2, y2) {
-    console.log(`[Engine] draw_line(${x1}, ${y1}, ${x2}, ${y2})`);
+    if (ctx) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.closePath();
+    }
 }
 
 let running = false;
@@ -97,4 +160,8 @@ module.exports = {
     run,
     startLoop,
     stopLoop,
+    initCanvas,
+    getCanvas,
+    getCtx,
+    setCanvasSize,
 };

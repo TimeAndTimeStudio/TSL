@@ -358,7 +358,7 @@ function createParser(tokens, source, filename = '<anonymous>') {
       const precedence = getPrecedence(token);
       if (precedence === 0 || precedence < minPrecedence) break;
 
-      const operator = getOperatorName(token);
+      let operator = getOperatorName(token);
       advance();
       let right = parseUnary();
 
@@ -373,9 +373,9 @@ function createParser(tokens, source, filename = '<anonymous>') {
         if (nextPrecedence > precedence) {
           right = BinaryExpression(nextOp, right, parseBinary(nextPrecedence), makeLocation(nextToken));
         } else {
-          const nextRight = parseUnary();
-          left = BinaryExpression(nextOp, left, right, makeLocation(nextToken));
-          right = nextRight;
+          left = BinaryExpression(operator, left, right, makeLocation(token));
+          operator = nextOp;
+          right = parseUnary();
         }
       }
 
