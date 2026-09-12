@@ -200,6 +200,11 @@ function createGenerator(source, filename = '<anonymous>') {
       return `${indent()}${left} = ${right};`;
     }
 
+    // Determine if this is an array access assignment (e.g., arr[0] = 10)
+    if (node.left.type === 'ArrayAccess') {
+      return `${indent()}${left} = ${right};`;
+    }
+
     // Check if variable was already declared in any scope
     const varName = node.left.name;
     const isDeclaration = !isDeclared(varName);

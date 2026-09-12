@@ -437,7 +437,7 @@ function createParser(tokens, source, filename = '<anonymous>') {
 
   // === Assignment ===
   function parseAssignment() {
-    // Parse left-hand side: identifier or member access (e.g., player.x)
+    // Parse left-hand side: identifier, member access, or array access
     const nameToken = advance(TokenType.IDENTIFIER);
     let left = Identifier(nameToken.value, makeLocation(nameToken));
 
@@ -446,6 +446,14 @@ function createParser(tokens, source, filename = '<anonymous>') {
       advance(TokenType.DOT);
       const propToken = expect(TokenType.IDENTIFIER);
       left = MemberExpression(left, Identifier(propToken.value, makeLocation(propToken)), makeLocation(propToken));
+    }
+
+    // Handle array access (e.g., arr[0] = 10)
+    while (peek().type === TokenType.LBRACKET) {
+      advance(TokenType.LBRACKET);
+      const index = parseExpression();
+      expect(TokenType.RBRACKET);
+      left = ArrayAccess(left, index, makeLocation(index));
     }
 
     expect(TokenType.EQUAL);
@@ -585,7 +593,7 @@ function createParser(tokens, source, filename = '<anonymous>') {
     // Assignment: identifier = expression
     if (token.type === TokenType.IDENTIFIER) {
       // Look ahead: check if next non-structural token is EQUAL
-      // Handle member access (e.g., player.x = 100)
+      // Handle member access (e.g., player.x = 100) and array access (e.g., arr[0] = 10)
       let scan = pos + 1;
       while (scan < tokens.length) {
         const st = tokens[scan];
@@ -595,6 +603,17 @@ function createParser(tokens, source, filename = '<anonymous>') {
         }
         if (st.type === TokenType.DOT) {
           scan += 2; // Skip DOT and the following identifier
+          continue;
+        }
+        if (st.type === TokenType.LBRACKET) {
+          // Skip everything inside brackets
+          let bracketDepth = 1;
+          scan++;
+          while (scan < tokens.length && bracketDepth > 0) {
+            if (tokens[scan].type === TokenType.LBRACKET) bracketDepth++;
+            if (tokens[scan].type === TokenType.RBRACKET) bracketDepth--;
+            scan++;
+          }
           continue;
         }
         break;

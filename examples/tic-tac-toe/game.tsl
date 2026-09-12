@@ -1,0 +1,102 @@
+# Tic Tac Toe - TSL Example
+# 2-player console game on 3x3 board
+
+# Game state
+board = [null, null, null, null, null, null, null, null, null]
+current_player = "X"
+game_over = false
+
+function get_cell(row, col):
+    return board[row * 3 + col]
+
+function set_cell(row, col, value):
+    board[row * 3 + col] = value
+
+function print_board():
+    print("---")
+    for row in range(3):
+        line = ""
+        for col in range(3):
+            cell = get_cell(row, col)
+            if cell == null:
+                line = line + " . "
+            else:
+                line = line + " " + cell + " "
+            if col < 2:
+                line = line + "|"
+        print(line)
+        if row < 2:
+            print("---")
+
+function check_winner():
+    # Check rows
+    for row in range(3):
+        c0 = get_cell(row, 0)
+        c1 = get_cell(row, 1)
+        c2 = get_cell(row, 2)
+        if c0 != null and c0 == c1 and c1 == c2:
+            return c0
+    
+    # Check columns
+    for col in range(3):
+        c0 = get_cell(0, col)
+        c1 = get_cell(1, col)
+        c2 = get_cell(2, col)
+        if c0 != null and c0 == c1 and c1 == c2:
+            return c0
+    
+    # Check diagonals
+    d1 = get_cell(0, 0)
+    d2 = get_cell(1, 1)
+    d3 = get_cell(2, 2)
+    if d1 != null and d1 == d2 and d2 == d3:
+        return d1
+    
+    d1 = get_cell(0, 2)
+    d2 = get_cell(1, 1)
+    d3 = get_cell(2, 0)
+    if d1 != null and d1 == d2 and d2 == d3:
+        return d1
+    
+    return null
+
+function is_board_full():
+    for i in range(9):
+        if board[i] == null:
+            return false
+    return true
+
+print("=== Tic Tac Toe ===")
+print("Players: X and O")
+print("Enter row and column (0-2)")
+
+# Game loop
+while game_over == false:
+    print_board()
+    print("Player " + current_player + "'s turn")
+    
+    # Simulated move for demo
+    row = 0
+    col = 0
+    
+    if get_cell(row, col) == null:
+        set_cell(row, col, current_player)
+    
+    # Check winner
+    winner = check_winner()
+    if winner != null:
+        print_board()
+        print("Player " + winner + " wins!")
+        game_over = true
+    
+    # Check draw
+    if game_over == false and is_board_full():
+        print_board()
+        print("It's a draw!")
+        game_over = true
+    
+    # Switch player
+    if current_player == "X":
+        current_player = "O"
+    else:
+        current_player = "X"
