@@ -4,6 +4,8 @@ let canvas = null;
 let ctx = null;
 let canvasWidth = 800;
 let canvasHeight = 600;
+let currentUpdate = null;
+let currentDraw = null;
 
 function initCanvas(width, height) {
     if (typeof document !== 'undefined') {
@@ -105,8 +107,11 @@ function stopLoop() {
     }
 }
 
-function frameLoop(update, draw) {
+function frameLoop(timestamp) {
     if (!running) return;
+
+    const update = currentUpdate;
+    const draw = currentDraw;
 
     if (typeof update === 'function') {
         update();
@@ -115,13 +120,15 @@ function frameLoop(update, draw) {
     if (typeof draw === 'function') {
         draw();
     }
+
+    animationId = requestAnimationFrame(frameLoop);
 }
 
 function startLoop(module) {
     stopLoop();
     running = true;
-    const update = module && module.update;
-    const draw = module && module.draw;
+    currentUpdate = module && module.update;
+    currentDraw = module && module.draw;
 
     if (typeof requestAnimationFrame === 'function') {
         animationId = requestAnimationFrame(frameLoop);
@@ -146,6 +153,8 @@ function run(module) {
         return { update, draw };
     }
 
+    currentUpdate = module && module.update;
+    currentDraw = module && module.draw;
     startLoop(module);
     return { update: module && module.update, draw: module && module.draw };
 }
