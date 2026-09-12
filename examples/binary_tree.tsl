@@ -1,10 +1,6 @@
 # Binary Tree Node
 function create_tree_node(value):
-    return {
-        value: value,
-        left: null,
-        right: null
-    }
+    return { value: value, left: null, right: null }
 
 # Insert into BST
 function insert(root, value):

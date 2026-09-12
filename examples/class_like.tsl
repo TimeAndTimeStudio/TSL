@@ -1,8 +1,5 @@
 # Object with Array
-class Person:
-    name: "Alice"
-    age: 25
-    hobbies: ["reading", "coding"]
+person = { name: "Alice", age: 25, hobbies: ["reading", "coding"] }
 
-print(Person.name)
-print(Person.hobbies[0])
+print(person.name)
+print(person.hobbies[0])

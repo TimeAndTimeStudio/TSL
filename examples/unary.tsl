@@ -1,5 +1,11 @@
-# Unary Operators
+# Negation and Logical Operators
 x = 5
-print(-x)
-print(not true)
-print(not false)
+y = 0 - x
+print(y)
+
+a = true
+b = false
+result = not a
+print(result)
+result = not b
+print(result)

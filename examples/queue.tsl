@@ -1,32 +1,30 @@
 # Queue Implementation
 function create_queue():
-    items = []
-    front = 0
-    rear = -1
-    count = 0
-    
-    return {
-        enqueue: function(item):
-            rear = rear + 1
-            items[rear] = item
-            count = count + 1
-        dequeue: function():
-            if count == 0:
-                return null
-            item = items[front]
-            front = front + 1
-            count = count - 1
-            return item
-        isEmpty: function():
-            return count == 0
-        size: function():
-            return count
-    }
+    return { items: [], front: 0, rear: (0 - 1), count: 0 }
+
+function queue_enqueue(queue, item):
+    queue.rear = queue.rear + 1
+    queue.items[queue.rear] = item
+    queue.count = queue.count + 1
+
+function queue_dequeue(queue):
+    if queue.count == 0:
+        return null
+    item = queue.items[queue.front]
+    queue.front = queue.front + 1
+    queue.count = queue.count - 1
+    return item
+
+function queue_is_empty(queue):
+    return queue.count == 0
+
+function queue_size(queue):
+    return queue.count
 
 queue = create_queue()
-queue.enqueue(1)
-queue.enqueue(2)
-queue.enqueue(3)
-print(queue.size())
-print(queue.dequeue())
-print(queue.dequeue())
+queue_enqueue(queue, 1)
+queue_enqueue(queue, 2)
+queue_enqueue(queue, 3)
+print(queue_size(queue))
+print(queue_dequeue(queue))
+print(queue_dequeue(queue))

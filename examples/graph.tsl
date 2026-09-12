@@ -1,23 +1,22 @@
 # Graph Adjacency List
 function create_graph():
-    vertices = []
-    edges = []
-    
-    return {
-        add_vertex: function(v):
-            vertices[vertices.length] = v
-        add_edge: function(v1, v2):
-            edges[edges.length] = { from: v1, to: v2 }
-        print: function():
-            for edge in edges:
-                print(edge.from + " -> " + edge.to)
-    }
+    return { vertices: [], edges: [] }
+
+function graph_add_vertex(graph, v):
+    graph.vertices[graph.vertices.length] = v
+
+function graph_add_edge(graph, v1, v2):
+    graph.edges[graph.edges.length] = { from: v1, to: v2 }
+
+function graph_print(graph):
+    for edge in graph.edges:
+        print(edge.from + " -> " + edge.to)
 
 graph = create_graph()
-graph.add_vertex("A")
-graph.add_vertex("B")
-graph.add_vertex("C")
-graph.add_edge("A", "B")
-graph.add_edge("B", "C")
-graph.add_edge("C", "A")
-graph.print()
+graph_add_vertex(graph, "A")
+graph_add_vertex(graph, "B")
+graph_add_vertex(graph, "C")
+graph_add_edge(graph, "A", "B")
+graph_add_edge(graph, "B", "C")
+graph_add_edge(graph, "C", "A")
+graph_print(graph)

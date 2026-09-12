@@ -1,6 +1,12 @@
 # Dynamic Programming - Word Break
+function string_length(s):
+    len = 0
+    for ch in s:
+        len = len + 1
+    return len
+
 function word_break(s, word_dict):
-    n = s.length
+    n = string_length(s)
     dp = []
     i = 0
     while i <= n:
@@ -12,7 +18,12 @@ function word_break(s, word_dict):
     while i <= n:
         j = 0
         while j < i:
-            if dp[j] and s.substring(j, i) in word_dict:
+            sub = ""
+            k = j
+            while k < i:
+                sub = sub + get_char(s, k)
+                k = k + 1
+            if dp[j] == true and sub == word_dict:
                 dp[i] = true
                 break
             j = j + 1
@@ -20,7 +31,15 @@ function word_break(s, word_dict):
     
     return dp[n]
 
+function get_char(s, i):
+    j = 0
+    for ch in s:
+        if j == i:
+            return ch
+        j = j + 1
+    return ""
+
 s = "leetcode"
-word_dict = ["leet", "code"]
+word_dict = "code"
 result = word_break(s, word_dict)
 print(result)
