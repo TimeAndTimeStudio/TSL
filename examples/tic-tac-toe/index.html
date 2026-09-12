@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-size: 2rem;
+      color: #e94560;
+    }
+    #status {
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+      min-height: 1.5em;
+      color: #0f3460;
+      background: #e94560;
+      padding: 8px 20px;
+      border-radius: 8px;
+    }
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+    .cell {
+      background: #16213e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .cell:hover { background: #1a1a4e; }
+    .cell.taken { cursor: not-allowed; }
+    .cell.x { color: #e94560; }
+    .cell.o { color: #0f3460; }
+    button {
+      padding: 10px 30px;
+      font-size: 1rem;
+      background: #e94560;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    button:hover { opacity: 0.8; }
+    #log {
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+      width: 310px;
+      background: #16213e;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-family: monospace;
+    }
+    #log div { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Tic Tac Toe</h1>
+  <div id="status">Player X's turn</div>
+  <div id="board"></div>
+  <button onclick="resetGame()">New Game</button>
+  <div id="log"></div>
+
+  <script>
+    let board = [null, null, null, null, null, null, null, null, null];
+    let current_player = "X";
+    let game_over = false;
+
+    function print(msg) {
+      const log = document.getElementById('log');
+      const div = document.createElement('div');
+      div.textContent = msg;
+      log.appendChild(div);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function range(n) {
+      const arr = [];
+      for (let i = 0; i < n; i++) arr.push(i);
+      return arr;
+    }
+
+    function get_cell(row, col) {
+      return board[row * 3 + col];
+    }
+
+    function set_cell(row, col, value) {
+      board[row * 3 + col] = value;
+    }
+
+    function renderBoard() {
+      const boardEl = document.getElementById('board');
+      boardEl.innerHTML = '';
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          const val = get_cell(row, col);
+          if (val) {
+            cell.textContent = val;
+            cell.classList.add('taken', val.toLowerCase());
+          } else {
+            cell.addEventListener('click', () => handleClick(row, col));
+          }
+          boardEl.appendChild(cell);
+        }
+      }
+    }
+
+    function handleClick(row, col) {
+      if (game_over) return;
+      if (get_cell(row, col) !== null) {
+        print("Position taken!");
+        return;
+      }
+      set_cell(row, col, current_player);
+      print("Player " + current_player + " placed at (" + row + ", " + col + ")");
+
+      const winner = check_winner();
+      if (winner !== null) {
+        renderBoard();
+        print("Player " + winner + " wins!");
+        document.getElementById('status').textContent = "Player " + winner + " wins!";
+        game_over = true;
+        return;
+      }
+
+      if (is_board_full()) {
+        renderBoard();
+        print("It's a draw!");
+        document.getElementById('status').textContent = "It's a draw!";
+        game_over = true;
+        return;
+      }
+
+      current_player = (current_player === "X") ? "O" : "X";
+      document.getElementById('status').textContent = "Player " + current_player + "'s turn";
+      renderBoard();
+    }
+
+    function check_winner() {
+      for (let row = 0; row < 3; row++) {
+        const c0 = get_cell(row, 0);
+        const c1 = get_cell(row, 1);
+        const c2 = get_cell(row, 2);
+        if (c0 !== null && c0 == c1 && c1 == c2) return c0;
+      }
+      for (let col = 0; col < 3; col++) {
+        const c0 = get_cell(0, col);
+        const c1 = get_cell(1, col);
+        const c2 = get_cell(2, col);
+        if (c0 !== null && c0 == c1 && c1 == c2) return c0;
+      }
+      let d1 = get_cell(0, 0);
+      let d2 = get_cell(1, 1);
+      let d3 = get_cell(2, 2);
+      if (d1 !== null && d1 == d2 && d2 == d3) return d1;
+      d1 = get_cell(0, 2);
+      d2 = get_cell(1, 1);
+      d3 = get_cell(2, 0);
+      if (d1 !== null && d1 == d2 && d2 == d3) return d1;
+      return null;
+    }
+
+    function is_board_full() {
+      for (let i = 0; i < 9; i++) {
+        if (board[i] === null) return false;
+      }
+      return true;
+    }
+
+    function resetGame() {
+      board = [null, null, null, null, null, null, null, null, null];
+      current_player = "X";
+      game_over = false;
+      document.getElementById('log').innerHTML = '';
+      document.getElementById('status').textContent = "Player X's turn";
+      renderBoard();
+    }
+
+    // Initial render
+    renderBoard();
+  </script>
+</body>
+</html>
