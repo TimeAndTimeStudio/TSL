@@ -10,7 +10,7 @@ node src/cli.js <file.tsl>
 
 ## Status
 
-Phase 12 — Runtime
+Phase 13 — Math
 
 ## Compiler Pipeline
 
@@ -53,7 +53,7 @@ Engine
 | 10 | Variable Semantics | ✓ Done |
 | 11 | Data Types | ✓ Done |
 | 12 | Runtime | ✓ Done |
-| 13 | Math | Pending |
+| 13 | Math | ✓ Done |
 | 14 | Engine API | Pending |
 | 15 | Render Loop | Pending |
 | 16 | Error System | Pending |
