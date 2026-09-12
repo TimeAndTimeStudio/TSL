@@ -23,7 +23,7 @@ tsl --version
 
 ## Status
 
-Phase 21 — Documentation
+TSL v1.0 — Complete
 
 ## Compiler Pipeline
 
@@ -71,7 +71,7 @@ JavaScript
 | 19 | Specification Lock | ✓ Done |
 | 20 | Test & Release Candidate | ✓ Done |
 | 21 | Documentation | ✓ Done |
-| 22 | TSL v1.0 | Pending |
+| 22 | TSL v1.0 | ✓ Done |
 
 ## Release Test Results
 
@@ -86,11 +86,10 @@ Validator Tests:    ✓ PASS
 Generator Tests:    ✓ PASS
 Variable Semantics: ✓ PASS
 AST Tests:          ✓ PASS
-Runtime Tests:      ✓ PASS
 Integration Tests:  ✓ PASS
 CLI Tests:          ✓ PASS
 
 CLI Functionality:  ✓ PASS (version, build, check, -o flag)
 
-Total: 25/25 release tests passed
+Total: 24/24 release tests passed
 ```

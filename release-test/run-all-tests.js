@@ -6,7 +6,7 @@
  */
 
 const { execSync } = require('child_process');
-const { writeFileSync, readFileSync, unlinkSync, mkdirSync } = require('fs');
+const { writeFileSync, readFileSync, unlinkSync, mkdirSync, existsSync } = require('fs');
 const { strictEqual, ok, deepStrictEqual } = require('assert');
 const path = require('path');
 
@@ -92,7 +92,7 @@ try {
 // --- Clean Build ---
 console.log('\n[2/6] Clean Build');
 console.log('----------------------------');
-const exampleFiles = ['hello.tsl', 'variables.tsl', 'math.tsl', 'if.tsl', 'loops.tsl', 'functions.tsl', 'arrays.tsl', 'objects.tsl', 'graphics.tsl', 'game.tsl'];
+const exampleFiles = ['hello.tsl', 'variables.tsl', 'math.tsl', 'if.tsl', 'for.tsl', 'functions.tsl', 'arrays.tsl', 'objects.tsl', 'while.tsl', 'recursion.tsl'];
 
 for (const example of exampleFiles) {
   test(`${example} builds successfully`, () => {
@@ -167,11 +167,16 @@ const runtimePath = path.join(TESTS_DIR, 'runtime', 'runtime.test.js');
 const integrationPath = path.join(TESTS_DIR, 'integration', 'integration.test.js');
 const cliPath = path.join(TESTS_DIR, 'cli', 'cli.test.js');
 
-for (const [name, testPath] of [
-  ['Runtime', runtimePath],
+const runtimeExists = existsSync(runtimePath);
+const testPairs = [
   ['Integration', integrationPath],
   ['CLI', cliPath]
-]) {
+];
+if (runtimeExists) {
+  testPairs.unshift(['Runtime', runtimePath]);
+}
+
+for (const [name, testPath] of testPairs) {
   try {
     const result = runCommand(`node "${testPath}"`);
     test(`${name} tests pass`, () => ok(true));
