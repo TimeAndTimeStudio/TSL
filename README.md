@@ -10,7 +10,7 @@ node src/cli.js <file.tsl>
 
 ## Status
 
-Phase 10 — Variable Semantics
+Phase 11 — Data Types
 
 ## Compiler Pipeline
 
@@ -27,7 +27,7 @@ AST
     ↓
 Validator
     ↓
-Variable Semantics ← Current Phase
+Data Types ← Current Phase
     ↓
 JavaScript Generator
     ↓
@@ -49,7 +49,7 @@ JavaScript
 | 8 | Control Flow Generator | ✓ Done |
 | 9 | Function Generator | ✓ Done |
 | 10 | Variable Semantics | ✓ Done |
-| 11 | Data Types | Pending |
+| 11 | Data Types | ✓ Done |
 | 12 | Runtime | Pending |
 | 13 | Math | Pending |
 | 14 | Engine API | Pending |
