@@ -98,7 +98,7 @@ test("generates binary comparisons", () => {
 
 test("generates binary logical operators", () => {
   const js = compile(`x = true and false\ny = true or false`);
-  assertEqual(js, `let x = (true and false);\nlet y = (true or false);`);
+  assertEqual(js, `let x = (true && false);\nlet y = (true || false);`);
 });
 
 // Unary expressions
@@ -316,7 +316,7 @@ test("generates if with complex condition", () => {
   const source = `if (x > 10 and y < 5):
   print("big")`;
   const js = compile(source);
-  assertEqual(js, `if (((x > 10) and (y < 5))) {\n  print("big");\n}`);
+  assertEqual(js, `if (((x > 10) && (y < 5))) {\n  print("big");\n}`);
 });
 
 test("generates while with break and continue together", () => {
@@ -378,7 +378,7 @@ test("generates number operations", () => {
 // Boolean operations
 test("generates boolean operations", () => {
   const js = compile(`x = true and false or true`);
-  assertEqual(js, `let x = ((true and false) or true);`);
+  assertEqual(js, `let x = ((true && false) || true);`);
 });
 
 // Null handling
@@ -651,7 +651,7 @@ test("generates function with logical operators in condition", () => {
     return true
   return false`;
   const js = compile(source);
-  assertEqual(js, `function check(x, y) {\n  if (((x > 0) and (y > 0))) {\n    return true;\n  }\n  return false;\n}`);
+  assertEqual(js, `function check(x, y) {\n  if (((x > 0) && (y > 0))) {\n    return true;\n  }\n  return false;\n}`);
 });
 
 test("generates function with not operator", () => {

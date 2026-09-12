@@ -18,7 +18,7 @@ function check_winner() {
     let c0 = get_cell(row, 0);
     let c1 = get_cell(row, 1);
     let c2 = get_cell(row, 2);
-    if ((((c0 != null) and (c0 == c1)) and (c1 == c2))) {
+    if ((((c0 != null) && (c0 == c1)) && (c1 == c2))) {
       return c0;
     }
   }
@@ -26,20 +26,20 @@ function check_winner() {
     let c0 = get_cell(0, col);
     let c1 = get_cell(1, col);
     let c2 = get_cell(2, col);
-    if ((((c0 != null) and (c0 == c1)) and (c1 == c2))) {
+    if ((((c0 != null) && (c0 == c1)) && (c1 == c2))) {
       return c0;
     }
   }
   let d1 = get_cell(0, 0);
   let d2 = get_cell(1, 1);
   let d3 = get_cell(2, 2);
-  if ((((d1 != null) and (d1 == d2)) and (d2 == d3))) {
+  if ((((d1 != null) && (d1 == d2)) && (d2 == d3))) {
     return d1;
   }
   d1 = get_cell(0, 2);
   d2 = get_cell(1, 1);
   d3 = get_cell(2, 0);
-  if ((((d1 != null) and (d1 == d2)) and (d2 == d3))) {
+  if ((((d1 != null) && (d1 == d2)) && (d2 == d3))) {
     return d1;
   }
   return null;

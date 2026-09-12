@@ -220,8 +220,8 @@ test("full pipeline: function with loop", () => {
 // Test 24: Full pipeline — boolean and logical
 test("full pipeline: boolean and logical operators", () => {
   const result = compileAndRun('a = true and false\nb = true or false\nc = not true\nprint(a)\nprint(b)\nprint(c)\n');
-  ok(result.jsCode.includes('and'), 'Should generate and');
-  ok(result.jsCode.includes('or'), 'Should generate or');
+  ok(result.jsCode.includes('&&'), 'Should generate &&');
+  ok(result.jsCode.includes('||'), 'Should generate ||');
   ok(result.jsCode.includes('not'), 'Should generate not');
 });
 

@@ -150,18 +150,20 @@ function run(module) {
     return { update: module && module.update, draw: module && module.draw };
 }
 
-module.exports = {
-    print,
-    range,
-    clear,
-    draw_rect,
-    draw_circle,
-    draw_line,
-    run,
-    startLoop,
-    stopLoop,
-    initCanvas,
-    getCanvas,
-    getCtx,
-    setCanvasSize,
-};
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        print,
+        range,
+        clear,
+        draw_rect,
+        draw_circle,
+        draw_line,
+        run,
+        startLoop,
+        stopLoop,
+        initCanvas,
+        getCanvas,
+        getCtx,
+        setCanvasSize,
+    };
+}

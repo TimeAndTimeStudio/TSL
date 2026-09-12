@@ -151,7 +151,10 @@ function createGenerator(source, filename = '<anonymous>') {
   function generateBinaryExpression(node) {
     const left = generateNode(node.left);
     const right = generateNode(node.right);
-    return `(${left} ${node.operator} ${right})`;
+    let op = node.operator;
+    if (op === 'and') op = '&&';
+    if (op === 'or') op = '||';
+    return `(${left} ${op} ${right})`;
   }
 
   // === Unary Expression ===
