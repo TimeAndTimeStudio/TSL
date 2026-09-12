@@ -1,169 +1,26 @@
-# TSL CLI
+# TSL CLI Reference
 
-Command-line interface for the TSL Language compiler.
+## Overview
 
-## Quick Start
+The TSL CLI is the command-line interface for the TSL Language. It provides commands to compile, check, and run TSL source files.
 
-```bash
-node src/cli.js <file.tsl>
-```
+## Installation
 
-## Commands
-
-### Run and View Generated JavaScript
-
-Compile a `.tsl` file and display the generated JavaScript.
-
-```bash
-node src/cli.js <file.tsl>
-```
-
-**Output on success:**
-
-```
-Loaded: <file.tsl>
-Compilation successful!
-
---- Generated JavaScript ---
-<generated JS code>
---- End of Generated Code ---
-```
-
-**Output on error:**
-
-```
-Error message from compiler
-```
-
-Exit code 1 on error.
-
----
-
-### Build to stdout
-
-Compile and output the generated JavaScript to stdout.
-
-```bash
-node src/cli.js build <file.tsl>
-```
-
-**Output on success:**
-
-```
-<generated JS code>
-```
-
----
-
-### Build to output file
-
-Compile and write the generated JavaScript to a file.
-
-```bash
-node src/cli.js build <file.tsl> -o <output.js>
-```
-
-**Output on success:**
-
-```
-Built: <file.tsl> -> <output.js>
-```
-
----
-
-### Check / Validate
-
-Check a `.tsl` file for compilation errors without generating output.
-
-```bash
-node src/cli.js check <file.tsl>
-```
-
-**Output on success:**
-
-```
-Check passed: <file.tsl>
-```
-
-Exit code 0 on success, 1 on error.
-
----
-
-### Show Version
-
-Display the TSL compiler version.
-
-```bash
-node src/cli.js --version
-```
-
-**Output:**
-
-```
-TSL v1.0.0
-```
-
----
-
-## Exit Codes
-
-| Code | Meaning |
-|------|---------|
-| 0 | Success |
-| 1 | Error |
-
----
-
-## Error Messages
-
-### Wrong file extension
-
-```
-Error: Expected .tsl extension, got "<ext>"
-```
-
-The input file must have a `.tsl` extension.
-
-### File not found
-
-```
-Error: File not found: <file>
-```
-
-The specified file does not exist.
-
-### Compiler errors
-
-Compiler errors include:
-
-- filename
-- line number
-- column number
-- message
-- source context
-
----
-
-## Global Installation
-
-Install globally:
+After installing TSL globally:
 
 ```bash
 npm install -g .
 ```
 
-Use the `tsl` command:
+Or run directly from source:
 
 ```bash
-tsl <file.tsl>
-tsl build <file.tsl> -o <output.js>
-tsl check <file.tsl>
-tsl --version
+node src/cli.js
 ```
 
----
+## Usage
 
-## Usage Summary
+### Commands
 
 ```
 tsl <file.tsl>
@@ -171,3 +28,118 @@ tsl build <file.tsl> [-o <output.js>]
 tsl check <file.tsl>
 tsl --version
 ```
+
+### Compile and Run
+
+Compile a TSL file and print the generated JavaScript to stdout:
+
+```bash
+node src/cli.js hello.tsl
+```
+
+Output:
+
+```
+Loaded: hello.tsl
+Compilation successful!
+
+--- Generated JavaScript ---
+<generated JavaScript>
+--- End of Generated Code ---
+```
+
+### Compile to File
+
+Compile a TSL file and write the generated JavaScript to an output file:
+
+```bash
+node src/cli.js hello.tsl -o hello.js
+```
+
+Or using the build command:
+
+```bash
+tsl build hello.tsl -o hello.js
+```
+
+Output:
+
+```
+Built: hello.tsl -> hello.js
+```
+
+### Check
+
+Validate a TSL file without generating output:
+
+```bash
+tsl check hello.tsl
+```
+
+Output on success:
+
+```
+Check passed: hello.tsl
+```
+
+### Version
+
+Print the TSL version:
+
+```bash
+tsl --version
+```
+
+Output:
+
+```
+TSL v1.0.0
+```
+
+## Compilation Pipeline
+
+The CLI compiles TSL source through four stages:
+
+1. **Tokenize** — `lexer.tokenize(source, filename)` converts source text into tokens
+2. **Parse** — `createParser(tokens, source, filename).parseStatements()` builds the AST
+3. **Validate** — `createValidator(source, filename).validate(ast)` checks semantic rules
+4. **Generate** — `createGenerator(source, filename).generate(ast)` produces JavaScript
+
+## Error Handling
+
+The CLI catches and reports errors from each pipeline stage:
+
+| Error Type     | Source        | Description                      |
+| -------------- | ------------- | -------------------------------- |
+| LexerError     | lexer.js      | Invalid tokens or syntax         |
+| ParserError    | parser.js     | Malformed AST structure          |
+| ValidationError| validator.js  | Semantic rule violations         |
+| GeneratorError | generator.js  | Code generation failure          |
+
+Errors are printed to stderr with line and column information:
+
+```
+LexerError: Unexpected token 'invalid' at line 3, column 5
+```
+
+## Exit Codes
+
+| Code | Meaning                    |
+| ---- | -------------------------- |
+| 0    | Success                    |
+| 1    | Error (compilation or I/O) |
+
+## File Requirements
+
+- Source files must have `.tsl` extension
+- Files must exist on disk before compilation
+- Files must be readable as UTF-8 text
+
+## Alternative Entry Points
+
+The CLI can be invoked in two ways:
+
+1. Direct: `node src/cli.js <args>`
+2. Via package bin: `tsl <args>` (after global install)
+
+Both entry points are fully equivalent.

@@ -1,6 +1,11 @@
 # Getting Started with TSL
 
-TSL is a small programming language that transpiles to JavaScript. It uses indentation for blocks and colon (`:`) to mark block start, with no `end` keyword.
+TSL (Tiny Script Language) is a small programming language that transpiles to JavaScript. It uses indentation for blocks, has simple syntax, and runs on any JavaScript runtime.
+
+**Version:** 1.0.0
+**File extension:** `.tsl`
+
+---
 
 ## Installation
 
@@ -8,22 +13,18 @@ TSL is a small programming language that transpiles to JavaScript. It uses inden
 npm install
 ```
 
-Or install globally:
-
-```bash
-npm install -g .
-```
+---
 
 ## Quick Start
 
-Create a `.tsl` file:
+Create a file `hello.tsl`:
 
 ```tsl
 # Hello World
 print("Hello, World!")
 ```
 
-Compile and view generated JavaScript:
+Run it:
 
 ```bash
 node src/cli.js hello.tsl
@@ -31,7 +32,7 @@ node src/cli.js hello.tsl
 
 Output:
 
-```text
+```
 Loaded: hello.tsl
 Compilation successful!
 
@@ -40,73 +41,91 @@ console.log("Hello, World!");
 --- End of Generated Code ---
 ```
 
-Build to a `.js` file:
+---
+
+## Building to JavaScript
+
+To generate a JavaScript file:
 
 ```bash
 node src/cli.js hello.tsl -o hello.js
 ```
 
-Or with global install:
+Or use the build command:
 
 ```bash
-tsl hello.tsl
-tsl build hello.tsl -o hello.js
+node src/cli.js build hello.tsl -o hello.js
 ```
 
-Check syntax without output:
+Then run the generated JavaScript with Node.js:
 
 ```bash
-tsl check hello.tsl
+node hello.js
 ```
 
-Show version:
+---
+
+## Checking Syntax
+
+To validate a TSL file without generating output:
 
 ```bash
-tsl --version
+node src/cli.js check hello.tsl
 ```
 
-Output: `TSL v1.0.0`
+Output on success:
+
+```
+Check passed: hello.tsl
+```
+
+---
+
+## Version
+
+```bash
+node src/cli.js --version
+```
+
+Output:
+
+```
+TSL v1.0.0
+```
+
+---
 
 ## Language Basics
 
 ### Variables
 
-Variables are declared with `=`. The first assignment in a scope generates `let`:
+Variables are created on first assignment. The first declaration uses `let` in the generated JavaScript.
 
 ```tsl
 name = "TSL"
 version = 1
-is_ready = true
+pi = 3.14
+active = true
 nothing = null
-
-print(name)
 ```
 
-Reassignment does not add `let`:
+Reassignment does not use `let`:
 
 ```tsl
 x = 10
-x = 20  # reassignment, no 'let'
+x = 20  # reassignment, no let
 ```
-
-### Comments
-
-```tsl
-# This is a comment
-```
-
-Everything after `#` to end of line is ignored.
 
 ### Data Types
 
-**Numbers** — integers and decimals:
+**Numbers** — integers and floats:
 
 ```tsl
-x = 10
+x = 42
 y = 3.14
 ```
 
-**Strings** — single or double quotes:
+**Strings** — double or single quotes:
 
 ```tsl
 a = "hello"
@@ -116,7 +135,8 @@ b = 'world'
 **Booleans:**
 
 ```tsl
-flag = true
+is_ready = true
+is_done = false
 ```
 
 **Null:**
@@ -127,32 +147,58 @@ value = null
 
 ### Operators
 
-**Arithmetic:** `+`, `-`, `*`, `/`, `%`
+**Arithmetic:**
 
 ```tsl
-sum = a + b
-diff = a - b
-product = a * b
-quotient = a / b
-remainder = a % b
+a = 10 + 5    # addition
+b = 10 - 5    # subtraction
+c = 10 * 5    # multiplication
+d = 10 / 5    # division
+e = 10 % 3    # modulo
 ```
 
-**Comparison:** `<`, `<=`, `>`, `>=`, `==`, `!=`
+**Comparison:**
 
 ```tsl
-if x == 10:
-    print("equal")
+a == b    # equal
+a != b    # not equal
+a < b     # less than
+a <= b    # less than or equal
+a > b     # greater than
+a >= b    # greater than or equal
 ```
 
-**Logical:** `and`, `or`, `not`
+**Logical:**
 
 ```tsl
-if x > 0 and y < 10:
-    print("in range")
-
-if not flag:
-    print("false")
+result = (a > 10) and (b < 5)
+result = (a > 10) or (b < 5)
+result = not (a > 10)
 ```
+
+**Operator Precedence** (high to low):
+
+1. `()`
+2. `not`
+3. `*`, `/`, `%`
+4. `+`, `-`
+5. `<`, `<=`, `>`, `>=`
+6. `==`, `!=`
+7. `and`
+8. `or`
+
+### Comments
+
+Use `#` for line comments:
+
+```tsl
+# This is a comment
+x = 10  # inline comment
+```
+
+Comments are ignored by the compiler.
+
+---
 
 ### Control Flow
 
@@ -167,6 +213,8 @@ else:
     print("small")
 ```
 
+Blocks are defined by indentation (spaces) and a colon `:`.
+
 **While:**
 
 ```tsl
@@ -175,9 +223,11 @@ counter = 3
 while counter > 0:
     print(counter)
     counter = counter - 1
+
+print("Go!")
 ```
 
-**For / In:**
+**For (with range):**
 
 ```tsl
 for i in range(5):
@@ -195,7 +245,13 @@ for i in range(10):
     print(i)
 ```
 
+`break` and `continue` only work inside loops.
+
+---
+
 ### Functions
+
+**Declaration:**
 
 ```tsl
 function add(a, b):
@@ -205,66 +261,81 @@ result = add(10, 20)
 print(result)
 ```
 
+**No return value:**
+
+```tsl
+function greet(name):
+    print("Hello, " + name)
+
+greet("TSL")
+```
+
+---
+
 ### Arrays
+
+**Create:**
 
 ```tsl
 numbers = [1, 2, 3, 4, 5]
+```
+
+**Access:**
+
+```tsl
 first = numbers[0]
 last = numbers[4]
 ```
 
+---
+
 ### Objects
+
+**Create:**
 
 ```tsl
 player = { x: 100, y: 200, name: "Hero" }
 ```
 
-### Member Access
+**Access properties:**
+
+```tsl
+print(player.x)
+print(player.y)
+print(player.name)
+```
+
+**Member access chaining:**
 
 ```tsl
 matrix = { rows: 3, cols: 4, data: [1, 2, 3] }
-print(matrix.rows)
 print(matrix.data[0])
 ```
 
-## Built-in Helpers
+---
 
-### print()
-
-Prints a value to stdout (maps to `console.log`):
+## Complete Example
 
 ```tsl
-print("Hello")
-print(x)
-```
+# Complete example
+max_value = 10
+counter = 0
 
-### range()
-
-Generates a sequence of integers:
-
-```tsl
-for i in range(5):
-    print(i)  # 0, 1, 2, 3, 4
-```
-
-## Block Syntax
-
-Blocks start with `:` and are defined by indentation (spaces):
-
-```tsl
-if x > 10:
-    print("big")
-    if x > 20:
-        print("very big")
+function check_number(n):
+    if n > max_value:
+        return "too big"
     else:
-        print("between 10 and 20")
-else:
-    print("small")
+        return "ok"
+
+for i in range(5):
+    result = check_number(i * 3)
+    print(i + " -> " + result)
+    counter = counter + 1
+
+print("Done: " + counter)
 ```
 
-- No `end` keyword
-- Indentation defines nesting level
-- Use spaces (tabs are not supported)
+---
 
 ## CLI Reference
 
@@ -272,80 +343,68 @@ else:
 |---------|-------------|
 | `node src/cli.js <file.tsl>` | Compile and show generated JavaScript |
 | `node src/cli.js <file.tsl> -o <output.js>` | Compile and write to file |
+| `node src/cli.js build <file.tsl>` | Build and print JavaScript |
+| `node src/cli.js build <file.tsl> -o <output.js>` | Build and write to file |
+| `node src/cli.js check <file.tsl>` | Validate syntax |
 | `node src/cli.js --version` | Show version |
-| `tsl <file.tsl>` | Same as above (global install) |
-| `tsl build <file.tsl> [-o <output.js>]` | Build to JavaScript |
-| `tsl check <file.tsl>` | Check syntax only |
-| `tsl --version` | Show version |
 
-## Error Reporting
+---
 
-Errors include:
-
-- Error type (Lexer Error, Parser Error, Semantic Error, Generator Error)
-- Filename
-- Line number
-- Column number
-- Source line with pointer
-
-Example:
+## Compiler Pipeline
 
 ```
-Parser Error: Expected ':' at line 1:0
-> if x > 10
-  ^
+TSL Source
+    ↓
+Lexer  →  Tokens
+    ↓
+Parser  →  AST
+    ↓
+Validator  →  (semantic checks)
+    ↓
+Generator  →  JavaScript
 ```
 
-## Generated JavaScript
+Each stage can produce errors with filename, line, column, and source line information.
 
-TSL compiles to valid, readable JavaScript:
+---
 
-| TSL | JavaScript |
-|-----|------------|
-| `x = 10` | `let x = 10;` |
-| `if x > 10:` | `if (x > 10) {` |
-| `else:` | `} else {` |
-| `for i in range(5):` | `for (let i of range(5)) {` |
-| `while x > 0:` | `while (x > 0) {` |
-| `function foo(a, b):` | `function foo(a, b) {` |
-| `return x` | `return x;` |
-| `print(x)` | `console.log(x);` |
-| `break` | `break;` |
-| `continue` | `continue;` |
+## Error Types
 
-## Keywords
+| Type | Description |
+|------|-------------|
+| Lexer Error | Invalid characters or unterminated strings |
+| Parser Error | Unexpected tokens or missing syntax |
+| Semantic Error | `return` outside function, `break`/`continue` outside loop |
+| Generator Error | Unknown AST node type |
 
-Reserved keywords (cannot be used as identifiers):
+---
 
-```
-if  else  for  in  while  function  return  break  continue  pass
-true  false  null  and  or  not
-```
+## Out of Scope (v1.0)
 
-## Identifiers
+The following are **not** part of TSL v1.0:
 
-- Start with a letter or `_`
-- Followed by letters, digits, or `_`
-- Case-sensitive
+- Classes, inheritance, interfaces
+- Modules, packages
+- Static typing
+- Garbage collector, VM, bytecode
+- JIT compilation, native compilation
+- Async, threads, coroutines
+- Pattern matching, destructuring
 
-Valid: `x`, `player`, `player_x`, `_value`, `x2`
-Invalid: `2x`, `player-name`
+---
 
 ## Examples
 
-See the `examples/` directory for full working examples:
+See the `examples/` directory for more:
 
-- `examples/hello.tsl` — Hello World
-- `examples/variables.tsl` — Variables and types
-- `examples/if.tsl` — If / Else
-- `examples/for.tsl` — For / In loop
-- `examples/while.tsl` — While loop
-- `examples/functions.tsl` — Functions and return
-- `examples/arrays.tsl` — Arrays
-- `examples/objects.tsl` — Objects
-- `examples/member_access.tsl` — Member access
-- `examples/break_continue.tsl` — Break and continue
-- `examples/logical.tsl` — Logical operators
-- `examples/recursion.tsl` — Recursive functions
-- `examples/fibonacci.tsl` — Fibonacci
-- `examples/bubble_sort.tsl` — Bubble sort
+```
+examples/
+    hello.tsl
+    functions.tsl
+    arrays.tsl
+    objects.tsl
+    if.tsl
+    for.tsl
+    while.tsl
+    strings.tsl
+```

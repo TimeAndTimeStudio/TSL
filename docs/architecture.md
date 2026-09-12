@@ -1,340 +1,355 @@
 # TSL Architecture
 
-TSL is a small, indentation-based programming language that transpiles to JavaScript.
+## Overview
 
-## Language Philosophy
+TSL (TSLang) is a small, simple programming language that transpiles to JavaScript.
+It is designed for game development and small programs with Python-like indentation-based syntax.
 
-- Transpiles to JavaScript (no VM, no bytecode, no JIT)
+**Target**: JavaScript (ES6+)
+**Runtime**: Node.js
+**File Extension**: `.tsl`
+**Version**: 1.0.0
+
+---
+
+## Language Goals
+
+- Easy to write and read
 - Indentation-based blocks (no `end` keyword)
-- No type system
-- Small and predictable
-- Each stage has clear input/output
+- Transpile to JavaScript
+- Run on JavaScript runtime
+- Support game development and small programs
+
+TSL is **not** intended to be a general-purpose language with complex features.
+
+---
+
+## Compiler Pipeline
+
+```
+TSL Source
+    ↓
+    Lexer (src/lexer.js)
+    ↓
+    Tokens (TokenType + Token)
+    ↓
+    Parser (src/parser.js)
+    ↓
+    AST (src/ast.js)
+    ↓
+    Validator (src/validator.js)
+    ↓
+    Generator (src/generator.js)
+    ↓
+    JavaScript
+```
+
+### Pipeline Rules
+
+- The AST is the central representation shared by the Parser and Generator.
+- No string replacement is used as compiler architecture.
+- No VM, bytecode, JIT, or native compilation.
+- Output is valid, deterministic JavaScript.
+
+---
 
 ## Project Structure
 
 ```
-TSL/
+Engine/
 ├── src/
-│   ├── cli.js        # CLI entry point, compileSource()
-│   ├── errors.js     # Error classes
-│   ├── ast.js        # AST node classes
-│   ├── lexer.js      # Lexer (tokenizer)
-│   ├── parser.js     # Parser (AST builder)
-│   ├── validator.js  # Semantic validator
-│   └── generator.js  # JavaScript generator
-├── examples/         # .tsl example files
-├── docs/             # Documentation
-├── package.json      # Project config
-└── SPEC.md           # Language specification
+│   ├── cli.js          # CLI entry point
+│   ├── errors.js       # Error classes
+│   ├── lexer.js        # Tokenizer
+│   ├── parser.js       # Parser (precedence climbing)
+│   ├── validator.js    # Semantic validator
+│   ├── generator.js    # JavaScript code generator
+│   └── ast.js          # AST node definitions
+├── tests/              # Test files
+├── docs/               # Documentation
+├── examples/           # Example TSL programs
+├── release-test/       # Release verification
+├── package.json
+├── SPEC.md             # Language specification
+├── AGENTS.md           # Agent instructions
+└── README.md
 ```
 
-## Compilation Pipeline
+---
+
+## Module Descriptions
+
+### `src/lexer.js` — Tokenizer
+
+The Lexer reads TSL source code and produces a stream of tokens.
+
+**Key Responsibilities**:
+
+- Recognize literals: numbers, strings, booleans, null
+- Recognize identifiers and keywords
+- Recognize operators and delimiters
+- Handle comments (`#` to end of line)
+- Convert indentation changes to `INDENT` / `DEDENT` tokens
+- Emit `NEWLINE` tokens between statements
+- Emit `EOF` at end of input
+
+**Token Types**:
 
 ```
-Source Code (.tsl)
-    ↓
-Lexer → Token[]
-    ↓
-Parser → AST
-    ↓
-Validator → (errors)
-    ↓
-Generator → JavaScript
+IDENTIFIER, NUMBER, STRING
+IF, ELSE, FOR, IN, WHILE, FUNCTION, RETURN, BREAK, CONTINUE, PASS, TRUE, FALSE, NULL, AND, OR, NOT
+PLUS, MINUS, STAR, SLASH, PERCENT
+EQUAL, EQUAL_EQUAL, NOT_EQUAL
+LESS, LESS_EQUAL, GREATER, GREATER_EQUAL
+LPAREN, RPAREN, LBRACKET, RBRACKET, LBRACE, RBRACE
+COMMA, DOT, COLON
+NEWLINE, INDENT, DEDENT
+EOF
 ```
 
-Each stage is independent. The output of one stage is the input of the next.
+**Indentation Handling**:
 
-## Source Files
+- Uses an `indentStack` to track indentation levels
+- Spaces are counted; tabs reset the indent (first non-space wins)
+- `INDENT` is emitted when indentation increases
+- `DEDENT` is emitted when indentation decreases
+- Mismatched indentation throws a `LexerError`
 
-### src/lexer.js
+---
 
-The lexer tokenizes source code into a stream of tokens.
+### `src/parser.js` — Parser
 
-**Key exports:**
+The Parser consumes tokens and builds an AST using **precedence climbing**.
 
-- `TokenType` — object with all token type constants
-- `Token` — class with properties: `type`, `value`, `line`, `column`
-- `tokenize(source, filename)` — returns `Token[]`
-- `createLexer(source, filename)` — returns `{ tokenize }`
+**Key Responsibilities**:
 
-**Token types:**
+- Parse expressions with correct operator precedence
+- Parse statements: if, else, for, while, function, return, break, continue, pass, assignment
+- Parse blocks delimited by `:` + INDENT + ... + DEDENT
+- Handle postfix operators: member access (`.prop`), function calls `(args)`, array access `[index]`
+- Parse array literals `[...]` and object literals `{...}`
 
-| Category | Token Types |
-|----------|-------------|
-| Literals | `NUMBER`, `STRING` |
-| Identifiers | `IDENTIFIER` |
-| Keywords | `IF`, `ELSE`, `FOR`, `IN`, `WHILE`, `FUNCTION`, `RETURN`, `BREAK`, `CONTINUE`, `PASS`, `TRUE`, `FALSE`, `NULL`, `AND`, `OR`, `NOT` |
-| Operators | `PLUS`, `MINUS`, `STAR`, `SLASH`, `PERCENT`, `EQUAL`, `EQUAL_EQUAL`, `NOT_EQUAL`, `LESS`, `LESS_EQUAL`, `GREATER`, `GREATER_EQUAL` |
-| Delimiters | `LPAREN`, `RPAREN`, `LBRACKET`, `RBRACKET`, `LBRACE`, `RBRACE`, `COMMA`, `DOT`, `COLON` |
-| Structure | `NEWLINE`, `INDENT`, `DEDENT`, `EOF` |
+**Parser Methods**:
 
-**Whitespace handling:**
+| Method | Purpose |
+|---|---|
+| `parseExpression()` | Top-level expression parsing |
+| `parseBinary(minPrecedence)` | Precedence climbing for binary operators |
+| `parseUnary()` | Handle `not` prefix operator |
+| `parsePrimary()` | Literals, identifiers, grouped expressions |
+| `parsePostfix()` | Member access, calls, array access |
+| `parseStatements()` | Parse a list of statements |
+| `parseStatement()` | Parse a single statement |
+| `parseBlock()` | Parse `:` + INDENT + statements + DEDENT |
 
-- Spaces and tabs are used for indentation-based blocks
-- Blank lines are skipped (NEWLINE is still emitted)
-- Mixed tabs/spaces in indentation causes a LexerError
-- Indentation is tracked via an indent stack
+**Operator Precedence** (low to high):
 
-**Comments:**
+```
+or (1)
+and (2)
+==, !=, <, <=, >, >= (3)
++, - (4)
+*, /, % (5)
+not (unary, highest)
+```
 
-- Line comments start with `#` and extend to end of line
+---
 
-### src/parser.js
+### `src/ast.js` — AST Node Definitions
 
-The parser consumes tokens and builds an AST.
+AST nodes follow a simple factory pattern. Each node has a `type` and `location`.
 
-**Key exports:**
+**Node Types**:
 
-- `createParser(tokens, source, filename)` — returns `{ parseExpression, parseStatements, parsePrimary, parseUnary, parseStatement, parseBlock }`
+| Category | Nodes |
+|---|---|
+| Program | `Program` |
+| Literals | `NumberLiteral`, `StringLiteral`, `BooleanLiteral`, `NullLiteral` |
+| Expressions | `Identifier`, `BinaryExpression`, `UnaryExpression`, `CallExpression`, `MemberExpression`, `ArrayAccess`, `ArrayExpression`, `ObjectExpression`, `Property` |
+| Statements | `Assignment`, `IfStatement`, `WhileStatement`, `ForStatement`, `FunctionDeclaration`, `ReturnStatement`, `BreakStatement`, `ContinueStatement`, `ExpressionStatement` |
+| Location | `Location(line, column, endLine, endColumn)` |
 
-**Parser methods:**
+---
 
-- `parseStatements()` — parses a list of statements until EOF
-- `parseStatement()` — parses a single statement (dispatches by keyword)
-- `parseExpression()` — parses an expression using precedence climbing
-- `parsePrimary()` — parses primary expressions (literals, identifiers, groups)
-- `parseUnary()` — parses unary expressions (`not`)
-- `parseBlock()` — parses an indented block (expects `:`, `INDENT`, statements, `DEDENT`)
+### `src/validator.js` — Semantic Validator
 
-**Operator precedence (lowest to highest):**
+The Validator performs semantic checks on the AST before code generation.
 
-| Precedence | Operators |
-|------------|-----------|
-| 1 | `or` |
-| 2 | `and` |
-| 3 | `==`, `!=`, `<`, `<=`, `>`, `>=` |
-| 4 | `+`, `-` |
-| 5 | `*`, `/`, `%` |
+**Current Checks**:
 
-**Statement types parsed:**
+| Check | Error |
+|---|---|
+| `return` outside function | `'return outside function'` |
+| `break` outside loop | `'break outside loop'` |
+| `continue` outside loop | `'continue outside loop'` |
 
-- `IfStatement` — `if condition:` with optional `else:`
-- `ForStatement` — `for variable in iterable:`
-- `WhileStatement` — `while condition:`
-- `FunctionDeclaration` — `function name(params):`
-- `ReturnStatement` — `return [expression]`
-- `BreakStatement`, `ContinueStatement`, `Pass`
-- `Assignment` — `identifier = expression` (supports member access and array access)
-- `ExpressionStatement` — any expression as a statement
+**Context Tracking**:
 
-### src/ast.js
+- `inFunction` — tracks whether currently inside a function
+- `inLoop` — tracks whether currently inside a loop
 
-Defines all AST node factory functions.
+---
 
-**Key exports:**
+### `src/generator.js` — JavaScript Code Generator
 
-- `Location(line, column, endLine, endColumn)` — source location
-- `Program(body, location)` — root node, `body` is an array of statements
+The Generator walks the AST and produces JavaScript source code.
 
-**Literal nodes:**
+**Key Responsibilities**:
 
-- `NumberLiteral(value, location)`
-- `StringLiteral(value, location)`
-- `BooleanLiteral(value, location)`
-- `NullLiteral(location)`
+- Convert AST nodes to valid JavaScript
+- Track variable declarations (`let` on first assignment, bare assignment on subsequent)
+- Track scope via `scopeStack` (array of Sets)
+- Manage indentation with `indentLevel`
+- Generate deterministic output
 
-**Expression nodes:**
+**Scope Management**:
 
-- `Identifier(name, location)`
-- `BinaryExpression(operator, left, right, location)`
-- `UnaryExpression(operator, argument, location)`
-- `CallExpression(callee, arguments, location)`
-- `ArrayExpression(elements, location)`
-- `ObjectExpression(properties, location)`
-- `Property(key, value, location)`
-- `MemberExpression(object, property, location)`
-- `ArrayAccess(object, index, location)`
+- `scopeStack` — array of Sets, one per scope level
+- `declareVar(name)` — adds a variable to the current scope
+- `isDeclared(name)` — checks if a variable exists in any enclosing scope
+- First assignment in a scope generates `let`; subsequent assignments use bare `=`
 
-**Statement nodes:**
-
-- `Assignment(left, right, location)`
-- `IfStatement(condition, consequent, alternate, location)`
-- `WhileStatement(condition, body, location)`
-- `ForStatement(variable, iterable, body, location)`
-- `FunctionDeclaration(name, parameters, body, location)`
-- `ReturnStatement(argument, location)`
-- `BreakStatement(location)`
-- `ContinueStatement(location)`
-
-All nodes extend `ASTNode` and have a `location` property.
-
-### src/validator.js
-
-Performs semantic validation on the AST.
-
-**Key exports:**
-
-- `createValidator(source, filename)` — returns `{ validate }`
-- `ValidationError` — thrown on semantic errors
-
-**Validation rules:**
-
-- `return` outside function → ValidationError
-- `break` outside loop → ValidationError
-- `continue` outside loop → ValidationError
-
-**Implementation:**
-
-- Uses a context object `{ inFunction, inLoop }` that is propagated through nested structures
-- First error is thrown; validation stops
-
-### src/generator.js
-
-Translates the AST into JavaScript source code.
-
-**Key exports:**
-
-- `createGenerator(source, filename)` — returns `{ generate }`
-- `GeneratorError` — thrown on generator errors
-
-**Scope management:**
-
-- `scopeStack` — array of Sets, one per lexical scope
-- `declareVar(name)` — marks a variable as declared in current scope
-- `isDeclared(name)` — checks if a variable is declared in any scope
-- `pushScope()` / `popScope()` — manage nesting depth via `indentLevel`
-
-**Variable declaration logic:**
-
-- First assignment to a name in any scope → `let name = value;`
-- Subsequent assignments → `name = value;`
-- Member access assignments (e.g., `player.x = 100`) → `player.x = 100;` (no `let`)
-- Array access assignments (e.g., `arr[0] = 10`) → `arr[0] = 10;` (no `let`)
-
-**Code generation rules:**
+**Code Mapping**:
 
 | TSL | JavaScript |
-|-----|-----------|
-| `and` | `&&` |
-| `or` | `||` |
-| `not` | `!` |
-| `for x in y:` | `for (let x of y) {` |
+|---|---|
+| `and` / `or` | `&&` / `\|\|` |
+| `not x` | `(! x)` |
 | `if cond:` | `if (cond) {` |
+| `for var in expr:` | `for (let var of expr) {` |
 | `while cond:` | `while (cond) {` |
 | `function name(params):` | `function name(params) {` |
+| `print(x)` | `console.log(x)` |
 | `pass` | `// pass` |
-| `break` | `break;` |
-| `continue` | `continue;` |
-| String literals | `JSON.stringify()` (adds quotes) |
-| Number literals | `String(value)` |
-| Boolean literals | `true` / `false` |
-| `null` | `null` |
 
-### src/errors.js
+**Indentation**: Uses 2 spaces per level.
 
-Defines error classes for all compilation stages.
+---
 
-**Key exports:**
+### `src/errors.js` — Error System
 
-- `ErrorType` — object with: `LEXER`, `PARSER`, `SEMANTIC`, `GENERATOR`, `RUNTIME`
-- `TSL` — base error class, all errors extend this
-- `LexerError`, `ParserError`, `ValidationError`, `GeneratorError`, `RuntimeError`
-- `getSourceLine(source, lineNum)` — extracts source line from source code
+All errors extend a base `TSL` class with structured metadata.
 
-**Error properties (inherited from `TSL`):**
+**Error Classes**:
 
-- `errorType` — string from ErrorType
+| Class | Error Type |
+|---|---|
+| `LexerError` | `Lexer Error` |
+| `ParserError` | `Parser Error` |
+| `ValidationError` | `Semantic Error` |
+| `GeneratorError` | `Generator Error` |
+| `RuntimeError` | `Runtime Error` |
+
+**Error Properties**:
+
+- `errorType` — category string
 - `filename` — source file name
 - `line` — line number
 - `column` — column number
 - `sourceLine` — the actual source line text
-- `message` — human-readable error message
-- `name` — class name (e.g., `LexerError`)
+- `stack` — JavaScript stack trace
 
-### src/cli.js
+---
 
-Command-line interface and compilation pipeline orchestrator.
+### `src/cli.js` — Command Line Interface
 
-**Key exports:**
+The CLI provides the `tsl` command with the following commands:
 
-- `compileSource(source, filename)` — runs full pipeline: Lexer → Parser → Validator → Generator
-- `runCommand(file)` — compile and display generated JS
-- `buildCommand(file, outputFile)` — compile and write to file
-- `checkCommand(file)` — validate without output
-- `showVersion()` — prints `TSL v1.0.0`
+| Command | Description |
+|---|---|
+| `tsl <file.tsl>` | Compile and display generated JavaScript |
+| `tsl build <file.tsl> [-o <output.js>]` | Build to file or stdout |
+| `tsl check <file.tsl>` | Validate without generating code |
+| `tsl --version` | Print version |
 
-**CLI commands:**
+**Compile Flow**:
 
-```bash
-tsl <file.tsl>          # Compile and display generated JavaScript
-tsl build <file.tsl>    # Compile (display or write with -o)
-tsl build <file.tsl> -o <output.js>  # Compile and write to file
-tsl check <file.tsl>    # Validate only
-tsl --version           # Print version
+```
+read file → tokenize → parse → Program AST → validate → generate → JavaScript
 ```
 
-**Pipeline (compileSource):**
-
-1. `tokenize(source, filename)` → `Token[]`
-2. `createParser(tokens, source, filename)` → parser instance
-3. `parser.parseStatements()` → array of AST nodes
-4. `Program(body, location)` → AST root
-5. `createValidator(source, filename)` → validator instance
-6. `validator.validate(ast)` → throws on error
-7. `createGenerator(source, filename)` → generator instance
-8. `generator.generate(ast)` → JavaScript string
-
-**Output format:**
-
-```js
-{
-  ast: ASTNode,   // the parsed AST
-  jsCode: string  // generated JavaScript
-}
-```
+---
 
 ## Design Decisions
 
-### No VM, No Bytecode
-
-TSL transpiles directly to JavaScript. There is no intermediate representation, no virtual machine, no JIT compilation. The generated code runs on any JavaScript engine (Node.js, browsers).
-
 ### Indentation-Based Blocks
 
-Blocks are delimited by indentation, not by keywords like `end` or braces. The lexer emits `INDENT` and `DEDENT` tokens. The parser expects a colon (`:`) before indented blocks.
+TSL uses indentation to delimit blocks, similar to Python.
+
+- A colon (`:`) marks the start of a block
+- Indentation creates a new scope
+- Dedent closes the current scope
+- No `end` keyword needed
+
+### Variable Declaration
+
+- First assignment in a scope creates the variable (`let`)
+- Subsequent assignments reuse the variable (`=`)
+- This follows JavaScript `let` semantics
 
 ### No Type System
 
-TSL has no type declarations, no type checking, and no type inference. All types are JavaScript types.
+- TSL uses JavaScript types directly
+- No static typing, no type annotations
+- No type coercion rules beyond JavaScript's
 
-### Scope Tracking
+### No Runtime Library
 
-Variable declarations are tracked via a stack of Sets in the generator. A variable is declared with `let` on first assignment within any scope, and reassigned without `let` on subsequent uses.
+- TSL does not ship a runtime library
+- Uses native JavaScript features (`console.log`, arrays, objects)
+- Helper functions (`range()`) are provided by the runtime layer, not the compiler
 
-### Error Handling
+### Lexical Scope
 
-All errors include: `errorType`, `filename`, `line`, `column`, `sourceLine`, `message`. Each compilation stage has its own error class.
+- TSL scope follows JavaScript lexical scoping rules
+- Functions create local scope
+- Blocks create scope via JavaScript `let`/`const` semantics
 
-### Language Constructs
+---
 
-- **No classes** — JavaScript objects are used directly
-- **No modules** — no import/export
-- **No try/catch** — not implemented
-- **No arrays with non-integer indices** — array access uses expressions but JavaScript arrays are used as-is
-- **Objects use colon syntax** — `{ key: value, ... }`
+## Out of Scope
 
-## Generated Code Characteristics
+The following are **not** part of TSL v1.0:
 
-- Deterministic: same input always produces same output
-- Readable: uses 2-space indentation
-- Valid JavaScript: runs on any JS engine
-- No optimization: code is faithful to source, not transformed
-
-## Example Compilation
-
-```tsl
-# TSL source
-function greet(name):
-    print("Hello, " + name)
-
-greet("World")
+```
+VM, Bytecode, JIT, Native Compiler, Static Type System,
+Generics, Classes, Inheritance, Interfaces, Complex Modules,
+Package Manager, Macros, Decorators, Async Language,
+Threads, Coroutines, Pattern Matching, Destructuring,
+Operator Overloading, Metaprogramming, Optimizer,
+IDE, LSP, Debugger, Full ECS
 ```
 
-Compiles to:
+---
 
-```js
-function greet(name) {
-  print("Hello, " + name);
-}
-greet("World");
+## Error Handling
+
+Every compiler error includes:
+
 ```
+filename
+line
+column
+message
+source line (when available)
+```
+
+Errors are thrown as typed exceptions (`LexerError`, `ParserError`, etc.) and caught by the CLI.
+
+---
+
+## Testing
+
+Tests are located in `tests/` and run with:
+
+```bash
+npm test
+```
+
+Test files follow the pattern `tests/**/*.test.js`.
+
+---
+
+## Files Changed
+
+- Created: `docs/architecture.md`

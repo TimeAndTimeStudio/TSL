@@ -1,19 +1,32 @@
 # TSL Functions
 
-Functions in TSL are defined using the `function` keyword. They compile to JavaScript `function` declarations and follow JavaScript semantics for scope, parameters, and return values.
+## Overview
 
-## Declaration Syntax
+TSL functions are declared with the `function` keyword, followed by a name, parentheses for parameters, a colon, and an indented body block.
 
 ```tsl
-function name(parameters):
+function name(params):
     body
 ```
 
-- The keyword `function` starts a function declaration
-- Followed by an identifier (the function name)
-- Followed by parentheses containing zero or more comma-separated parameter names
-- A colon (`:`) ends the signature and starts the function body block
-- The body is an indented block of statements
+Functions generate JavaScript `function` declarations.
+
+---
+
+## Function Declaration
+
+### Syntax
+
+```tsl
+function name(params):
+    body
+```
+
+- `function` is a reserved keyword
+- `name` is an identifier
+- `params` is a comma-separated list of identifiers
+- `:` ends the function signature line
+- Body is an indented block of statements
 
 ### Example
 
@@ -26,123 +39,76 @@ Generates:
 
 ```js
 function add(a, b) {
-  return (a + b);
+  return a + b;
 }
 ```
 
-## Parameters
+### No Parameters
 
-Functions accept zero or more parameters. Parameters are identifiers separated by commas. No type annotations are supported.
-
-### Zero Parameters
+A function can have zero parameters.
 
 ```tsl
 function greet():
-    print("Hello")
+    print("Hello!")
 ```
 
 Generates:
 
 ```js
 function greet() {
-  console.log("Hello");
-}
-```
-
-### Single Parameter
-
-```tsl
-function double(x):
-    return x * 2
-```
-
-Generates:
-
-```js
-function double(x) {
-  return (x * 2);
+  console.log("Hello!");
 }
 ```
 
 ### Multiple Parameters
 
+Parameters are separated by commas.
+
 ```tsl
-function add(a, b):
-    return a + b
+function sum(a, b, c):
+    return a + b + c
 ```
 
 Generates:
 
 ```js
-function add(a, b) {
-  return (a + b);
+function sum(a, b, c) {
+  return a + b + c;
 }
 ```
 
-Parameters are treated as declared variables within the function body. Assigning to a parameter name inside the function body generates a reassignment (not a new `let`):
+### Parameter Rules
 
-```tsl
-function adjust(x):
-    x = x + 1
-    return x
-```
+- Each parameter must be a valid identifier
+- No default values
+- No rest parameters
+- No type annotations (v1.0)
 
-Generates:
-
-```js
-function adjust(x) {
-  x = (x + 1);
-  return x;
-}
-```
-
-## Return Statement
-
-The `return` statement exits a function and optionally returns a value.
-
-### Return with Expression
-
-```tsl
-function square(x):
-    return x * x
-```
-
-Generates:
-
-```js
-function square(x) {
-  return (x * x);
-}
-```
-
-### Return without Value
-
-```tsl
-function done():
-    return
-```
-
-Generates:
-
-```js
-function done() {
-  return ;
-}
-```
-
-### Return Outside Function (Semantic Error)
-
-A `return` statement outside of any function body is a semantic error:
-
-```tsl
-return 10  # ERROR: return outside function
-```
-
-The validator catches this and throws a `ValidationError` with the message `"return outside function"`.
+---
 
 ## Function Call
 
-Functions are called using standard call syntax: `name(arguments)`.
+A function is called by writing its name followed by parentheses containing arguments.
+
+### Syntax
+
+```tsl
+name(args)
+```
+
+### Example
+
+```tsl
+result = add(10, 20)
+print(result)
+```
+
+Generates:
+
+```js
+let result = add(10, 20);
+console.log(result);
+```
 
 ### No Arguments
 
@@ -156,385 +122,313 @@ Generates:
 greet();
 ```
 
-### With Arguments
-
-```tsl
-result = add(10, 20)
-```
-
-Generates:
-
-```js
-let result = add(10, 20);
-```
-
 ### Nested Calls
 
-Function calls can be nested in arguments:
+Function calls can be nested.
 
 ```tsl
-result = add(double(5), 10)
+result = add(multiply(2, 3), 5)
 ```
 
 Generates:
 
 ```js
-let result = add(double(5), 10);
+let result = add(multiply(2, 3), 5);
 ```
 
-## Function Body
+### Call as Expression
 
-The function body is an indented block that can contain any TSL statements: assignments, control flow, loops, other function calls, and return statements.
-
-### Multiple Statements
+A function call can appear anywhere an expression is valid.
 
 ```tsl
-function max(a, b):
-    if a > b:
-        return a
-    return b
+x = add(1, 2) + multiply(3, 4)
 ```
 
 Generates:
 
 ```js
-function max(a, b) {
-  if ((a > b)) {
-    return a;
-  }
-  return b;
+let x = add(1, 2) + multiply(3, 4);
+```
+
+---
+
+## Return
+
+The `return` statement exits a function and optionally returns a value.
+
+### With Value
+
+```tsl
+function multiply(x, y):
+    return x * y
+```
+
+Generates:
+
+```js
+function multiply(x, y) {
+  return x * y;
 }
 ```
 
-### Function with No Return
+### Without Value
 
-A function that does not contain a `return` statement simply executes its body and returns `undefined` (JavaScript default):
+```tsl
+function doSomething():
+    print("doing something")
+    return
+    print("this line is unreachable")
+```
+
+Generates:
+
+```js
+function doSomething() {
+  console.log("doing something");
+  return;
+  console.log("this line is unreachable");
+}
+```
+
+### Return Rules
+
+- `return` must be inside a function
+- `return` outside a function is a **semantic error**
+- `return` without a value generates `return;`
+- `return` with an expression generates `return <expression>;`
+
+---
+
+## Scope
+
+Each function creates a new lexical scope.
+
+### Local Variables
+
+Variables assigned inside a function are local to that function.
+
+```tsl
+function foo():
+    x = 10
+    print(x)
+
+foo()
+# print(x)  # Error: x is not defined here
+```
+
+Generates:
+
+```js
+function foo() {
+  let x = 10;
+  console.log(x);
+}
+foo();
+```
+
+### Accessing Outer Scope
+
+Variables from outer scopes are accessible inside a function.
+
+```tsl
+outer = 100
+
+function printOuter():
+    print(outer)
+
+printOuter()
+```
+
+Generates:
+
+```js
+let outer = 100;
+
+function printOuter() {
+  console.log(outer);
+}
+printOuter();
+```
+
+### Parameter Scope
+
+Function parameters are local to the function body.
+
+```tsl
+x = 10
+
+function setX(x):
+    x = 20
+    print(x)
+
+setX(5)
+print(x)
+```
+
+Generates:
+
+```js
+let x = 10;
+
+function setX(x) {
+  x = 20;
+  console.log(x);
+}
+setX(5);
+console.log(x);
+```
+
+Output:
+```
+20
+10
+```
+
+### Parameter Shadowing
+
+A parameter shadows any outer variable with the same name.
+
+```tsl
+value = 1
+
+function double(value):
+    print(value)
+
+double(5)
+```
+
+Generates:
+
+```js
+let value = 1;
+
+function double(value) {
+  console.log(value);
+}
+double(5);
+```
+
+---
+
+## Complete Example
 
 ```tsl
 function greet(name):
-    print("Hello, " + name)
+    message = "Hello, " + name + "!"
+    print(message)
+    return message
+
+result = greet("TSL")
+print(result)
 ```
 
 Generates:
 
 ```js
 function greet(name) {
-  console.log("Hello, " + name);
+  let message = "Hello, " + name + "!";
+  console.log(message);
+  return message;
 }
+let result = greet("TSL");
+console.log(result);
 ```
 
-### Function with Loops
+---
+
+## Render Functions
+
+TSL supports two special function names for the render loop: `update` and `draw`.
 
 ```tsl
-function countdown(n):
-    while n > 0:
-        print(n)
-        n = n - 1
+function update():
+    x = x + 1
+
+function draw():
+    clear()
+    draw_rect(x, 0, 10, 10)
 ```
 
-Generates:
+The runtime calls `update()` and `draw()` in a frame loop. The compiler does not treat these functions specially; it generates them as regular JavaScript functions.
+
+---
+
+## Implementation Details
+
+### AST Node
 
 ```js
-function countdown(n) {
-  while (n > 0) {
-    console.log(n);
-    n = (n - 1);
-  }
-}
+FunctionDeclaration(name, parameters, body, location)
 ```
 
-### Function with For Loop
+- `name` — Identifier
+- `parameters` — Array of Identifier nodes
+- `body` — Array of statement nodes
+- `location` — Source location
 
-```tsl
-function sum_array(arr):
-    total = 0
-    for item in arr:
-        total = total + item
-    return total
+### Parser
+
+The parser handles function declarations at the statement level:
+
+```
+FUNCTION → IDENTIFIER → LPAREN → paramList → RPAREN → COLON → block
 ```
 
-Generates:
-
-```js
-function sum_array(arr) {
-  let total = 0;
-  for (let item of arr) {
-    total = (total + item);
-  }
-  return total;
-}
-```
-
-## Local Variables
-
-Variables assigned inside a function body are local to that function. The first assignment generates `let`, subsequent assignments generate plain assignment:
-
-```tsl
-function compute(x):
-    y = x * 2
-    z = y + 1
-    return z
-```
-
-Generates:
-
-```js
-function compute(x) {
-  let y = (x * 2);
-  let z = (y + 1);
-  return z;
-}
-```
-
-## Multiple Functions
-
-Multiple function declarations can appear at the top level:
-
-```tsl
-function add(a, b):
-    return a + b
-
-function sub(a, b):
-    return a - b
-```
-
-Generates:
-
-```js
-function add(a, b) {
-  return (a + b);
-}
-function sub(a, b) {
-  return (a - b);
-}
-```
-
-## Recursion
-
-Functions can call themselves. This uses standard JavaScript recursion:
-
-```tsl
-function factorial(n):
-    if n <= 1:
-        return 1
-    return n * factorial(n - 1)
-```
-
-Generates:
-
-```js
-function factorial(n) {
-  if ((n <= 1)) {
-    return 1;
-  }
-  return (n * factorial((n - 1)));
-}
-```
-
-## Nested Functions
-
-Functions can be defined inside other functions. Each nested function creates a new scope:
-
-```tsl
-function outer(x):
-    function inner(y):
-        return y * 2
-    return inner(x + 1)
-```
+Parameters are parsed as a comma-separated list of identifiers inside parentheses.
 
-Generates:
-
-```js
-function outer(x) {
-  function inner(y) {
-    return (y * 2);
-  }
-  return inner((x + 1));
-}
-```
-
-## Returning Values
+The body is parsed as a block: `COLON → INDENT → statements → DEDENT`.
 
-Functions can return any expression: literals, variables, arithmetic, arrays, objects, member access, and function calls.
+### Generator
 
-### Return Literal Values
-
-```tsl
-function get_null():
-    return null
-
-function get_true():
-    return true
+The generator produces valid JavaScript:
 
-function get_string():
-    return "hello"
-```
+1. Outputs `function <name>(<params>) {`
+2. Declares each parameter in the scope stack
+3. Generates each statement in the body with increased indentation
+4. Closes the scope and outputs `}`
 
-Generates:
+### Scope Stack
 
-```js
-function get_null() {
-  return null;
-}
-function get_true() {
-  return true;
-}
-function get_string() {
-  return "hello";
-}
-```
+The generator maintains a scope stack:
 
-### Return Array / Object
+- `pushScope()` — called when entering a function
+- `popScope()` — called when exiting a function
+- `declareVar()` — marks a variable as declared in the current scope
+- `isDeclared()` — checks if a variable exists in the current or any outer scope
 
-```tsl
-function make_pair(a, b):
-    return [a, b]
+Parameters are declared before the body is generated, so they are visible throughout the function body.
 
-function make_point(x, y):
-    return { x: x, y: y }
-```
+---
 
-Generates:
+## Error Handling
 
-```js
-function make_pair(a, b) {
-  return [a, b];
-}
-function make_point(x, y) {
-  return { x: x, y: y };
-}
-```
+### Semantic Errors
 
-### Return Member Access
+| Condition | Error Type |
+|-----------|-----------|
+| `return` outside a function | Semantic Error |
 
-```tsl
-function get_x(obj):
-    return obj.x
-```
+### Parser Errors
 
-Generates:
+| Condition | Error Type |
+|-----------|-----------|
+| Missing `:` after function signature | Parser Error |
+| Missing `(` after function name | Parser Error |
+| Missing `)` in parameter list | Parser Error |
+| Non-identifier in parameter position | Parser Error |
 
-```js
-function get_x(obj) {
-  return obj.x;
-}
-```
+---
 
-## Function with Member Assignment
+## Out of Scope for v1.0
 
-Functions can assign to object properties:
+The following are **not** supported:
 
-```tsl
-function set_x(obj, val):
-    obj.x = val
-```
-
-Generates:
-
-```js
-function set_x(obj, val) {
-  obj.x = val;
-}
-```
-
-## Control Flow in Functions
-
-Functions can contain `break` and `continue` inside loops:
-
-```tsl
-function find(items, target):
-    for item in items:
-        if item == target:
-            return item
-    return null
-```
-
-Generates:
-
-```js
-function find(items, target) {
-  for (let item of items) {
-    if (item == target) {
-      return item;
-    }
-  }
-  return null;
-}
-```
-
-## Empty Function
-
-A function body can contain `pass` (a no-op):
-
-```tsl
-function empty():
-    pass
-```
-
-Generates:
-
-```js
-function empty() {
-  // pass
-}
-```
-
-## Call After Declaration
-
-Functions can be called after their declaration in the same program:
-
-```tsl
-function add(a, b):
-    return a + b
-
-result = add(3, 4)
-```
-
-Generates:
-
-```js
-function add(a, b) {
-  return (a + b);
-}
-let result = add(3, 4);
-```
-
-## Semantic Validation
-
-The validator enforces the following rules for functions:
-
-| Rule | Error Message |
-|------|---------------|
-| `return` outside function | `return outside function` |
-| `break` outside loop (inside function) | `break outside loop` |
-| `continue` outside loop (inside function) | `continue outside loop` |
-
-Nested functions create a new function context. A `return` inside a nested function is valid even if the enclosing context is not a function.
-
-## AST Node
-
-Functions are represented by the `FunctionDeclaration` AST node:
-
-```js
-{
-  type: 'FunctionDeclaration',
-  name: Identifier,
-  parameters: [Identifier, ...],
-  body: [Statement, ...],
-  location: Location
-}
-```
-
-## Generated JavaScript
-
-TSL functions compile to standard JavaScript `function` declarations. There is no wrapper, no special runtime, and no type system. Functions behave exactly like JavaScript functions.
-
-| TSL Feature | JavaScript Output |
-|-------------|-------------------|
-| `function name(params):` | `function name(params) {` |
-| `return value` | `return value;` |
-| `return` | `return ;` |
-| Function body block | `{ ... }` |
-| Local variable (first assign) | `let x = ...;` |
-| Local variable (reassign) | `x = ...;` |
-| Parameter | `function(name) {` (parameter declared) |
+- Default parameter values
+- Rest parameters (`...args`)
+- Variadic functions
+- Closures (beyond lexical scoping)
+- Anonymous functions
+- Arrow functions
+- Higher-order functions as first-class values (functions can be called but not assigned to variables)
+- Function overloading
+- Recursion (not explicitly prohibited, but not tested)

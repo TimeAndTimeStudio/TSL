@@ -1,46 +1,28 @@
-# TSL Arrays
+# Arrays
 
-## Array Creation
+Arrays are ordered collections of values in TSL.
 
-Arrays are created using square bracket syntax with comma-separated elements.
+## Array Literals
 
-```tsl
-items = [10, 20, 30]
-```
-
-Generates:
-
-```js
-let items = [10, 20, 30];
-```
-
-### Empty Array
+Create an array with square brackets:
 
 ```tsl
-empty = []
+numbers = [1, 2, 3, 4, 5]
 ```
-
-Generates:
 
 ```js
-let empty = [];
+let numbers = [1, 2, 3, 4, 5];
 ```
 
-### Mixed Types
-
-Arrays can hold any combination of TSL values:
+Elements can be any expression:
 
 ```tsl
-mixed = [10, "hello", true, null]
+mixed = [1, "hello", true]
 ```
-
-Generates:
 
 ```js
-let mixed = [10, "hello", true, null];
+let mixed = [1, "hello", true];
 ```
-
----
 
 ## Nested Arrays
 
@@ -50,115 +32,57 @@ Arrays can contain other arrays:
 matrix = [[1, 2], [3, 4]]
 ```
 
-Generates:
-
 ```js
 let matrix = [[1, 2], [3, 4]];
 ```
 
----
-
 ## Array Access
 
-Access an element by index using bracket notation:
+Access an element by index with square brackets. Indices are zero-based:
 
 ```tsl
-x = items[0]
+first = numbers[0]
+second = numbers[1]
 ```
-
-Generates:
 
 ```js
-let x = items[0];
+let first = numbers[0];
+let second = numbers[1];
 ```
-
-Index can be a variable:
-
-```tsl
-idx = 0
-x = items[idx]
-```
-
-Generates:
-
-```js
-let idx = 0;
-let x = items[idx];
-```
-
-Index can be an expression:
-
-```tsl
-idx = 0
-x = items[idx + 1]
-```
-
-Generates:
-
-```js
-let idx = 0;
-let x = items[idx + 1];
-```
-
----
 
 ## Array Assignment
 
 Assign to an element by index:
 
 ```tsl
-items[0] = 100
+numbers[0] = 10
+numbers[4] = 50
 ```
-
-Generates:
 
 ```js
-items[0] = 100;
+numbers[0] = 10;
+numbers[4] = 50;
 ```
 
----
+## Iteration
 
-## Array of Objects
-
-Arrays can hold objects:
+Iterate over array elements with `for-in`:
 
 ```tsl
-people = [
-    { name: "Alice", age: 30 },
-    { name: "Bob", age: 25 }
-]
-```
+numbers = [1, 2, 3, 4, 5]
+total = 0
 
-Generates:
+for num in numbers:
+    total = total + num
+
+print(total)
+```
 
 ```js
-let people = [
-    { name: "Alice", age: 30 },
-    { name: "Bob", age: 25 }
-];
+let numbers = [1, 2, 3, 4, 5];
+let total = 0;
+for (const num of numbers) {
+  total = total + num;
+}
+console.log(total);
 ```
-
----
-
-## AST Representation
-
-| TSL Syntax | AST Node |
-|------------|----------|
-| `[1, 2, 3]` | `ArrayExpression` |
-| `items[0]` | `ArrayAccess` |
-| `items[0] = 100` | Assignment with `ArrayAccess` target |
-
----
-
-## Summary
-
-| Feature | Syntax |
-|---------|--------|
-| Create | `[1, 2, 3]` |
-| Empty | `[]` |
-| Access | `items[0]` |
-| Assign | `items[0] = 100` |
-| Nested | `[[1, 2], [3, 4]]` |
-| Expression index | `items[i + 1]` |
-| Mixed types | `[10, "hello", true, null]` |
-| Array of objects | `[{ x: 1 }, { x: 2 }]` |

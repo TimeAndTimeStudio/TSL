@@ -1,16 +1,17 @@
 # TSL Operators
 
-This document describes all operators supported by TSL Language, based on the implementation in `src/lexer.js`, `src/parser.js`, and `src/generator.js`.
+Operators in TSL are translated to their JavaScript equivalents by the compiler.
+All operators generate valid JavaScript expressions.
 
 ## Arithmetic Operators
 
 | TSL | JavaScript | Description |
-|-----|-----------|-------------|
+|-----|------------|-------------|
 | `+` | `+` | Addition |
 | `-` | `-` | Subtraction |
 | `*` | `*` | Multiplication |
 | `/` | `/` | Division |
-| `%` | `%` | Modulo |
+| `%` | `%` | Modulo (remainder) |
 
 **Examples:**
 
@@ -22,11 +23,13 @@ d = 10 / 5      # 2
 e = 10 % 3      # 1
 ```
 
+Division and modulo with zero produce JavaScript's runtime behavior (`Infinity`, `NaN`, or `RangeError`).
+
 ## Comparison Operators
 
 | TSL | JavaScript | Description |
-|-----|-----------|-------------|
-| `==` | `==` | Equal |
+|-----|------------|-------------|
+| `==` | `==` | Equal (loose equality) |
 | `!=` | `!=` | Not equal |
 | `<` | `<` | Less than |
 | `<=` | `<=` | Less than or equal |
@@ -36,93 +39,159 @@ e = 10 % 3      # 1
 **Examples:**
 
 ```tsl
-x = 5
-y = 10
-equal = (x == 5)        # true
-not_equal = (x == y)    # false
-less = (x < y)          # true
-greater = (y > x)       # true
+x == y
+x != y
+x < y
+x <= y
+x > y
+x >= y
 ```
+
+TSL uses JavaScript's loose equality (`==`) for the `==` operator.
 
 ## Logical Operators
 
 | TSL | JavaScript | Description |
-|-----|-----------|-------------|
+|-----|------------|-------------|
 | `and` | `&&` | Logical AND |
 | `or` | `\|\|` | Logical OR |
-| `not` | `!` | Logical NOT (prefix) |
+| `not` | `!` | Logical NOT (unary prefix) |
 
 **Examples:**
 
 ```tsl
-x = 5
-y = 10
-result = (x > 0) and (y < 20)   # true
-
-flag = false
-result = not flag               # true
+x and y
+x or y
+not x
 ```
 
-## Operator Precedence
+### `not` (Unary)
 
-Operators are evaluated from highest to lowest precedence. Operators at the same level are left-associative (except `not` which is right-associative).
-
-| Precedence | Operators | Description |
-|-----------|-----------|-------------|
-| 1 (highest) | `()` | Grouping |
-| 2 | `not` | Logical NOT |
-| 3 | `*`, `/`, `%` | Multiplication, division, modulo |
-| 4 | `+`, `-` | Addition, subtraction |
-| 5 | `<`, `<=`, `>`, `>=` | Comparison |
-| 6 | `==`, `!=` | Equality |
-| 7 | `and` | Logical AND |
-| 8 (lowest) | `or` | Logical OR |
-
-### Precedence Examples
+`not` is a prefix operator applied to a single operand:
 
 ```tsl
-# Multiplication before addition
-a = 2 + 3 * 4     # 14, not 20
-
-# Comparison before logical
-if x > 10 and y < 20:
-    print("valid")
-
-# Parentheses override precedence
-a = (2 + 3) * 4   # 20
-
-# not binds tighter than and/or
-result = not a or b    # equivalent to (not a) or b
-```
-
-## Generated JavaScript
-
-All TSL operators generate valid JavaScript. The generator wraps binary expressions in parentheses for safety.
-
-| TSL | Generated JavaScript |
-|-----|---------------------|
-| `a and b` | `(a && b)` |
-| `a or b` | `(a \|\| b)` |
-| `not x` | `(! x)` |
-| `a + b` | `(a + b)` |
-| `a == b` | `(a == b)` |
-
-### Example: Full Compilation
-
-```tsl
-# TSL source
-x = 10
-y = 20
-if x > 5 and y < 30:
-    print("both true")
+if not flag:
+    print("disabled")
 ```
 
 Generates:
 
-```javascript
-let x = 10;
-let y = 20;
-if ((x > 5) && (y < 30)) {
-  console.log("both true");
-}
+```js
+if (!flag) {
+```
+
+### `and` / `or` (Binary)
+
+`and` and `or` are infix binary operators. They generate JavaScript's `&&` and `||` respectively, which are short-circuit operators.
+
+```tsl
+if x > 10 and y < 20:
+    print("valid")
+```
+
+Generates:
+
+```js
+if ((x > 10) && (y < 20)) {
+```
+
+## Assignment
+
+| TSL | JavaScript | Description |
+|-----|------------|-------------|
+| `=` | `let x = ...` / `x = ...` | Assignment |
+
+The first assignment to a variable generates `let`. Subsequent assignments reuse the existing variable.
+
+```tsl
+x = 10      # generates: let x = 10;
+x = 20      # generates: x = 20;
+```
+
+## Operator Precedence
+
+Operators are evaluated from highest to lowest precedence. Parentheses `()` can override precedence.
+
+| Precedence | Operators | Associativity |
+|------------|-----------|---------------|
+| 1 (highest) | `()` | Grouping |
+| 2 | `not` | Right-to-left |
+| 3 | `*`, `/`, `%` | Left-to-right |
+| 4 | `+`, `-` | Left-to-right |
+| 5 | `<`, `<=`, `>`, `>=` | Left-to-right |
+| 6 | `==`, `!=` | Left-to-right |
+| 7 | `and` | Left-to-right |
+| 8 (lowest) | `or` | Left-to-right |
+
+### Precedence Examples
+
+```tsl
+# Multiplication binds tighter than addition
+a = 1 + 2 * 3     # equivalent to: 1 + (2 * 3) => 7
+
+# Comparison binds tighter than logical operators
+if x > 10 and y < 20:
+    print("valid")
+# equivalent to: if (x > 10) and (y < 20):
+
+# `not` binds tighter than `and`
+result = not x and y
+# equivalent to: (!x) && y
+
+# Use parentheses to override precedence
+a = (1 + 2) * 3   # 9
+```
+
+## Generated JavaScript
+
+The compiler generates parenthesized binary and unary expressions for consistency:
+
+| TSL | Generated JavaScript |
+|-----|---------------------|
+| `x and y` | `(x && y)` |
+| `x or y` | `(x \|\| y)` |
+| `not x` | `(!x)` |
+| `a + b * c` | `((a + (b * c)))` |
+
+## String Concatenation
+
+TSL does not have a dedicated string concatenation operator. Use the `+` operator with string literals and variables:
+
+```tsl
+name = "world"
+message = "hello " + name    # "hello world"
+```
+
+This generates JavaScript string concatenation.
+
+## Integer Division
+
+TSL does not distinguish between integer and floating-point division. The `/` operator always produces a JavaScript number (which may be a float):
+
+```tsl
+a = 10 / 3     # 3.333...
+b = 10 / 2     # 5
+```
+
+For integer division, use `Math.floor()` or the `%` operator:
+
+```tsl
+a = Math.floor(10 / 3)    # 3
+```
+
+## Type Coercion
+
+TSL does not perform explicit type conversion. Type coercion follows JavaScript rules:
+
+```tsl
+# Number coercion
+result = "5" + 3     # "53" (string concatenation)
+result = "5" - 3     # 2 (numeric subtraction)
+
+# Boolean coercion in conditions
+if 1:
+    print("truthy")
+
+if 0:
+    print("never runs")
 ```

@@ -2,13 +2,15 @@
 
 ## Overview
 
-TSL has no static type system. All types follow JavaScript semantics. The compiler generates JavaScript code directly, and JavaScript handles all typing at runtime.
+TSL has no static type system. Types follow JavaScript semantics.
+
+TSL variables are dynamically typed — the type is determined at runtime by the JavaScript engine.
 
 ---
 
 ## Number
 
-Integers and floating-point numbers are represented as JavaScript `Number`.
+Integers and floating-point numbers.
 
 ```tsl
 x = 10
@@ -22,15 +24,30 @@ let x = 10;
 let pi = 3.14;
 ```
 
-- Integers: `0`, `10`, `42`
-- Decimals: `3.14`, `0.5`
-- No integer/float distinction
+All numbers use JavaScript `Number` (IEEE 754 double precision).
+
+### Literal Syntax
+
+```tsl
+42
+0
+-3
+3.14
+0.5
+```
+
+The lexer accepts:
+
+- Decimal integers: `10`, `42`, `0`
+- Decimal floats: `3.14`, `0.5`
+
+Scientific notation is not supported in v1.0.
 
 ---
 
 ## String
 
-Strings use JavaScript `string` semantics.
+Text enclosed in double quotes or single quotes.
 
 ```tsl
 name = "hello"
@@ -44,33 +61,39 @@ let name = "hello";
 let greeting = "world";
 ```
 
-Both double (`"`) and single (`'`) quotes are accepted as delimiters. The generator always outputs double quotes via `JSON.stringify()`.
-
 ### Escape Sequences
 
-| Escape | Character |
-|--------|-----------|
-| `\n`   | newline   |
-| `\t`   | tab       |
-| `\\`   | backslash |
-| `\"`   | double quote |
-| `\'`   | single quote |
+| Escape | Meaning |
+|--------|---------|
+| `\\n`  | newline |
+| `\\t`  | tab |
+| `\\\\` | backslash |
+| `\\"`  | double quote |
+| `\\'`  | single quote |
 
 Example:
 
 ```tsl
-msg = "hello\nworld\t!"
+msg = "line1\nline2"
+path = 'C:\\Users\\name'
+quote = "she said \"hi\""
 ```
 
 Generates:
 
 ```js
-let msg = "hello\nworld\t!";
+let msg = "line1\nline2";
+let path = "C:\\Users\\name";
+let quote = "she said \"hi\"";
 ```
+
+The generator uses `JSON.stringify()` to produce valid JavaScript string literals.
 
 ---
 
 ## Boolean
+
+Logical true/false values.
 
 ```tsl
 flag = true
@@ -86,9 +109,18 @@ let disabled = false;
 
 Keywords: `true`, `false`
 
+Used in conditions:
+
+```tsl
+if flag:
+    print("enabled")
+```
+
 ---
 
 ## Null
+
+Represents absent or undefined value.
 
 ```tsl
 value = null
@@ -106,31 +138,49 @@ Keyword: `null`
 
 ## Arrays
 
+Ordered collections of values.
+
 ```tsl
 items = [10, 20, 30]
+names = ["a", "b", "c"]
 ```
 
 Generates:
 
 ```js
 let items = [10, 20, 30];
+let names = ["a", "b", "c"];
 ```
 
-Access by index:
+### Indexing
 
 ```tsl
-x = items[0]
+first = items[0]
 ```
 
 Generates:
 
 ```js
-let x = items[0];
+let first = items[0];
+```
+
+### Assignment to Index
+
+```tsl
+items[0] = 99
+```
+
+Generates:
+
+```js
+items[0] = 99;
 ```
 
 ---
 
 ## Objects
+
+Key-value collections.
 
 ```tsl
 player = {
@@ -142,43 +192,92 @@ player = {
 Generates:
 
 ```js
-let player = { x: 100, y: 200 };
+let player = {
+    x: 100,
+    y: 200
+};
 ```
 
-Member access:
+Keys must be identifiers. Values can be any expression.
+
+### Member Access
 
 ```tsl
-pos = player.x
+px = player.x
 ```
 
 Generates:
 
 ```js
-let pos = player.x;
+let px = player.x;
+```
+
+### Assignment to Member
+
+```tsl
+player.x = 300
+```
+
+Generates:
+
+```js
+player.x = 300;
 ```
 
 ---
 
 ## Type Summary
 
-| TSL Literal | AST Node | JavaScript |
-|-------------|----------|------------|
-| `10`, `3.14` | `NumberLiteral` | `10`, `3.14` |
-| `"hello"`, `'hello'` | `StringLiteral` | `"hello"` |
-| `true`, `false` | `BooleanLiteral` | `true`, `false` |
-| `null` | `NullLiteral` | `null` |
-| `[1, 2, 3]` | `ArrayExpression` | `[1, 2, 3]` |
-| `{ x: 1 }` | `ObjectExpression` | `{ x: 1 }` |
+| Type   | TSL Literal    | JavaScript Output |
+|--------|----------------|-------------------|
+| Number | `10`, `3.14`   | `10`, `3.14`      |
+| String | `"hi"`, `'hi'` | `"hi"`, `'hi'`    |
+| Boolean | `true`, `false` | `true`, `false`  |
+| Null   | `null`         | `null`            |
+| Array  | `[1, 2]`       | `[1, 2]`          |
+| Object | `{x: 1}`       | `{ x: 1 }`        |
 
 ---
 
-## Type Declarations
+## No Type Declarations
 
-TSL has no type declarations. Variables are created with `let` on first assignment and assigned without `let` on subsequent assignments within the same scope.
+TSL does not require or support type declarations.
 
 ```tsl
-x = 10      // generates: let x = 10;
-x = 20      // generates: x = 20;
+# Correct - no type needed
+x = 10
+x = "hello"
 ```
 
-The generator tracks variable declarations per scope to avoid duplicate `let`.
+The JavaScript engine handles all typing at runtime.
+
+---
+
+## Implementation Notes
+
+### Lexer
+
+- Numbers: parsed by `readNumber()` in `src/lexer.js`
+- Strings: parsed by `readString()` in `src/lexer.js`, supports escape sequences
+- Booleans: `true`/`false` recognized as keywords
+- Null: `null` recognized as keyword
+
+### AST
+
+| Type      | AST Node         |
+|-----------|------------------|
+| Number    | `NumberLiteral`  |
+| String    | `StringLiteral`  |
+| Boolean   | `BooleanLiteral` |
+| Null      | `NullLiteral`    |
+| Array     | `ArrayExpression`|
+| Object    | `ObjectExpression`|
+
+### Generator
+
+- Numbers: `String(node.value)`
+- Strings: `JSON.stringify(node.value)`
+- Booleans: `node.value ? 'true' : 'false'`
+- Null: `'null'`
+- Arrays: `'[${elements.join(', ')}]'`
+- Objects: `'{ ${props.join(', ')} }'`

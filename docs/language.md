@@ -1,28 +1,24 @@
 # TSL Language Reference
 
-## Status
-
-```text
-Version: 1.0
-File Extension: .tsl
-Backend: JavaScript (Node.js)
-```
-
----
-
 ## Overview
 
-TSL is a small programming language that transpiles to JavaScript.
+TSL (TSL Language) is a small programming language that transpiles to JavaScript.
+
+- **Version:** 1.0
+- **File extension:** `.tsl`
+- **Backend:** JavaScript
+- **Runtime:** Node.js (or any JavaScript runtime)
 
 Design goals:
 
 - Simple syntax
+- Python-like but not Python
 - Indentation-based blocks
 - JavaScript backend
 - No VM, no bytecode, no JIT
 - Small and predictable
 
-What TSL is NOT:
+## What TSL Is Not
 
 - Not a general-purpose language
 - Not a replacement for Python or JavaScript
@@ -31,57 +27,32 @@ What TSL is NOT:
 
 ---
 
-## Compilation Model
+## Hello World
 
+```tsl
+print("Hello, World!")
 ```
-TSL Source
-    ↓
-Lexer (tokenize)
-    ↓
-Parser (AST)
-    ↓
-Validator (semantic checks)
-    ↓
-Generator (JavaScript)
-    ↓
-JavaScript
-```
-
-The AST is the shared representation between Parser and Generator.
 
 ---
 
-## Syntax Rules
+## Comments
 
-### Indentation
-
-Blocks are defined by indentation.
-
-- Use spaces (tabs are not supported)
-- Indentation level determines block nesting
-- A colon (`:`) starts a block
-- Dedent closes a block
-
-```tsl
-if x > 10:
-    print(x)
-else:
-    print("small")
-```
-
-### Comments
+Comments start with `#` and extend to the end of the line.
 
 ```tsl
 # This is a comment
+x = 10  # inline comment
 ```
 
-Everything after `#` until end of line is ignored.
+Comments have no effect on the AST.
 
-### Identifiers
+---
 
-- Start with a letter or `_`
-- Followed by letters, digits, or `_`
-- Case-sensitive
+## Identifiers
+
+An identifier starts with a letter or `_`, followed by letters, digits, or `_`. Identifiers are case-sensitive.
+
+Valid:
 
 ```tsl
 x
@@ -91,15 +62,24 @@ _value
 x2
 ```
 
-### Keywords
+Invalid:
 
 ```text
-if      else      for      in      while
-function return  break    continue  pass
-true    false     null     and     or      not
+2x
+player-name
 ```
 
 Keywords cannot be used as identifiers.
+
+---
+
+## Keywords
+
+```text
+if      else      for       in        while
+function return  break     continue  pass
+true    false     null      and       or      not
+```
 
 ---
 
@@ -107,36 +87,38 @@ Keywords cannot be used as identifiers.
 
 ### Numbers
 
-```tsl
-10
-42
-3.14
-0.5
-```
+Integers and decimals. Both generate JavaScript `Number`.
 
-All numbers are JavaScript `Number`.
+```tsl
+x = 10
+y = 3.14
+```
 
 ### Strings
 
-```tsl
-"hello"
-'hello'
-```
+Double quotes or single quotes. Supports escape sequences: `\n`, `\t`, `\\`, `\"`, `\'`.
 
-Supports escape sequences: `\n`, `\t`, `\\`, `\"`, `\'`.
+```tsl
+a = "hello"
+b = 'world'
+```
 
 ### Booleans
 
 ```tsl
-true
-false
+a = true
+b = false
 ```
+
+Generates JavaScript `true` / `false`.
 
 ### Null
 
 ```tsl
-null
+x = null
 ```
+
+Generates JavaScript `null`.
 
 ---
 
@@ -160,9 +142,9 @@ null
 and   or   not
 ```
 
-### Precedence (high to low)
+### Operator Precedence (highest to lowest)
 
-```text
+```
 1.  ()
 2.  not
 3.  *   /   %
@@ -177,32 +159,46 @@ and   or   not
 
 ## Variables
 
-### Assignment
+Assignment uses `=`. The first assignment in a scope creates a variable (generates `let`). Reassignment in the same scope does not generate `let`.
 
 ```tsl
-x = 10
+x = 10      # generates: let x = 10;
+x = 20      # generates: x = 20;
 ```
-
-First assignment in a scope: generates `let x = 10;`
-
-Reassignment in the same scope: generates `x = 20;`
-
-```tsl
-x = 10    # generates: let x = 10;
-x = 20    # generates: x = 20;
-```
-
-### Variable Scope
-
-- Lexical scope (JavaScript semantics)
-- Function creates a local scope
-- Block scope follows JavaScript block semantics
 
 ---
 
-## Control Flow
+## Variable Scope
 
-### If / Else
+- TSL uses lexical scope.
+- `function` creates a local scope.
+- Block scope follows JavaScript block semantics.
+- First assignment in scope: generates `let`.
+- Reassignment in same scope: no `let`.
+
+```tsl
+x = 10
+
+function foo():
+    y = 20      # y is local to foo
+    x = 30      # x refers to outer scope
+
+foo()
+print(x)          # prints 30
+```
+
+---
+
+## If / Else
+
+```tsl
+if condition:
+    statement
+else:
+    statement
+```
+
+Example:
 
 ```tsl
 if x > 10:
@@ -211,225 +207,176 @@ else:
     print("small")
 ```
 
-Generates:
+Generates JavaScript `if` / `else`.
 
-```js
-if (x > 10) {
-    console.log("big");
-} else {
-    console.log("small");
-}
+---
+
+## For
+
+```tsl
+for variable in expression:
+    statement
 ```
 
-### For Loop
+Example:
 
 ```tsl
 for i in range(10):
     print(i)
 ```
 
-Generates:
+Generates JavaScript `for ... of`.
 
-```js
-for (let i of range(10)) {
-    console.log(i);
-}
-```
+---
 
-### While Loop
+## While
 
 ```tsl
-while x > 0:
-    x = x - 1
+while condition:
+    statement
 ```
 
-Generates:
+Generates JavaScript `while`.
 
-```js
-while (x > 0) {
-    x = x - 1;
-}
-```
+---
 
-### Break
+## Break / Continue
 
 ```tsl
 break
-```
-
-Stops the current loop. Only valid inside a loop.
-
-### Continue
-
-```tsl
 continue
 ```
 
-Skips to the next iteration. Only valid inside a loop.
+- `break` exits the innermost loop.
+- `continue` skips to the next iteration.
+- Both are only valid inside a loop. Using them outside a loop is a semantic error.
 
-### Pass
+Example:
+
+```tsl
+for i in range(10):
+    if i == 3:
+        continue
+    if i == 7:
+        break
+    print(i)
+```
+
+---
+
+## Pass
 
 ```tsl
 pass
 ```
 
-No-op. Generates `// pass` (empty comment).
+A no-op statement. Generates a comment in JavaScript.
 
 ---
 
 ## Functions
 
-### Declaration
+```tsl
+function name(params):
+    body
+```
+
+Example:
 
 ```tsl
 function add(a, b):
     return a + b
-```
 
-Generates:
-
-```js
-function add(a, b) {
-    return a + b;
-}
-```
-
-### Call
-
-```tsl
 result = add(10, 20)
 print(result)
 ```
 
-Generates:
+Generates JavaScript `function`.
 
-```js
-let result = add(10, 20);
-console.log(result);
-```
+---
 
-### Return
+## Return
 
 ```tsl
 return value
+```
+
+or:
+
+```tsl
 return
 ```
 
 `return` outside a function is a semantic error.
 
-### Parameters
+---
 
-Functions accept zero or more parameters.
+## Function Calls
 
 ```tsl
-function greet(name):
-    print("Hello, " + name)
+result = add(10, 20)
 ```
+
+Supports:
+
+- Zero arguments
+- One argument
+- Multiple arguments
+- Nested calls
 
 ---
 
 ## Arrays
 
-### Creation
-
 ```tsl
-numbers = [1, 2, 3, 4, 5]
+items = [10, 20, 30]
+x = items[0]
 ```
 
-Generates:
-
-```js
-let numbers = [1, 2, 3, 4, 5];
-```
-
-### Access
-
-```tsl
-first = numbers[0]
-```
-
-Generates:
-
-```js
-let first = numbers[0];
-```
+Generates JavaScript arrays.
 
 ---
 
 ## Objects
 
-### Creation
+Basic object literals:
 
 ```tsl
 player = { x: 100, y: 200, name: "Hero" }
 ```
 
-Generates:
+Generates JavaScript object literals.
 
-```js
-let player = { x: 100, y: 200, name: "Hero" };
-```
+v1.0 objects do not support:
 
-### Member Access
-
-```tsl
-print(player.x)
-print(player.name)
-```
-
-Generates:
-
-```js
-console.log(player.x);
-console.log(player.name);
-```
-
-### Object Assignment
-
-```tsl
-player.x = 200
-```
-
-Generates:
-
-```js
-player.x = 200;
-```
-
-### Nested Objects
-
-```tsl
-person = { name: "Alice", age: 25, hobbies: ["reading", "coding"] }
-print(person.hobbies[0])
-```
-
-Generates:
-
-```js
-console.log(person.hobbies[0]);
-```
+- class
+- method syntax
+- inheritance
+- generic object system
 
 ---
 
-## Composite Access
-
-Member access and array access can be chained:
+## Member Access
 
 ```tsl
-person.hobbies[0]
-player.x.y[1]
+player.x
 ```
 
-Generates:
-
-```js
-person.hobbies[0]
-player.x.y[1]
-```
+Generates JavaScript member access.
 
 ---
 
-## Runtime Helpers
+## Array Access
+
+```tsl
+items[0]
+```
+
+Generates JavaScript bracket access.
+
+---
+
+## Built-in Functions
 
 ### print()
 
@@ -437,11 +384,7 @@ player.x.y[1]
 print(value)
 ```
 
-Maps to:
-
-```js
-console.log(value);
-```
+Generates `console.log(value)`.
 
 ### range()
 
@@ -449,15 +392,7 @@ console.log(value);
 range(10)
 ```
 
-Returns `[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]`.
-
-Reference implementation:
-
-```js
-function range(n) {
-    return Array.from({ length: n }, (_, i) => i);
-}
-```
+Returns an array `[0, 1, 2, ..., 9]`.
 
 ---
 
@@ -473,7 +408,7 @@ Generator Error
 Runtime Error
 ```
 
-Each compiler error includes:
+Every compiler error includes:
 
 ```text
 filename
@@ -484,49 +419,92 @@ message
 
 ---
 
-## AST Nodes
+## Architecture
 
-The AST contains these node types:
-
-```text
-Program
-NumberLiteral, StringLiteral, BooleanLiteral, NullLiteral
-Identifier
-ArrayExpression, ObjectExpression, Property
-UnaryExpression, BinaryExpression, CallExpression
-MemberExpression, ArrayAccess
-Assignment
-IfStatement, WhileStatement, ForStatement
-FunctionDeclaration, ReturnStatement
-BreakStatement, ContinueStatement
-Pass, ExpressionStatement
 ```
-
-Each node stores source location information.
+TSL Source
+    ↓
+Lexer (tokenize)
+    ↓
+Tokens
+    ↓
+Parser (AST)
+    ↓
+AST
+    ↓
+Validator (semantic checks)
+    ↓
+JavaScript Generator
+    ↓
+JavaScript
+```
 
 ---
 
-## Token Types
+## AST Node Types
 
-The Lexer produces these tokens:
+```
+Program
+NumberLiteral
+StringLiteral
+BooleanLiteral
+NullLiteral
+Identifier
+ArrayExpression
+ObjectExpression
+Property
+UnaryExpression
+BinaryExpression
+CallExpression
+MemberExpression
+ArrayAccess
+Assignment
+IfStatement
+WhileStatement
+ForStatement
+FunctionDeclaration
+ReturnStatement
+BreakStatement
+ContinueStatement
+Pass
+ExpressionStatement
+```
 
-```text
-IDENTIFIER, NUMBER, STRING
+---
 
-IF, ELSE, FOR, IN, WHILE, FUNCTION, RETURN,
-BREAK, CONTINUE, PASS, TRUE, FALSE, NULL,
-AND, OR, NOT
+## Lexer Tokens
 
-PLUS, MINUS, STAR, SLASH, PERCENT
-EQUAL, EQUAL_EQUAL, NOT_EQUAL
-LESS, LESS_EQUAL, GREATER, GREATER_EQUAL
-
-LPAREN, RPAREN, LBRACKET, RBRACKET
-LBRACE, RBRACE, COMMA, DOT, COLON
-
-NEWLINE, INDENT, DEDENT
+```
+IDENTIFIER    NUMBER      STRING
+PLUS          MINUS       STAR        SLASH     PERCENT
+EQUAL         EQUAL_EQUAL NOT_EQUAL
+LESS          LESS_EQUAL  GREATER     GREATER_EQUAL
+AND           OR          NOT
+LPAREN        RPAREN      LBRACKET    RBRACKET  LBRACE    RBRACE
+COMMA         DOT         COLON
+NEWLINE       INDENT      DEDENT
 EOF
 ```
+
+---
+
+## Indentation
+
+TSL uses indentation to define blocks.
+
+- `:` ends a statement that introduces a block.
+- `INDENT` marks the start of a block.
+- `DEDENT` marks the end of a block.
+
+```tsl
+if x:
+    if y:
+        print(x)
+    print(y)
+print(x)
+```
+
+Mixing indentation in ambiguous ways is not allowed.
 
 ---
 
@@ -542,11 +520,38 @@ tsl --version
 
 ---
 
-## Out of Scope
+## Engine API (v1.0)
 
-The following are NOT part of TSL v1.0:
+The compiler generates calls; the runtime implements them.
 
 ```text
+clear()
+draw_rect(x, y, width, height)
+draw_circle(x, y, radius)
+draw_line(x1, y1, x2, y2)
+```
+
+The compiler does not understand graphics implementation.
+
+---
+
+## Render Model
+
+```tsl
+function update():
+    ...
+
+function draw():
+    ...
+```
+
+The runtime calls `update()` and `draw()` in a frame loop.
+
+---
+
+## Out of Scope for v1.0
+
+```
 Garbage Collector
 VM
 Bytecode
@@ -557,7 +562,7 @@ Generics
 Classes
 Inheritance
 Interfaces
-Modules
+Modules (complex)
 Package Manager
 Macros
 Decorators
@@ -573,64 +578,4 @@ IDE
 LSP
 Debugger
 Full ECS
-```
-
----
-
-## Example Programs
-
-### Hello World
-
-```tsl
-# Hello World
-print("Hello, World!")
-```
-
-### Variables and Conditionals
-
-```tsl
-x = 10
-y = 20
-
-if x < y:
-    print("x is smaller")
-else:
-    print("y is smaller")
-```
-
-### Function with Return
-
-```tsl
-function add(a, b):
-    return a + b
-
-result = add(10, 20)
-print(result)
-```
-
-### Loop with Break
-
-```tsl
-i = 0
-while true:
-    i = i + 1
-    if i >= 10:
-        break
-    print(i)
-```
-
-### Object Pattern
-
-```tsl
-function create_point(x, y):
-    return { x: x, y: y }
-
-function point_distance(p1, p2):
-    dx = p2.x - p1.x
-    dy = p2.y - p1.y
-    return dx * dx + dy * dy
-
-p1 = create_point(0, 0)
-p2 = create_point(3, 4)
-print(point_distance(p1, p2))
 ```

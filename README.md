@@ -25,8 +25,6 @@ tsl --version
 
 Phase 21 — Documentation
 
-> **Documentation in progress.** Comprehensive docs generated for all language features, compiler pipeline, and CLI.
-
 ## Compiler Pipeline
 
 ```
@@ -72,7 +70,7 @@ JavaScript
 | 18 | Integration | ✓ Done |
 | 19 | Specification Lock | ✓ Done |
 | 20 | Test & Release Candidate | ✓ Done |
-| 21 | Documentation | In Progress |
+| 21 | Documentation | ✓ Done |
 | 22 | TSL v1.0 | Pending |
 
 ## Release Test Results

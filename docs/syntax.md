@@ -2,280 +2,248 @@
 
 ## Overview
 
-TSL (Turing Scripting Language) is a small, Python-inspired scripting language that compiles to JavaScript. It uses indentation-based blocks and a colon (`:`) to mark block boundaries.
+TSL is a statically typed, indentation-based scripting language. This document describes the complete syntax of TSL.
 
-**File extension:** `.tsl`
+## Comments
 
----
-
-## 1. Comments
-
-Lines beginning with `#` are comments. Everything after `#` to the end of the line is ignored.
+Single-line comments start with `#` and extend to the end of the line.
 
 ```tsl
 # This is a comment
-x = 10  # inline comment is also supported
 ```
 
----
+Comments are ignored by the lexer.
 
-## 2. Identifiers
+## Identifiers
 
-An identifier is a name used for variables, functions, and properties.
+Identifiers name variables, functions, and properties.
 
 **Rules:**
-- Must start with a letter (`a-z`, `A-Z`) or underscore (`_`)
-- Subsequent characters may be letters, digits (`0-9`), or underscores
-- Case-sensitive: `x` and `X` are different identifiers
 
-**Valid examples:**
+- Must start with a letter (`a-z`, `A-Z`) or underscore (`_`)
+- Followed by zero or more letters, digits (`0-9`), or underscores
+- Case sensitive (`x` and `X` are different)
+- Cannot be a keyword
+
+**Examples:**
+
 ```tsl
 x
 player
 player_x
 _value
 x2
-myVar
 ```
 
 **Invalid examples:**
+
 ```tsl
-2x       # cannot start with a digit
-player-name  # hyphens are not allowed
+1x      # starts with a digit
+player-x # hyphen not allowed
 ```
 
-Identifiers cannot be keywords (see section 3).
+## Keywords
 
----
+Keywords are reserved words that have special meaning in the language. They cannot be used as identifiers.
 
-## 3. Keywords
-
-The following words are reserved and cannot be used as identifiers:
-
-| Keyword    | Purpose               |
-|------------|-----------------------|
-| `if`       | Conditional           |
-| `else`     | Conditional alternate |
-| `for`      | Loop                  |
-| `in`       | Loop iterable         |
-| `while`    | Loop                  |
-| `function` | Function definition   |
-| `return`   | Return from function  |
-| `break`    | Exit loop             |
+| Keyword | Description |
+|---------|-------------|
+| `if` | Conditional statement |
+| `else` | Alternate branch of condition |
+| `for` | Loop over iterable |
+| `in` | Used with `for` to specify iterable |
+| `while` | Conditional loop |
+| `function` | Function declaration |
+| `return` | Return from function |
+| `break` | Exit loop early |
 | `continue` | Skip to next iteration |
-| `pass`     | No-op placeholder     |
-| `true`     | Boolean literal       |
-| `false`    | Boolean literal       |
-| `null`     | Null literal          |
-| `and`      | Logical AND           |
-| `or`       | Logical OR            |
-| `not`      | Logical NOT           |
+| `pass` | No-op statement |
+| `true` | Boolean true literal |
+| `false` | Boolean false literal |
+| `null` | Null literal |
+| `and` | Logical AND operator |
+| `or` | Logical OR operator |
+| `not` | Logical NOT operator |
 
----
+## Literals
 
-## 4. Literals
+### Numbers
 
-### 4.1 Numbers
-
-Integers and floating-point numbers are supported. Both compile to JavaScript `Number`.
+Integers and floating-point numbers.
 
 ```tsl
-x = 10
-y = 42
-z = 3.14
-w = 0.5
+10
+42
+3.14
+0.5
 ```
 
-### 4.2 Strings
+Numbers are parsed as JavaScript `Number` type.
 
-Strings use double quotes (`"`) or single quotes (`'`). Both forms are equivalent.
+### Strings
+
+Strings are delimited by double quotes (`"`) or single quotes (`'`).
 
 ```tsl
-name = "Hello, World!"
-greeting = 'Hello, World!'
+"hello"
+'world'
 ```
 
 **Escape sequences:**
 
-| Escape | Meaning   |
-|--------|-----------|
-| `\\n`  | Newline   |
-| `\\t`  | Tab       |
-| `\\`   | Backslash |
-| `\\"`  | Double quote |
-| `\\'`  | Single quote |
-
-```tsl
-message = "Line 1\nLine 2"
-path = "C:\\Users\\name"
-quote = "She said \"hi\""
-```
-
-### 4.3 Booleans
-
-```tsl
-is_active = true
-is_done = false
-```
-
-### 4.4 Null
-
-```tsl
-value = null
-```
-
----
-
-## 5. Operators
-
-### 5.1 Arithmetic
-
-| Operator | Meaning |
-|----------|---------|
-| `+`      | Addition |
-| `-`      | Subtraction |
-| `*`      | Multiplication |
-| `/`      | Division |
-| `%`      | Modulo |
-
-```tsl
-sum = 10 + 5
-diff = 10 - 5
-prod = 10 * 5
-quot = 10 / 5
-rem = 10 % 3
-```
-
-### 5.2 Comparison
-
-| Operator | Meaning |
-|----------|---------|
-| `<`      | Less than |
-| `<=`     | Less than or equal |
-| `>`      | Greater than |
-| `>=`     | Greater than or equal |
-| `==`     | Equal (loose) |
-| `!=`     | Not equal |
-
-```tsl
-is_equal = (x == 10)
-is_greater = (x > 5)
-```
-
-### 5.3 Logical
-
-| Operator | Meaning |
-|----------|---------|
-| `and`    | Logical AND |
-| `or`     | Logical OR |
-| `not`    | Logical NOT (unary, prefix) |
-
-```tsl
-result = (x > 0) and (x < 10)
-flag = true or false
-negated = not true
-```
-
-### 5.4 Assignment
-
-| Operator | Meaning |
-|----------|---------|
-| `=`      | Assign value |
-
-```tsl
-x = 10
-x = x + 1  # reassignment
-```
-
-First assignment in a scope creates a new variable (`let`). Reassignment uses plain assignment.
-
----
-
-## 6. Operator Precedence
-
-From highest to lowest:
-
-| Precedence | Operators                        |
-|------------|----------------------------------|
-| 1 (highest)| `()` grouping                    |
-| 2          | `not`                            |
-| 3          | `*`, `/`, `%`                   |
-| 4          | `+`, `-`                         |
-| 5          | `<`, `<=`, `>`, `>=`            |
-| 6          | `==`, `!=`                       |
-| 7          | `and`                            |
-| 8 (lowest) | `or`                             |
-
-Use parentheses to control evaluation order:
-
-```tsl
-result = (2 + 3) * 4  # 20, not 14
-```
-
----
-
-## 7. Delimiters
-
-| Symbol | Purpose |
+| Escape | Meaning |
 |--------|---------|
-| `(` `)` | Function call, grouping |
-| `[` `]` | Array literal, array access |
-| `{` `}` | Object literal |
-| `,`    | Argument/element separator |
-| `.`    | Member access |
-| `:`    | Block delimiter |
-| `=`    | Assignment |
+| `\\n` | Newline |
+| `\\t` | Tab |
+| `\\\\` | Backslash |
+| `\\"` | Double quote |
+| `\\'` | Single quote |
 
----
+```tsl
+"hello\nworld"
+'say \'hi\''
+```
 
-## 8. Blocks (Indentation-Based)
+### Booleans
 
-TSL uses **colon (`:`)** and **indentation** to define blocks. There is no `end` keyword.
+Two boolean literals:
+
+```tsl
+true
+false
+```
+
+### Null
+
+The `null` literal represents absence of value:
+
+```tsl
+null
+```
+
+## Operators
+
+### Arithmetic
+
+| Operator | Description |
+|----------|-------------|
+| `+` | Addition |
+| `-` | Subtraction |
+| `*` | Multiplication |
+| `/` | Division |
+| `%` | Modulo |
+
+### Comparison
+
+| Operator | Description |
+|----------|-------------|
+| `<` | Less than |
+| `<=` | Less than or equal |
+| `>` | Greater than |
+| `>=` | Greater than or equal |
+| `==` | Equal |
+| `!=` | Not equal |
+
+### Logical
+
+| Operator | Description |
+|----------|-------------|
+| `and` | Logical AND |
+| `or` | Logical OR |
+| `not` | Logical NOT (prefix) |
+
+### Operator Precedence
+
+From lowest to highest binding strength:
+
+| Precedence | Operators | Associativity |
+|------------|-----------|---------------|
+| 1 | `or` | Left |
+| 2 | `and` | Left |
+| 3 | `==`, `!=`, `<`, `<=`, `>`, `>=` | Left |
+| 4 | `+`, `-` | Left |
+| 5 | `*`, `/`, `%` | Left |
+| 6 | `not` | Right (prefix) |
+| 7 | `()` | N/A |
+
+### Examples
+
+```tsl
+# Low precedence: (true or false) and false
+result = true or false and false
+
+# High precedence: (2 * 3) + 1
+result = 2 * 3 + 1
+
+# not binds tighter than and
+result = not x and y
+```
+
+## Delimiters
+
+| Token | Symbol | Description |
+|-------|--------|-------------|
+| Left parenthesis | `(` | Start of grouping / argument list |
+| Right parenthesis | `)` | End of grouping / argument list |
+| Left bracket | `[` | Start of array literal / access |
+| Right bracket | `]` | End of array literal / access |
+| Left brace | `{` | Start of object literal |
+| Right brace | `}` | End of object literal |
+| Comma | `,` | Separator in lists |
+| Dot | `.` | Member access |
+| Colon | `:` | Block delimiter |
+| Equals | `=` | Assignment |
+
+## Block Structure
+
+TSL uses **indentation** to define code blocks, not braces or keywords.
+
+### Rules
+
+1. A colon (`:`) marks the start of a block
+2. The block body is defined by consistent indentation (spaces)
+3. Deducing block end: a line with less (or equal) indentation ends the block
+4. No `end` keyword is needed
+
+### Example
 
 ```tsl
 if x > 10:
     print(x)
-else:
-    print("small")
 ```
 
-**Rules:**
-- A colon (`:`) marks the start of a block
-- Indentation (spaces) defines the block body
-- DEDENT (reducing indentation) ends the block
-- Use consistent indentation (spaces recommended)
-
-**Nested blocks:**
-```tsl
-if x > 10:
-    if y > 5:
-        print("both large")
-    print("end of inner if")
-print("end of outer if")
-```
-
----
-
-## 9. Statements
-
-### 9.1 Variable Assignment
-
-```tsl
-x = 10
-name = "Alice"
-items = [1, 2, 3]
-```
-
-### 9.2 If / Else
+### Block Syntax
 
 ```tsl
 if condition:
-    statement
+    # body — indented
+    pass
 else:
-    statement
+    # else body — same indentation level
+    pass
 ```
 
-Example:
+```tsl
+for item in collection:
+    print(item)
+
+while x > 0:
+    x = x - 1
+
+function greet(name):
+    print(name)
+```
+
+### Indentation
+
+- Use spaces for indentation (tabs are not supported)
+- Consistent indentation within a block is required
+- Mixed indentation levels cause a lexer error
+
+## Control Flow
+
+### If Statement
+
 ```tsl
 if x > 10:
     print("big")
@@ -283,211 +251,148 @@ else:
     print("small")
 ```
 
-### 9.3 For Loop
+### For Loop
 
 ```tsl
-for variable in iterable:
-    statement
-```
-
-Example:
-```tsl
-for item in items:
+for item in collection:
     print(item)
 ```
 
-### 9.4 While Loop
+### While Loop
 
 ```tsl
-while condition:
-    statement
+while x > 0:
+    x = x - 1
 ```
 
-Example:
-```tsl
-while count > 0:
-    print(count)
-    count = count - 1
-```
-
-### 9.5 Break
-
-Exits the innermost loop.
+### Break and Continue
 
 ```tsl
-while true:
-    if x > 10:
+for item in collection:
+    if item == target:
         break
-    x = x + 1
-```
-
-### 9.6 Continue
-
-Skips to the next iteration of the innermost loop.
-
-```tsl
-for item in items:
-    if item < 0:
+    if item == skip:
         continue
     print(item)
 ```
 
-### 9.7 Pass
+## Functions
 
-A no-op placeholder. Generates a comment in output.
-
-```tsl
-if condition:
-    pass
-```
-
-### 9.8 Return
-
-Returns a value from a function.
+### Declaration
 
 ```tsl
 function add(a, b):
     return a + b
+```
 
-function empty():
+### Call
+
+```tsl
+result = add(1, 2)
+```
+
+### Return
+
+```tsl
+function square(x):
+    return x * x
+```
+
+Return with no value:
+
+```tsl
+function doNothing():
     return
 ```
 
----
+## Expressions
 
-## 10. Functions
-
-### 10.1 Declaration
+### Assignment
 
 ```tsl
-function name(parameters):
-    body
+x = 10
 ```
 
-Example:
+Member access assignment:
+
 ```tsl
-function add(a, b):
-    return a + b
+player.x = 100
 ```
 
-### 10.2 Function Call
+Array access assignment:
 
 ```tsl
-result = add(10, 20)
-print(result)
+arr[0] = 10
 ```
 
-### 10.3 Function Values
-
-Functions are first-class values and can be passed as arguments.
+### Array Literals
 
 ```tsl
-function apply(func, x):
-    return func(x)
+[1, 2, 3]
+["a", "b", "c"]
 ```
 
----
-
-## 11. Arrays
-
-### 11.1 Array Literal
+### Array Access
 
 ```tsl
-items = [1, 2, 3, 4, 5]
-empty = []
-mixed = [1, "hello", true]
+arr[0]
+matrix[x][y]
 ```
 
-### 11.2 Array Access
+### Object Literals
 
 ```tsl
-first = items[0]
-items[0] = 100
-```
-
----
-
-## 12. Objects
-
-### 12.1 Object Literal
-
-```tsl
-player = { x: 100, y: 200, name: "Hero" }
-```
-
-Multi-line:
-```tsl
-player = {
-    x: 100,
-    y: 200,
-    name: "Hero"
+{
+    name: "Alice",
+    age: 30
 }
 ```
 
-### 12.2 Member Access
+### Member Access
 
 ```tsl
-print(player.x)
-player.x = 200
+player.x
+player.name
 ```
 
-### 12.3 Nested Objects
+### Function Calls
 
 ```tsl
-matrix = { rows: 3, cols: 4, data: [1, 2, 3] }
-print(matrix.data[0])
+print("hello")
+math.sqrt(16)
 ```
 
----
-
-## 13. Full Example
+### Chained Access
 
 ```tsl
-# TSL program example
-function greet(name):
-    print("Hello, " + name)
+# Chained member access
+obj.prop.method()
 
-count = 0
-for i in range(3):
-    if count == 0:
-        greet("World")
+# Chained array access
+arr[0][1]
+
+# Mixed access
+arr[0].prop
+```
+
+## Complete Example
+
+```tsl
+# TSL program
+function max(a, b):
+    if a > b:
+        return a
     else:
-        greet("Friend")
-    count = count + 1
+        return b
+
+numbers = [1, 5, 3, 9, 2]
+largest = null
+
+for n in numbers:
+    if largest == null:
+        largest = n
+    else:
+        largest = max(largest, n)
+
+print(largest)
 ```
-
----
-
-## 14. Compile Output
-
-TSL compiles to valid JavaScript. Key transformations:
-
-| TSL | JavaScript |
-|-----|------------|
-| `if cond:` | `if (cond) {` |
-| `else:` | `} else {` |
-| `for x in items:` | `for (let x of items)` |
-| `while cond:` | `while (cond)` |
-| `and` | `&&` |
-| `or` | `\|\|` |
-| `not x` | `(not x)` |
-| First assignment | `let x = ...;` |
-| Reassignment | `x = ...;` |
-| `print(x)` | `console.log(x);` |
-| `pass` | `// pass` |
-
----
-
-## 15. Error Reporting
-
-All compiler errors include:
-- Filename
-- Line number
-- Column number
-- Error message
-- Source line (when available)
-
-Error categories:
-- **Lexer Error** — invalid characters, unterminated strings
-- **Parser Error** — unexpected tokens, missing delimiters
-- **Generator Error** — unknown AST nodes
