@@ -1,0 +1,35 @@
+# Arrays - TSL Example
+# Demonstrates array creation and access
+
+# Array creation
+numbers = [1, 2, 3, 4, 5]
+print(numbers)
+
+# Array access
+first = numbers[0]
+print(first)
+
+last = numbers[4]
+print(last)
+
+# Array with mixed operations
+for i in range(5):
+    print(numbers[i] * 2)
+
+# Nested array
+matrix = [[1, 2], [3, 4], [5, 6]]
+print(matrix)
+
+# Array in function
+function sum_array(arr):
+    total = 0
+    for item in arr:
+        total = total + item
+    return total
+
+result = sum_array([10, 20, 30])
+print(result)
+
+# Empty array
+empty = []
+print(empty)

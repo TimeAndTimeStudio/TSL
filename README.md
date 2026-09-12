@@ -23,7 +23,7 @@ tsl --version
 
 ## Status
 
-Phase 17 — CLI
+Phase 18 — Integration
 
 ## Compiler Pipeline
 
@@ -46,7 +46,9 @@ JavaScript
     ↓
 Runtime
     ↓
-CLI ← Current Phase
+CLI
+    ↓
+Integration ← Current Phase
 ```
 
 ## Phases
@@ -71,7 +73,7 @@ CLI ← Current Phase
 | 15 | Render Loop | ✓ Done |
 | 16 | Error System | ✓ Done |
 | 17 | CLI | ✓ Done |
-| 18 | Integration | Pending |
+| 18 | Integration | ✓ Done |
 | 19 | Specification Lock | Pending |
 | 20 | Test & Release Candidate | Pending |
 | 21 | Documentation | Pending |

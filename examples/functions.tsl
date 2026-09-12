@@ -1,0 +1,37 @@
+# Functions - TSL Example
+# Demonstrates function declaration and calls
+
+function add(a, b):
+    return a + b
+
+function greet(name):
+    return "Hello, " + name
+
+function factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+function max(a, b):
+    if a > b:
+        return a
+    return b
+
+# Function calls
+result = add(10, 20)
+print(result)
+
+message = greet("TSL")
+print(message)
+
+fact = factorial(5)
+print(fact)
+
+m = max(15, 25)
+print(m)
+
+# Function with no return
+function say_hi():
+    print("Hi!")
+
+say_hi()

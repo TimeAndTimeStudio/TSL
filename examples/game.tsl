@@ -1,0 +1,23 @@
+# Game - TSL Example
+# Complete game example with render loop
+
+# Game state
+player_x = 100
+player_y = 100
+direction = 1
+speed = 5
+offset = 0
+
+function update():
+    player_x = player_x + speed * direction
+    offset = offset + 1
+
+    if player_x > 300:
+        direction = 0 - 1
+    if player_x < 50:
+        direction = 1
+
+function draw():
+    clear()
+    draw_rect(player_x, player_y, 50, 50)
+    draw_circle((player_x + 25), (player_y + offset), 10)

@@ -1,0 +1,18 @@
+# Variables - TSL Example
+# Demonstrates variable declaration and assignment
+
+name = "TSL"
+version = 1.0
+is_ready = true
+nothing = null
+
+print(name)
+print(version)
+print(is_ready)
+print(nothing)
+
+# Reassignment
+x = 10
+print(x)
+x = 20
+print(x)

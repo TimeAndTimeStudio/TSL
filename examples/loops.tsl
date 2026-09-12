@@ -1,0 +1,29 @@
+# Loops - TSL Example
+# Demonstrates for and while loops
+
+# For loop with range
+print("For loop with range:")
+for i in range(5):
+    print(i)
+
+# For loop with array
+print("For loop with array:")
+colors = ["red", "green", "blue"]
+for color in colors:
+    print(color)
+
+# While loop
+print("While loop:")
+counter = 3
+while counter > 0:
+    print(counter)
+    counter = counter - 1
+
+# Break and continue
+print("Break and continue:")
+for i in range(10):
+    if i == 3:
+        continue
+    if i == 7:
+        break
+    print(i)

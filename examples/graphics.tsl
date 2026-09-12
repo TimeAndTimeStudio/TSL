@@ -1,0 +1,25 @@
+# Graphics - TSL Example
+# Demonstrates Engine API calls
+
+# Basic shapes
+clear()
+draw_rect(10, 20, 50, 50)
+draw_circle(100, 100, 25)
+draw_line(0, 0, 200, 200)
+
+# Graphics with variables
+x = 50
+y = 50
+width = 100
+height = 80
+
+clear()
+draw_rect(x, y, width, height)
+draw_circle(x + width / 2, y + height / 2, 30)
+
+# Multiple shapes
+clear()
+draw_rect(10, 10, 100, 100)
+draw_rect(30, 30, 100, 100)
+draw_circle(150, 100, 50)
+draw_line(0, 0, 300, 300)
