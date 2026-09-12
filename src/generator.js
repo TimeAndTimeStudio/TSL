@@ -68,6 +68,7 @@ function createGenerator(source, filename = '<anonymous>') {
       ReturnStatement: generateReturnStatement,
       BreakStatement: generateBreakStatement,
       ContinueStatement: generateContinueStatement,
+      Pass: generatePass,
       ExpressionStatement: generateExpressionStatement,
     };
 
@@ -326,6 +327,12 @@ function createGenerator(source, filename = '<anonymous>') {
 
   function generateContinueStatement() {
     return `${indent()}continue;`;
+  }
+
+  // === Pass Statement ===
+
+  function generatePass() {
+    return `${indent()}// pass`;
   }
 
   // === Expression Statement ===

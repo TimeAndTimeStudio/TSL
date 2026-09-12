@@ -481,7 +481,7 @@ test("generates empty function", () => {
   validator.validate(ast);
   const generator = createGenerator();
   const js = generator.generate(ast);
-  assertEqual(js, `function empty() {\n  pass;\n}`);
+  assertEqual(js, `function empty() {\n  // pass\n}`);
 });
 
 test("generates function with local variables", () => {

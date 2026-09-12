@@ -93,12 +93,12 @@ function draw_game() {
   }
 }
 function update() {
-  pass;
+  // pass
 }
 function draw() {
   draw_game();
 }
 function init() {
-  pass;
+  // pass
 }
 init();

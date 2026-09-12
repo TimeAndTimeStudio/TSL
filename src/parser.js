@@ -555,6 +555,12 @@ function createParser(tokens, source, filename = '<anonymous>') {
     return ContinueStatement(makeLocation(current()));
   }
 
+  // === Pass statement ===
+  function parsePass() {
+    advance(TokenType.PASS);
+    return { type: 'Pass', location: makeLocation(current()) };
+  }
+
   // === Top-level: parse statements (for Phase 5) ===
   function parseStatements() {
     const statements = [];
@@ -588,6 +594,9 @@ function createParser(tokens, source, filename = '<anonymous>') {
     }
     if (token.type === TokenType.CONTINUE) {
       return parseContinue();
+    }
+    if (token.type === TokenType.PASS) {
+      return parsePass();
     }
 
     // Assignment: identifier = expression
