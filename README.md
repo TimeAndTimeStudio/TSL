@@ -23,10 +23,9 @@ tsl --version
 
 ## Status
 
-Phase 20 — Test & Release Candidate
+Phase 21 — Documentation
 
-> **Release Candidate.** All tests pass from standalone test project.
-> 25/25 release tests passing. 10/10 examples verified.
+> **Documentation in progress.** Comprehensive docs generated for all language features, compiler pipeline, and CLI.
 
 ## Compiler Pipeline
 
@@ -46,14 +45,6 @@ Validator
 JavaScript Generator
     ↓
 JavaScript
-    ↓
-Runtime
-    ↓
-CLI
-    ↓
-Integration
-    ↓
-Test & Release Candidate ← Current Phase
 ```
 
 ## Phases
@@ -81,7 +72,7 @@ Test & Release Candidate ← Current Phase
 | 18 | Integration | ✓ Done |
 | 19 | Specification Lock | ✓ Done |
 | 20 | Test & Release Candidate | ✓ Done |
-| 21 | Documentation | Pending |
+| 21 | Documentation | In Progress |
 | 22 | TSL v1.0 | Pending |
 
 ## Release Test Results
