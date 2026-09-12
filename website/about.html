@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — TSL</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <nav>
+      <div class="logo">T<span>S</span>L</div>
+      <button class="menu-toggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="docs.html">Docs</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="hero" style="padding-bottom: 20px;">
+        <h1>About <span class="highlight">TSL</span></h1>
+        <p class="tagline">Small, Simple, Predictable — Compiles to JavaScript</p>
+      </div>
+    </div>
+
+    <!-- What is TSL -->
+    <section class="container" style="padding: 40px 24px;">
+      <div style="max-width: 800px; margin: 0 auto;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 16px;">What is TSL?</h2>
+        <p>TSL (Time Script Language) คือภาษาโปรแกรมขนาดเล็กที่ออกแบบมาเพื่อเขียนง่าย อ่านง่าย และ transpile เป็น JavaScript ใช้ indentation เป็น block เหมือน Python แต่ไม่ใช่ Python</p>
+
+        <div class="note">
+          <strong>เป้าหมาย:</strong> ไม่ใช่การสร้างภาษา general-purpose ขนาดใหญ่ แต่เป็นภาษาเล็กที่ถูกต้อง คาดเดาได้ และง่ายต่อการ compile
+        </div>
+
+        <h2 style="font-size: 1.5rem; margin: 40px 0 16px;">Design Goals</h2>
+        <ul>
+          <li>Simple syntax — colon (:) และ indentation สำหรับ block</li>
+          <li>Full compiler pipeline — Lexer → Parser → AST → Validator → Generator</li>
+          <li>JavaScript backend — generate clean, readable, valid JavaScript</li>
+          <li>Deterministic output — same source always produces the same JavaScript</li>
+          <li>No VM, no bytecode, no JIT — compile ตรงเป็น JavaScript</li>
+          <li>Small and predictable</li>
+        </ul>
+
+        <h2 style="font-size: 1.5rem; margin: 40px 0 16px;">Project Stats</h2>
+        <div class="feature-grid" style="margin-top: 20px;">
+          <div class="feature-card" style="text-align: center;">
+            <div style="font-size: 2rem; font-weight: 800; color: var(--primary);">1.0.0</div>
+            <p>Version</p>
+          </div>
+          <div class="feature-card" style="text-align: center;">
+            <div style="font-size: 2rem; font-weight: 800; color: var(--primary);">100+</div>
+            <p>Examples</p>
+          </div>
+          <div class="feature-card" style="text-align: center;">
+            <div style="font-size: 2rem; font-weight: 800; color: var(--primary);">8</div>
+            <p>Test Suites</p>
+          </div>
+          <div class="feature-card" style="text-align: center;">
+            <div style="font-size: 2rem; font-weight: 800; color: var(--primary);">5</div>
+            <p>Error Types</p>
+          </div>
+        </div>
+
+        <h2 style="font-size: 1.5rem; margin: 40px 0 16px;">Compiler Pipeline</h2>
+        <div class="pipeline" style="margin: 24px 0;">
+          <div class="pipeline-step">TSL Source</div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-step">Lexer</div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-step">Parser</div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-step">AST</div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-step">Validator</div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-step">Generator</div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-step">JavaScript</div>
+        </div>
+
+        <h2 style="font-size: 1.5rem; margin: 40px 0 16px;">Error System</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Class</th>
+              <th>Pipeline Stage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Lexer Error</td>
+              <td><code>LexerError</code></td>
+              <td>Tokenization</td>
+            </tr>
+            <tr>
+              <td>Parser Error</td>
+              <td><code>ParserError</code></td>
+              <td>Parsing</td>
+            </tr>
+            <tr>
+              <td>Semantic Error</td>
+              <td><code>ValidationError</code></td>
+              <td>Validation</td>
+            </tr>
+            <tr>
+              <td>Generator Error</td>
+              <td><code>GeneratorError</code></td>
+              <td>Code Generation</td>
+            </tr>
+            <tr>
+              <td>Runtime Error</td>
+              <td><code>RuntimeError</code></td>
+              <td>Execution</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 style="font-size: 1.5rem; margin: 40px 0 16px;">Out of Scope (v1.0)</h2>
+        <ul>
+          <li>Classes, inheritance, interfaces</li>
+          <li>Modules, packages</li>
+          <li>Static typing</li>
+          <li>Garbage collector, VM, bytecode</li>
+          <li>JIT compilation, native compilation</li>
+          <li>Async, threads, coroutines</li>
+          <li>Pattern matching, destructuring</li>
+        </ul>
+
+        <h2 style="font-size: 1.5rem; margin: 40px 0 16px;">License</h2>
+        <p>TSL ปล่อยภายใต้ <strong>GPL-3.0 License</strong></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>TSL v1.0.0 — Time Script Language &nbsp;|&nbsp; GPL-3.0 License</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

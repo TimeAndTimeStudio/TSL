@@ -1,6 +1,6 @@
 # TSL — Small Language for JavaScript
 
-TSL (TimeStudio Language) is a small, simple programming language that compiles to JavaScript.
+TSL (Time Script Language) is a small, simple programming language that compiles to JavaScript.
 Designed for learning, game prototyping, and writing clean, readable code with minimal syntax.
 
 **Version:** 1.0.0 &nbsp;|&nbsp; **Status:** Stable &nbsp;|&&nbsp; **Backend:** JavaScript
