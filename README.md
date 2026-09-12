@@ -10,7 +10,7 @@ node src/cli.js <file.tsl>
 
 ## Status
 
-Phase 14 — Engine API
+Phase 15 — Render Loop
 
 ## Compiler Pipeline
 
@@ -33,7 +33,7 @@ JavaScript
     ↓
 Runtime
     ↓
-Engine ← Current Phase
+    Render Loop ← Current Phase
 ```
 
 ## Phases
@@ -55,7 +55,7 @@ Engine ← Current Phase
 | 12 | Runtime | ✓ Done |
 | 13 | Math | ✓ Done |
 | 14 | Engine API | ✓ Done |
-| 15 | Render Loop | Pending |
+| 15 | Render Loop | ✅ Done |
 | 16 | Error System | Pending |
 | 17 | CLI | Pending |
 | 18 | Integration | Pending |

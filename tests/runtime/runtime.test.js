@@ -135,4 +135,75 @@ test("draw_line() with negative coordinates does not throw", () => {
   draw_line(-10, -10, 10, 10);
 });
 
+// === Phase 15 — Render Loop Tests ===
+
+const { run, startLoop, stopLoop } = require("../../runtime/runtime.js");
+
+test("run() with empty module does not throw", () => {
+  const result = run({});
+  assertEqual(result.update, undefined);
+  assertEqual(result.draw, undefined);
+});
+
+test("run() with update function calls update", () => {
+  let called = false;
+  const mod = {
+    update: () => { called = true; },
+  };
+  run(mod);
+  assertEqual(called, true);
+});
+
+test("run() with draw function calls draw", () => {
+  let called = false;
+  const mod = {
+    draw: () => { called = true; },
+  };
+  run(mod);
+  assertEqual(called, true);
+});
+
+test("run() with both update and draw calls both", () => {
+  let updateCalled = false;
+  let drawCalled = false;
+  const mod = {
+    update: () => { updateCalled = true; },
+    draw: () => { drawCalled = true; },
+  };
+  run(mod);
+  assertEqual(updateCalled, true);
+  assertEqual(drawCalled, true);
+});
+
+test("run() returns update and draw references", () => {
+  const mod = {
+    update: () => {},
+    draw: () => {},
+  };
+  const result = run(mod);
+  assertEqual(result.update, mod.update);
+  assertEqual(result.draw, mod.draw);
+});
+
+test("run() with null module does not throw", () => {
+  run(null);
+});
+
+test("run() with undefined module does not throw", () => {
+  run(undefined);
+});
+
+test("startLoop() does not throw", () => {
+  startLoop({});
+});
+
+test("stopLoop() does not throw", () => {
+  stopLoop();
+});
+
+test("stopLoop() can be called multiple times", () => {
+  stopLoop();
+  stopLoop();
+});
+
 console.log("\nAll runtime tests passed!");
