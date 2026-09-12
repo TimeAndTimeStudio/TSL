@@ -1,0 +1,35 @@
+# Linked List Node
+function create_node(value):
+    return {
+        value: value,
+        next: null
+    }
+
+# Linked List
+function create_list():
+    head = null
+    size = 0
+    
+    return {
+        append: function(value):
+            node = create_node(value)
+            if head == null:
+                head = node
+            else:
+                current = head
+                while current.next != null:
+                    current = current.next
+                current.next = node
+            size = size + 1
+        print: function():
+            current = head
+            while current != null:
+                print(current.value)
+                current = current.next
+    }
+
+list = create_list()
+list.append(1)
+list.append(2)
+list.append(3)
+list.print()

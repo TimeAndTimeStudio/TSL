@@ -1,0 +1,14 @@
+# Object Method
+function create_counter():
+    count = 0
+    return {
+        value: count,
+        increment: function():
+            count = count + 1
+            self.value = count
+    }
+
+counter = create_counter()
+counter.increment()
+counter.increment()
+print(counter.value)

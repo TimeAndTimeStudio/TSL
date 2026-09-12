@@ -1,0 +1,26 @@
+# Dynamic Programming - Word Break
+function word_break(s, word_dict):
+    n = s.length
+    dp = []
+    i = 0
+    while i <= n:
+        dp[i] = false
+        i = i + 1
+    dp[0] = true
+    
+    i = 1
+    while i <= n:
+        j = 0
+        while j < i:
+            if dp[j] and s.substring(j, i) in word_dict:
+                dp[i] = true
+                break
+            j = j + 1
+        i = i + 1
+    
+    return dp[n]
+
+s = "leetcode"
+word_dict = ["leet", "code"]
+result = word_break(s, word_dict)
+print(result)

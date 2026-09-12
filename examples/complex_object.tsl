@@ -1,0 +1,13 @@
+# Complex Object
+company = {
+    name: "TSL Inc",
+    founded: 2024,
+    employees: [
+        { name: "Alice", role: "Engineer" },
+        { name: "Bob", role: "Designer" }
+    ],
+    active: true
+}
+
+print(company.name)
+print(company.employees[0].name)

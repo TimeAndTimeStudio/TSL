@@ -1,0 +1,30 @@
+# Stack Implementation
+function create_stack():
+    items = []
+    top = -1
+    
+    return {
+        push: function(item):
+            top = top + 1
+            items[top] = item
+        pop: function():
+            if top == -1:
+                return null
+            item = items[top]
+            top = top - 1
+            return item
+        peek: function():
+            if top == -1:
+                return null
+            return items[top]
+        isEmpty: function():
+            return top == -1
+    }
+
+stack = create_stack()
+stack.push(1)
+stack.push(2)
+stack.push(3)
+print(stack.peek())
+print(stack.pop())
+print(stack.pop())

@@ -1,0 +1,36 @@
+# Hash Table
+function create_hash_table():
+    buckets = []
+    i = 0
+    while i < 16:
+        buckets[i] = null
+        i = i + 1
+    
+    return {
+        put: function(key, value):
+            index = hash(key) % 16
+            node = { key: key, value: value, next: buckets[index] }
+            buckets[index] = node
+        get: function(key):
+            index = hash(key) % 16
+            current = buckets[index]
+            while current != null:
+                if current.key == key:
+                    return current.value
+                current = current.next
+            return null
+    }
+
+function hash(key):
+    sum = 0
+    i = 0
+    while i < key.length:
+        sum = sum + key[i]
+        i = i + 1
+    return sum
+
+table = create_hash_table()
+table.put("name", "Alice")
+table.put("age", "25")
+print(table.get("name"))
+print(table.get("age"))

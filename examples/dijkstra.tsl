@@ -1,0 +1,53 @@
+# Dijkstra's Algorithm
+function create_graph():
+    adj = {}
+    
+    return {
+        add_edge: function(u, v, w):
+            if u not in adj:
+                adj[u] = []
+            adj[u][adj[u].length] = { to: v, weight: w }
+        dijkstra: function(start):
+            dist = {}
+            visited = {}
+            nodes = []
+            
+            for node in adj:
+                dist[node] = 999999
+                nodes[nodes.length] = node
+            
+            dist[start] = 0
+            
+            for i in range(nodes.length):
+                u = -1
+                min_dist = 999999
+                
+                for node in nodes:
+                    if node not in visited and dist[node] < min_dist:
+                        min_dist = dist[node]
+                        u = node
+                
+                if u == -1:
+                    break
+                
+                visited[u] = true
+                
+                i = 0
+                while i < adj[u].length:
+                    v = adj[u][i].to
+                    w = adj[u][i].weight
+                    if dist[u] + w < dist[v]:
+                        dist[v] = dist[u] + w
+                    i = i + 1
+            
+            for node in nodes:
+                print(node + ": " + dist[node])
+    }
+
+graph = create_graph()
+graph.add_edge("A", "B", 4)
+graph.add_edge("A", "C", 2)
+graph.add_edge("B", "C", 1)
+graph.add_edge("B", "D", 5)
+graph.add_edge("C", "D", 8)
+graph.dijkstra("A")

@@ -1,0 +1,11 @@
+# Object with Nested Object
+config = {
+    app: {
+        name: "MyApp",
+        version: 1
+    },
+    debug: true
+}
+
+print(config.app.name)
+print(config.debug)

@@ -1,0 +1,35 @@
+# Breadth First Search
+function create_graph():
+    adj = {}
+    
+    return {
+        add_edge: function(u, v):
+            if u not in adj:
+                adj[u] = []
+            adj[u][adj[u].length] = v
+        bfs: function(start):
+            visited = {}
+            queue = []
+            queue[0] = start
+            front = 0
+            
+            while front < queue.length:
+                v = queue[front]
+                front = front + 1
+                
+                if v not in visited:
+                    print(v)
+                    visited[v] = true
+                    
+                    i = 0
+                    while i < adj[v].length:
+                        queue[queue.length] = adj[v][i]
+                        i = i + 1
+    }
+
+graph = create_graph()
+graph.add_edge("A", "B")
+graph.add_edge("A", "C")
+graph.add_edge("B", "D")
+graph.add_edge("C", "E")
+graph.bfs("A")
