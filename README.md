@@ -5,12 +5,25 @@ TSL คือภาษาโปรแกรมขนาดเล็กที่ 
 ## Usage
 
 ```bash
+# Run and view generated JavaScript
 node src/cli.js <file.tsl>
+
+# Build to stdout
+tsl build <file.tsl>
+
+# Build to output file
+tsl build <file.tsl> -o <output.js>
+
+# Check/validate only
+tsl check <file.tsl>
+
+# Show version
+tsl --version
 ```
 
 ## Status
 
-Phase 16 — Error System
+Phase 17 — CLI
 
 ## Compiler Pipeline
 
@@ -33,7 +46,7 @@ JavaScript
     ↓
 Runtime
     ↓
-    Render Loop ← Current Phase
+CLI ← Current Phase
 ```
 
 ## Phases
@@ -55,9 +68,9 @@ Runtime
 | 12 | Runtime | ✓ Done |
 | 13 | Math | ✓ Done |
 | 14 | Engine API | ✓ Done |
-| 15 | Render Loop | ✅ Done |
-| 16 | Error System | ✅ Done |
-| 17 | CLI | ✅ Done |
+| 15 | Render Loop | ✓ Done |
+| 16 | Error System | ✓ Done |
+| 17 | CLI | ✓ Done |
 | 18 | Integration | Pending |
 | 19 | Specification Lock | Pending |
 | 20 | Test & Release Candidate | Pending |
