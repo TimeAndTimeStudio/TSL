@@ -12,13 +12,36 @@ class GeneratorError extends Error {
 
 function createGenerator(filename = '<anonymous>') {
   let indentLevel = 0;
-  let declaredVars = new Set();
+  let scopeStack = [];
   let inFunction = false;
 
   function reset() {
     indentLevel = 0;
-    declaredVars = new Set();
+    scopeStack = [new Set()];
     inFunction = false;
+  }
+
+  function pushScope() {
+    scopeStack.push(new Set());
+    indentLevel++;
+  }
+
+  function popScope() {
+    scopeStack.pop();
+    indentLevel--;
+  }
+
+  function declareVar(name) {
+    scopeStack[scopeStack.length - 1].add(name);
+  }
+
+  function isDeclared(name) {
+    for (let i = scopeStack.length - 1; i >= 0; i--) {
+      if (scopeStack[i].has(name)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   function indent() {
@@ -182,12 +205,12 @@ function createGenerator(filename = '<anonymous>') {
       return `${indent()}${left} = ${right};`;
     }
 
-    // Check if variable was already declared in this scope
+    // Check if variable was already declared in any scope
     const varName = node.left.name;
-    const isDeclaration = !declaredVars.has(varName);
+    const isDeclaration = !isDeclared(varName);
 
     if (isDeclaration) {
-      declaredVars.add(varName);
+      declareVar(varName);
       return `${indent()}let ${left} = ${right};`;
     }
 
@@ -201,19 +224,19 @@ function createGenerator(filename = '<anonymous>') {
     const lines = [];
 
     lines.push(`${indent()}if (${condition}) {`);
-    indentLevel++;
+    pushScope();
     for (const stmt of node.consequent) {
       lines.push(generateStatement(stmt));
     }
-    indentLevel--;
+    popScope();
 
     if (node.alternate) {
       lines.push(`${indent()}} else {`);
-      indentLevel++;
+      pushScope();
       for (const stmt of node.alternate) {
         lines.push(generateStatement(stmt));
       }
-      indentLevel--;
+      popScope();
       lines.push(`${indent()}}`);
     } else {
       lines.push(`${indent()}}`);
@@ -229,11 +252,11 @@ function createGenerator(filename = '<anonymous>') {
     const lines = [];
 
     lines.push(`${indent()}while (${condition}) {`);
-    indentLevel++;
+    pushScope();
     for (const stmt of node.body) {
       lines.push(generateStatement(stmt));
     }
-    indentLevel--;
+    popScope();
 
     lines.push(`${indent()}}`);
 
@@ -248,11 +271,11 @@ function createGenerator(filename = '<anonymous>') {
     const lines = [];
 
     lines.push(`${indent()}for (let ${variable} of ${iterable}) {`);
-    indentLevel++;
+    pushScope();
     for (const stmt of node.body) {
       lines.push(generateStatement(stmt));
     }
-    indentLevel--;
+    popScope();
 
     lines.push(`${indent()}}`);
 
@@ -266,21 +289,17 @@ function createGenerator(filename = '<anonymous>') {
     const lines = [];
 
     lines.push(`${indent()}function ${node.name.name}(${params}) {`);
-    const prevInFunction = inFunction;
-    inFunction = true;
-    const prevDeclaredVars = declaredVars;
-    const newDeclaredVars = new Set(node.parameters.map(p => p.name));
-    declaredVars = newDeclaredVars;
-    const prevIndentLevel = indentLevel;
-    indentLevel++;
+    pushScope();
+
+    for (const param of node.parameters) {
+      declareVar(param.name);
+    }
 
     for (const stmt of node.body) {
       lines.push(generateStatement(stmt));
     }
 
-    inFunction = prevInFunction;
-    declaredVars = prevDeclaredVars;
-    indentLevel = prevIndentLevel;
+    popScope();
 
     lines.push(`${indent()}}`);
 
