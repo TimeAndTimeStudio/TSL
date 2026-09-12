@@ -23,7 +23,10 @@ tsl --version
 
 ## Status
 
-Phase 18 — Integration
+Phase 20 — Test & Release Candidate
+
+> **Release Candidate.** All tests pass from standalone test project.
+> 25/25 release tests passing. 10/10 examples verified.
 
 ## Compiler Pipeline
 
@@ -48,7 +51,9 @@ Runtime
     ↓
 CLI
     ↓
-Integration ← Current Phase
+Integration
+    ↓
+Test & Release Candidate ← Current Phase
 ```
 
 ## Phases
@@ -74,7 +79,29 @@ Integration ← Current Phase
 | 16 | Error System | ✓ Done |
 | 17 | CLI | ✓ Done |
 | 18 | Integration | ✓ Done |
-| 19 | Specification Lock | Pending |
-| 20 | Test & Release Candidate | Pending |
+| 19 | Specification Lock | ✓ Done |
+| 20 | Test & Release Candidate | ✓ Done |
 | 21 | Documentation | Pending |
 | 22 | TSL v1.0 | Pending |
+
+## Release Test Results
+
+Standalone test project: `release-test/`
+
+```
+Clean Install:      ✓ PASS
+Clean Build:        ✓ PASS (10/10 examples)
+Lexer Tests:        ✓ PASS
+Parser Tests:       ✓ PASS (expressions + statements)
+Validator Tests:    ✓ PASS
+Generator Tests:    ✓ PASS
+Variable Semantics: ✓ PASS
+AST Tests:          ✓ PASS
+Runtime Tests:      ✓ PASS
+Integration Tests:  ✓ PASS
+CLI Tests:          ✓ PASS
+
+CLI Functionality:  ✓ PASS (version, build, check, -o flag)
+
+Total: 25/25 release tests passed
+```
