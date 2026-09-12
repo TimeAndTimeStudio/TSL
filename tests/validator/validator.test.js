@@ -12,7 +12,7 @@ function parseAndValidate(source) {
   const parser = createParser(tokens, '<test>');
   const body = parser.parseStatements();
   const program = Program(body, { line: 1, column: 0, endLine: 1, endColumn: 0 });
-  const validator = createValidator('<test>');
+  const validator = createValidator(source, '<test>');
   return validator.validate(program);
 }
 

@@ -1,21 +1,14 @@
 'use strict';
 
-class ValidationError extends Error {
-  constructor(message, line, column, filename) {
-    super(message);
-    this.name = 'ValidationError';
-    this.line = line;
-    this.column = column;
-    this.filename = filename;
-  }
-}
+const { ValidationError, getSourceLine } = require('./errors');
 
-function createValidator(filename = '<anonymous>') {
+function createValidator(source, filename = '<anonymous>') {
   const errors = [];
 
   function addError(node, message) {
     const loc = node.location || {};
-    errors.push(new ValidationError(message, loc.line, loc.column, filename));
+    const sourceLine = getSourceLine(source, loc.line);
+    errors.push(new ValidationError(message, filename, loc.line, loc.column, sourceLine));
   }
 
   function validate(program) {

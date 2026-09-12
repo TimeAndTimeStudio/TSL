@@ -10,7 +10,7 @@ node src/cli.js <file.tsl>
 
 ## Status
 
-Phase 15 — Render Loop
+Phase 16 — Error System
 
 ## Compiler Pipeline
 
@@ -56,8 +56,8 @@ Runtime
 | 13 | Math | ✓ Done |
 | 14 | Engine API | ✓ Done |
 | 15 | Render Loop | ✅ Done |
-| 16 | Error System | Pending |
-| 17 | CLI | Pending |
+| 16 | Error System | ✅ Done |
+| 17 | CLI | ✅ Done |
 | 18 | Integration | Pending |
 | 19 | Specification Lock | Pending |
 | 20 | Test & Release Candidate | Pending |

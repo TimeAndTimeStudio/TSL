@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const { LexerError, getSourceLine } = require('./errors');
 
 // Token types
 const TokenType = {
@@ -91,16 +92,6 @@ class Token {
   }
 }
 
-class LexerError extends Error {
-  constructor(message, line, column, sourceLine) {
-    super(message);
-    this.name = 'LexerError';
-    this.line = line;
-    this.column = column;
-    this.sourceLine = sourceLine;
-  }
-}
-
 function createLexer(source, filename = '<anonymous>') {
   let pos = 0;
   let line = 1;
@@ -164,7 +155,7 @@ function createLexer(source, filename = '<anonymous>') {
       }
     }
 
-    throw new LexerError(`Unterminated string literal`, startLine, startColumn, getSourceLine(startLine));
+    throw new LexerError(`Unterminated string literal`, filename, startLine, startColumn, getSourceLine(source, startLine));
   }
 
   function readNumber() {
@@ -300,9 +291,10 @@ function createLexer(source, filename = '<anonymous>') {
                 // Mismatched indentation — emit error
                 throw new LexerError(
                   `Unexpected indentation (expected ${indentStack[indentStack.length - 1]}, got ${indent})`,
+                  filename,
                   spaceStartLine,
                   spaceStartColumn,
-                  getSourceLine(spaceStartLine)
+                  getSourceLine(source, spaceStartLine)
                 );
               }
             }
@@ -443,7 +435,7 @@ function createLexer(source, filename = '<anonymous>') {
           continue;
       }
 
-      throw new LexerError(`Unexpected character '${ch}'`, line, column, getSourceLine(line));
+      throw new LexerError(`Unexpected character '${ch}'`, filename, line, column, getSourceLine(source, line));
     }
 
     // Emit final NEWLINE if source ends without newline and we had tokens
@@ -477,4 +469,5 @@ module.exports = {
   LexerError,
   createLexer,
   tokenize,
+  getSourceLine,
 };

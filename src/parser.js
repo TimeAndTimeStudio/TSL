@@ -24,6 +24,7 @@ const {
   ContinueStatement,
 } = require('./ast');
 const { TokenType } = require('./lexer');
+const { ParserError, getSourceLine } = require('./errors');
 
 const PRECEDENCE = {
   or: 1,
@@ -41,18 +42,7 @@ const PRECEDENCE = {
   '%': 5,
 };
 
-class ParserError extends Error {
-  constructor(message, line, column, value, filename) {
-    super(message);
-    this.name = 'ParserError';
-    this.line = line;
-    this.column = column;
-    this.value = value;
-    this.filename = filename;
-  }
-}
-
-function createParser(tokens, filename = '<anonymous>') {
+function createParser(tokens, source, filename = '<anonymous>') {
   let pos = 0;
 
   function skipStructural() {
@@ -79,12 +69,13 @@ function createParser(tokens, filename = '<anonymous>') {
   function advance(expectedType) {
     const token = current();
     if (expectedType && token.type !== expectedType) {
+      const sourceLine = getSourceLine(source, token.line);
       throw new ParserError(
         `Expected ${expectedType} but found ${token.type}`,
+        filename,
         token.line,
         token.column,
-        token.value,
-        filename
+        sourceLine
       );
     }
     if (token.type !== TokenType.EOF) {
@@ -104,12 +95,13 @@ function createParser(tokens, filename = '<anonymous>') {
   function expect(type) {
     const token = current();
     if (token.type !== type) {
+      const sourceLine = getSourceLine(source, token.line);
       throw new ParserError(
         `Expected ${type} but found ${token.type}`,
+        filename,
         token.line,
         token.column,
-        token.value,
-        filename
+        sourceLine
       );
     }
     pos++;
@@ -173,10 +165,10 @@ function createParser(tokens, filename = '<anonymous>') {
 
     throw new ParserError(
       `Unexpected token: ${token.type}`,
+      filename,
       token.line,
       token.column,
-      token.value,
-      filename
+      getSourceLine(source, token.line)
     );
   }
 
@@ -268,10 +260,10 @@ function createParser(tokens, filename = '<anonymous>') {
 
     throw new ParserError(
       `Expected expression but found ${token.type}`,
+      filename,
       token.line,
       token.column,
-      token.value,
-      filename
+      getSourceLine(source, token.line)
     );
   }
 
@@ -421,10 +413,10 @@ function createParser(tokens, filename = '<anonymous>') {
     if (token.type !== TokenType.COLON) {
       throw new ParserError(
         `Expected ':' at start of block`,
+        filename,
         token.line,
         token.column,
-        token.value,
-        filename
+        getSourceLine(source, token.line)
       );
     }
     advance();
@@ -632,10 +624,10 @@ function createParser(tokens, filename = '<anonymous>') {
 
     throw new ParserError(
       `Unexpected token: ${token.type}`,
+      filename,
       token.line,
       token.column,
-      token.value,
-      filename
+      getSourceLine(source, token.line)
     );
   }
 
@@ -643,51 +635,6 @@ function createParser(tokens, filename = '<anonymous>') {
 }
 
 module.exports = {
-  TokenType: {
-    IDENTIFIER: 'IDENTIFIER',
-    NUMBER: 'NUMBER',
-    STRING: 'STRING',
-    IF: 'IF',
-    ELSE: 'ELSE',
-    FOR: 'FOR',
-    IN: 'IN',
-    WHILE: 'WHILE',
-    FUNCTION: 'FUNCTION',
-    RETURN: 'RETURN',
-    BREAK: 'BREAK',
-    CONTINUE: 'CONTINUE',
-    TRUE: 'TRUE',
-    FALSE: 'FALSE',
-    NULL: 'NULL',
-    AND: 'AND',
-    OR: 'OR',
-    NOT: 'NOT',
-    PLUS: 'PLUS',
-    MINUS: 'MINUS',
-    STAR: 'STAR',
-    SLASH: 'SLASH',
-    PERCENT: 'PERCENT',
-    EQUAL: 'EQUAL',
-    EQUAL_EQUAL: 'EQUAL_EQUAL',
-    NOT_EQUAL: 'NOT_EQUAL',
-    LESS: 'LESS',
-    LESS_EQUAL: 'LESS_EQUAL',
-    GREATER: 'GREATER',
-    GREATER_EQUAL: 'GREATER_EQUAL',
-    LPAREN: 'LPAREN',
-    RPAREN: 'RPAREN',
-    LBRACKET: 'LBRACKET',
-    RBRACKET: 'RBRACKET',
-    LBRACE: 'LBRACE',
-    RBRACE: 'RBRACE',
-    COMMA: 'COMMA',
-    DOT: 'DOT',
-    COLON: 'COLON',
-    NEWLINE: 'NEWLINE',
-    INDENT: 'INDENT',
-    DEDENT: 'DEDENT',
-    EOF: 'EOF',
-  },
   ParserError,
   createParser,
 };

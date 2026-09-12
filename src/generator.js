@@ -1,16 +1,8 @@
 'use strict';
 
-class GeneratorError extends Error {
-  constructor(message, line, column, filename) {
-    super(message);
-    this.name = 'GeneratorError';
-    this.line = line;
-    this.column = column;
-    this.filename = filename;
-  }
-}
+const { GeneratorError, getSourceLine } = require('./errors');
 
-function createGenerator(filename = '<anonymous>') {
+function createGenerator(source, filename = '<anonymous>') {
   let indentLevel = 0;
   let scopeStack = [];
   let inFunction = false;
@@ -81,11 +73,14 @@ function createGenerator(filename = '<anonymous>') {
 
     const gen = generator[node.type];
     if (!gen) {
+      const loc = node.location || {};
+      const sourceLine = getSourceLine(source, loc.line);
       throw new GeneratorError(
         `Unknown node type: ${node.type}`,
-        node.location?.line,
-        node.location?.column,
-        filename
+        filename,
+        loc.line,
+        loc.column,
+        sourceLine
       );
     }
 

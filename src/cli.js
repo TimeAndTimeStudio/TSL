@@ -4,6 +4,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const { tokenize } = require('./lexer');
+const { createParser } = require('./parser');
+const { createValidator } = require('./validator');
+const { createGenerator } = require('./generator');
+const { Program } = require('./ast');
 
 function main() {
   const args = process.argv.slice(2);
@@ -27,9 +32,40 @@ function main() {
   }
 
   const source = fs.readFileSync(file, 'utf-8');
+  const filename = path.basename(file);
 
-  console.log(`Loaded: ${file} (${source.length} bytes)`);
-  process.exit(0);
+  try {
+    // Lex
+    const tokens = tokenize(source, filename);
+
+    // Parse
+    const parser = createParser(tokens, source, filename);
+    const body = parser.parseStatements();
+    const ast = Program(body, { line: 1, column: 0, endLine: 1, endColumn: 0 });
+
+    // Validate
+    const validator = createValidator(source, filename);
+    validator.validate(ast);
+
+    // Generate
+    const generator = createGenerator(source, filename);
+    const jsCode = generator.generate(ast);
+
+    console.log(`Loaded: ${filename}`);
+    console.log('Compilation successful!');
+    console.log('');
+    console.log('--- Generated JavaScript ---');
+    console.log(jsCode);
+    console.log('--- End of Generated Code ---');
+
+  } catch (err) {
+    if (err && typeof err.toString === 'function') {
+      console.error(err.toString());
+    } else {
+      console.error('Unknown error:', err);
+    }
+    process.exit(1);
+  }
 }
 
 main();
