@@ -27,8 +27,11 @@ Designed for learning, game prototyping, and writing clean, readable code with m
 ### Install
 
 ```bash
-npm install
+git clone https://github.com/TimeAndTimeStudio/TSL.git
+cd TSL
 ```
+
+No dependencies required. TSL runs on Node.js.
 
 ### Run a TSL file
 
@@ -110,23 +113,22 @@ TSL Source
 
 | Topic | File |
 |-------|------|
-| Project overview | [docs/README.md](docs/README.md) |
-| Getting started | [docs/getting-started.md](docs/getting-started.md) |
-| Language reference | [docs/language.md](docs/language.md) |
-| Syntax reference | [docs/syntax.md](docs/syntax.md) |
-| Variables | [docs/variables.md](docs/variables.md) |
-| Data types | [docs/data-types.md](docs/data-types.md) |
-| Operators | [docs/operators.md](docs/operators.md) |
-| Control flow | [docs/control-flow.md](docs/control-flow.md) |
-| Functions | [docs/functions.md](docs/functions.md) |
-| Arrays | [docs/arrays.md](docs/arrays.md) |
-| Objects | [docs/objects.md](docs/objects.md) |
-| CLI | [docs/cli.md](docs/cli.md) |
-| Errors | [docs/errors.md](docs/errors.md) |
-| Compiler architecture | [docs/compiler.md](docs/compiler.md) |
-| Project architecture | [docs/architecture.md](docs/architecture.md) |
-| Examples | [docs/examples.md](docs/examples.md) |
-| Specification | [docs/syntax.md](docs/syntax.md) |
+| Project overview | [docs/en/README.md](docs/en/README.md) |
+| Getting started | [docs/en/getting-started.md](docs/en/getting-started.md) |
+| Language reference | [docs/en/language.md](docs/en/language.md) |
+| Syntax reference | [docs/en/syntax.md](docs/en/syntax.md) |
+| Variables | [docs/en/variables.md](docs/en/variables.md) |
+| Data types | [docs/en/data-types.md](docs/en/data-types.md) |
+| Operators | [docs/en/operators.md](docs/en/operators.md) |
+| Control flow | [docs/en/control-flow.md](docs/en/control-flow.md) |
+| Functions | [docs/en/functions.md](docs/en/functions.md) |
+| Arrays | [docs/en/arrays.md](docs/en/arrays.md) |
+| Objects | [docs/en/objects.md](docs/en/objects.md) |
+| CLI | [docs/en/cli.md](docs/en/cli.md) |
+| Errors | [docs/en/errors.md](docs/en/errors.md) |
+| Compiler architecture | [docs/en/compiler.md](docs/en/compiler.md) |
+| Project architecture | [docs/en/architecture.md](docs/en/architecture.md) |
+| Examples | [docs/en/examples.md](docs/en/examples.md) |
 
 ---
 
