@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const { LexerError, getSourceLine } = require('./errors');
+const { LexerError } = require('./errors');
 
 // Token types
 const TokenType = {
@@ -471,5 +471,4 @@ module.exports = {
   LexerError,
   createLexer,
   tokenize,
-  getSourceLine,
 };
