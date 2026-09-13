@@ -43,10 +43,10 @@ node src/cli.js hello.tsl
 
 ```bash
 # Output to stdout
-node src/cli.js hello.tsl
+node src/cli.js build hello.tsl
 
 # Write to file
-node src/cli.js hello.tsl -o hello.js
+node src/cli.js build hello.tsl -o hello.js
 ```
 
 ### CLI Commands
@@ -58,6 +58,8 @@ node src/cli.js build <file.tsl> -o <output.js>  # Build to file
 node src/cli.js check <file.tsl>    # Validate only
 node src/cli.js --version           # Show version
 ```
+
+**หมายเหตุ:** `-o` ใช้ได้เฉพาะกับคำสั่ง `build` เท่านั้น
 
 ---
 
