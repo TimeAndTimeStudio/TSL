@@ -161,3 +161,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 });
+
+function setLang(lang) {
+  document.documentElement.lang = lang;
+  localStorage.setItem('tsl-lang', lang);
+  
+  // Update button states
+  document.querySelectorAll('.lang-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+  
+  // Show/hide language content
+  document.querySelectorAll('.lang-th').forEach(function(el) {
+    el.style.display = lang === 'th' ? '' : 'none';
+  });
+  document.querySelectorAll('.lang-en').forEach(function(el) {
+    el.style.display = lang === 'en' ? '' : 'none';
+  });
+}
+
+// Initialize language on load
+(function initLang() {
+  const saved = localStorage.getItem('tsl-lang') || 'th';
+  setLang(saved);
+})();
