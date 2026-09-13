@@ -1,28 +1,28 @@
-# เอกสาร TSL
+# TSL Documentation
 
-## เริ่มต้นใช้งาน
-- [เริ่มต้นใช้งาน](getting-started.md)
+## Getting Started
+- [Getting Started](getting-started.md)
 
-## อ้างอิงภาษา
-- [ไวยากรณ์](syntax.md)
-- [ภาพรวมภาษา](language.md)
-- [ตัวแปร](variables.md)
-- [ชนิดข้อมูล](data-types.md)
-- [ตัวดำเนินการ](operators.md)
-- [การควบคุมการไหล](control-flow.md)
-- [ฟังก์ชัน](functions.md)
-- [อาร์เรย์](arrays.md)
-- [ออบเจกต์](objects.md)
+## Language Reference
+- [Syntax](syntax.md)
+- [Language Overview](language.md)
+- [Variables](variables.md)
+- [Data Types](data-types.md)
+- [Operators](operators.md)
+- [Control Flow](control-flow.md)
+- [Functions](functions.md)
+- [Arrays](arrays.md)
+- [Objects](objects.md)
 
-## คอมไพเลอร์
-- [ไพล์ไลน์คอมไพเลอร์](compiler.md)
-- [สถาปัตยกรรม](architecture.md)
+## Compiler
+- [Compiler Pipeline](compiler.md)
+- [Architecture](architecture.md)
 
 ## CLI
-- [อ้างอิง CLI](cli.md)
+- [CLI Reference](cli.md)
 
-## ข้อผิดพลาด
-- [ชนิดข้อผิดพลาด](errors.md)
+## Errors
+- [Error Types](errors.md)
 
-## ตัวอย่าง
-- [รายการตัวอย่าง](examples.md)
+## Examples
+- [Examples Index](examples.md)

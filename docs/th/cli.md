@@ -1,300 +1,145 @@
-# CLI Reference TSL
+# TSL CLI Reference
 
 ## ภาพรวม
 
-Command-line interface สำหรับ TSL compiler
+TSL CLI เป็น command-line interface สำหรับ TSL Language ให้ commands เพื่อ compile, check และรัน TSL source files
 
-## คำสั่ง
+## การติดตั้ง
 
-### Compile และแสดง JavaScript
+หลังติดตั้ง TSL แบบ global:
 
 ```bash
-node src/cli.js <file.tsl>
+npm install -g .
 ```
 
-**ตัวอย่าง:**
+หรือรันโดยตรงจาก source:
+
+```bash
+node src/cli.js
+```
+
+## การใช้งาน
+
+### Commands
+
+```
+tsl <file.tsl>
+tsl build <file.tsl> [-o <output.js>]
+tsl check <file.tsl>
+tsl --version
+```
+
+### Compile และ Run
+
+compile TSL file และพิมพ์ JavaScript ที่สร้างไปยัง stdout:
 
 ```bash
 node src/cli.js hello.tsl
 ```
 
-**ผลลัพธ์:**
+Output:
 
 ```
 Loaded: hello.tsl
 Compilation successful!
 
 --- Generated JavaScript ---
-console.log("Hello, World!");
+<generated JavaScript>
 --- End of Generated Code ---
 ```
 
-### Compile และเขียนไฟล์
+### Compile ไปยังไฟล์
 
-```bash
-node src/cli.js <file.tsl> -o <output.js>
-```
-
-**ตัวอย่าง:**
+compile TSL file และเขียน JavaScript ที่สร้างไปยัง output file:
 
 ```bash
 node src/cli.js hello.tsl -o hello.js
 ```
 
-**ผลลัพธ์:**
-
-```
-Loaded: hello.tsl
-Compilation successful!
-Output written to: hello.js
-```
-
-### Build และแสดง JavaScript
+หรือใช้ build command:
 
 ```bash
-node src/cli.js build <file.tsl>
+tsl build hello.tsl -o hello.js
 ```
 
-**ตัวอย่าง:**
+Output:
+
+```
+Built: hello.tsl -> hello.js
+```
+
+### Check
+
+validate TSL file โดยไม่สร้าง output:
 
 ```bash
-node src/cli.js build hello.tsl
+tsl check hello.tsl
 ```
 
-**ผลลัพธ์:** เหมือน compile และแสดง JavaScript
-
-### Build และเขียนไฟล์
-
-```bash
-node src/cli.js build <file.tsl> -o <output.js>
-```
-
-**ตัวอย่าง:**
-
-```bash
-node src/cli.js build hello.tsl -o hello.js
-```
-
-**ผลลัพธ์:** เหมือน compile และเขียนไฟล์
-
-### Validate Syntax
-
-```bash
-node src/cli.js check <file.tsl>
-```
-
-**ตัวอย่าง:**
-
-```bash
-node src/cli.js check hello.tsl
-```
-
-**ผลลัพธ์เมื่อสำเร็จ:**
+Output เมื่อสำเร็จ:
 
 ```
 Check passed: hello.tsl
 ```
 
-**ผลลัพธ์เมื่อมี error:**
+### Version
 
-```
-Error in hello.tsl:
-  Line 1: Invalid character '!'
-```
-
-### แสดงเวอร์ชัน
+พิมพ์ TSL version:
 
 ```bash
-node src/cli.js --version
+tsl --version
 ```
 
-**ผลลัพธ์:**
+Output:
 
 ```
 TSL v1.0.0
 ```
 
----
+## Compilation Pipeline
 
-## Usage
+CLI compile TSL source ผ่าน 4 stages:
+
+1. **Tokenize** — `lexer.tokenize(source, filename)` แปลง source text เป็น tokens
+2. **Parse** — `createParser(tokens, source, filename).parseStatements()` สร้าง AST
+3. **Validate** — `createValidator(source, filename).validate(ast)` ตรวจสอบ semantic rules
+4. **Generate** — `createGenerator(source, filename).generate(ast)` สร้าง JavaScript
+
+## การจัดการ Error
+
+CLI catch และ report errors จากแต่ละ pipeline stage:
+
+| Error Type     | Source        | คำอธิบาย                      |
+| -------------- | ------------- | -------------------------------- |
+| LexerError     | lexer.js      | Invalid tokens หรือ syntax         |
+| ParserError    | parser.js     | โครงสร้าง AST ผิดรูป          |
+| ValidationError| validator.js  | การละเมิด semantic rules         |
+| GeneratorError | generator.js  | Code generation ล้มเหลว          |
+
+Errors ถูกพิมพ์ไปยัง stderr พร้อม line และ column information:
 
 ```
-Usage: node src/cli.js [command] [options] <file.tsl>
-
-Commands:
-  <file.tsl>              Compile and display JavaScript
-  build <file.tsl>        Build and display JavaScript
-  check <file.tsl>        Validate syntax only
-  --version               Show version
-
-Options:
-  -o, --output <file>     Output file path
-  -h, --help              Show help
+LexerError: Unexpected token 'invalid' at line 3, column 5
 ```
-
----
 
 ## Exit Codes
 
-| Code | คำอธิบาย |
-|------|----------|
-| 0 | สำเร็จ |
-| 1 | มีข้อผิดพลาด |
+| Code | ความหมาย                    |
+| ---- | -------------------------- |
+| 0    | สำเร็จ                    |
+| 1    | มีข้อผิดพลาด (compilation หรือ I/O) |
 
----
+## ข้อกำหนดไฟล์
 
-## ตัวอย่าง
+- Source files ต้องมีนามสกุล `.tsl`
+- ไฟล์ต้องอยู่บน disk ก่อน compilation
+- ไฟล์ต้องอ่านได้เป็น UTF-8 text
 
-### Hello World
+## Alternative Entry Points
 
-```tsl
-# hello.tsl
-print("Hello, World!")
-```
+CLI สามารถ invoke ได้ 2 วิธี:
 
-Compile:
+1. Direct: `node src/cli.js <args>`
+2. ผ่าน package bin: `tsl <args>` (หลัง global install)
 
-```bash
-node src/cli.js hello.tsl
-```
-
-Build to file:
-
-```bash
-node src/cli.js hello.tsl -o hello.js
-node hello.js
-```
-
-### Functions
-
-```tsl
-# functions.tsl
-function add(a, b):
-    return a + b
-
-result = add(10, 20)
-print(result)
-```
-
-Compile:
-
-```bash
-node src/cli.js functions.tsl
-```
-
-### Arrays
-
-```tsl
-# arrays.tsl
-numbers = [1, 2, 3, 4, 5]
-for n in numbers:
-    print(n)
-```
-
-Compile:
-
-```bash
-node src/cli.js arrays.tsl
-```
-
-### Objects
-
-```tsl
-# objects.tsl
-player = { x: 100, y: 200 }
-print(player.x)
-print(player.y)
-```
-
-Compile:
-
-```bash
-node src/cli.js objects.tsl
-```
-
-### Control Flow
-
-```tsl
-# control.tsl
-x = 15
-
-if x > 10:
-    print("big")
-else:
-    print("small")
-```
-
-Compile:
-
-```bash
-node src/cli.js control.tsl
-```
-
-### While Loop
-
-```tsl
-# while.tsl
-counter = 3
-while counter > 0:
-    print(counter)
-    counter = counter - 1
-print("Go!")
-```
-
-Compile:
-
-```bash
-node src/cli.js while.tsl
-```
-
-### Strings
-
-```tsl
-# strings.tsl
-name = "TSL"
-greeting = "Hello, " + name
-print(greeting)
-```
-
-Compile:
-
-```bash
-node src/cli.js strings.tsl
-```
-
----
-
-## Error Handling
-
-เมื่อเกิดข้อผิดพลาด CLI จะแสดง:
-
-```
-Error in <filename>:
-  Line <line>: <message>
-  <source_line>
-```
-
-**ตัวอย่าง:**
-
-```
-Error in hello.tsl:
-  Line 1: Invalid character '!'
-  !invalid
-```
-
----
-
-## ไฟล์
-
-**CLI Source:** `src/cli.js`
-
----
-
-## อ้างอิง
-
-- **CLI Source:** `src/cli.js`
-- **Compiler:** `src/compiler.js`
-- **Lexer:** `src/lexer.js`
-- **Parser:** `src/parser.js`
-- **Validator:** `src/validator.js`
-- **Generator:** `src/generator.js`
+Entry points ทั้งสอง equivalent กันเต็มที่

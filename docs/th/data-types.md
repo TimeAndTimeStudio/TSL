@@ -1,30 +1,30 @@
-# ชนิดข้อมูล TSL
+# TSL Data Types
 
 ## ภาพรวม
 
-TSL ไม่มี static type system Types ตาม JavaScript semantics
+TSL ไม่มี static type system Types ปฏิบัติตาม JavaScript semantics
 
-ตัวแปร TSL เป็น dynamically typed — type ถูกกำหนดตอน runtime โดย JavaScript engine
+TSL variables เป็น dynamically typed — type ถูกกำหนดที่ runtime โดย JavaScript engine
 
 ---
 
 ## Number
 
-จำนวนเต็มและทศนิยม
+จำนวนเต็มและ floating-point numbers
 
 ```tsl
 x = 10
 pi = 3.14
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let x = 10;
 let pi = 3.14;
 ```
 
-ตัวเลขทั้งหมดใช้ JavaScript `Number` (IEEE 754 double precision)
+numbers ทั้งหมดใช้ JavaScript `Number` (IEEE 754 double precision)
 
 ### Literal Syntax
 
@@ -36,10 +36,10 @@ let pi = 3.14;
 0.5
 ```
 
-Lexer รับค่า:
+lexer รับ:
 
-- จำนวนเต็มฐานสิบ: `10`, `42`, `0`
-- ทศนิยมฐานสิบ: `3.14`, `0.5`
+- Decimal integers: `10`, `42`, `0`
+- Decimal floats: `3.14`, `0.5`
 
 Scientific notation ไม่รองรับใน v1.0
 
@@ -47,14 +47,14 @@ Scientific notation ไม่รองรับใน v1.0
 
 ## String
 
-ข้อความที่ล้อมด้วยเครื่องหมายคำพูดคู่หรือเดี่ยว
+Text ที่ enclosed ใน double quotes หรือ single quotes
 
 ```tsl
 name = "hello"
 greeting = 'world'
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let name = "hello";
@@ -63,7 +63,7 @@ let greeting = "world";
 
 ### Escape Sequences
 
-| Escape | ความหมาย |
+| Escape | Meaning |
 |--------|---------|
 | `\\n`  | newline |
 | `\\t`  | tab |
@@ -79,7 +79,7 @@ path = 'C:\\Users\\name'
 quote = "she said \"hi\""
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let msg = "line1\nline2";
@@ -87,20 +87,20 @@ let path = "C:\\Users\\name";
 let quote = "she said \"hi\"";
 ```
 
-Generator ใช้ `JSON.stringify()` เพื่อสร้าง JavaScript string literals ที่ถูกต้อง
+generator ใช้ `JSON.stringify()` เพื่อสร้าง JavaScript string literals ที่ถูกต้อง
 
 ---
 
 ## Boolean
 
-ค่าตรรกะ true/false
+Logical true/false values
 
 ```tsl
 flag = true
 disabled = false
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let flag = true;
@@ -109,7 +109,7 @@ let disabled = false;
 
 Keywords: `true`, `false`
 
-ใช้ในเงื่อนไข:
+ใช้ใน conditions:
 
 ```tsl
 if flag:
@@ -126,7 +126,7 @@ if flag:
 value = null
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let value = null;
@@ -138,14 +138,14 @@ Keyword: `null`
 
 ## Arrays
 
-ordered collections ของค่า
+Ordered collections ของ values
 
 ```tsl
 items = [10, 20, 30]
 names = ["a", "b", "c"]
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let items = [10, 20, 30];
@@ -158,7 +158,7 @@ let names = ["a", "b", "c"];
 first = items[0]
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let first = items[0];
@@ -170,7 +170,7 @@ let first = items[0];
 items[0] = 99
 ```
 
-Generate:
+สร้าง:
 
 ```js
 items[0] = 99;
@@ -180,7 +180,7 @@ items[0] = 99;
 
 ## Objects
 
-key-value collections
+Key-value collections
 
 ```tsl
 player = {
@@ -189,7 +189,7 @@ player = {
 }
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let player = {
@@ -198,7 +198,7 @@ let player = {
 };
 ```
 
-Keys ต้องเป็น identifiers Values เป็น expression ใดก็ได้
+Keys ต้องเป็น identifiers Values เป็น expression ใดๆ ได้
 
 ### Member Access
 
@@ -206,7 +206,7 @@ Keys ต้องเป็น identifiers Values เป็น expression ใด�
 px = player.x
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let px = player.x;
@@ -218,7 +218,7 @@ let px = player.x;
 player.x = 300
 ```
 
-Generate:
+สร้าง:
 
 ```js
 player.x = 300;
@@ -226,7 +226,7 @@ player.x = 300;
 
 ---
 
-## สรุปชนิดข้อมูล
+## Type Summary
 
 | Type   | TSL Literal    | JavaScript Output |
 |--------|----------------|-------------------|
@@ -239,28 +239,28 @@ player.x = 300;
 
 ---
 
-## ไม่มีการประกาศ Type
+## No Type Declarations
 
-TSL ไม่ต้องการหรือไม่รองรับการประกาศ type
+TSL ไม่ต้องการหรือรองรับ type declarations
 
 ```tsl
-# Correct - no type needed
+# ถูกต้อง - ไม่ต้องมี type
 x = 10
 x = "hello"
 ```
 
-JavaScript engine จัดการ typing ทั้งหมดตอน runtime
+JavaScript engine จัดการ typing ทั้งหมดที่ runtime
 
 ---
 
-## หมายเหตุการใช้งาน
+## Implementation Notes
 
 ### Lexer
 
 - Numbers: parsed โดย `readNumber()` ใน `src/lexer.js`
-- Strings: parsed โดย `readString()` ใน `src/lexer.js` รองรับ escape sequences
-- Booleans: `true`/`false` ถูก recognized เป็น keywords
-- Null: `null` ถูก recognized เป็น keyword
+- Strings: parsed โดย `readString()` ใน `src/lexer.js`, รองรับ escape sequences
+- Booleans: `true`/`false` recognized เป็น keywords
+- Null: `null` recognized เป็น keyword
 
 ### AST
 

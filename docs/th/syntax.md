@@ -1,31 +1,31 @@
-# อ้างอิงไวยากรณ์ภาษา TSL
+# TSL Language Syntax Reference
 
 ## ภาพรวม
 
-TSL เป็นภาษาสคริปต์ที่ใช้ indentation เอกสารนี้อธิบายไวยากรณ์ทั้งหมดของ TSL
+TSL เป็น indentation-based scripting language เอกสารนี้บรรยาย syntax ทั้งหมดของ TSL
 
-## แสดงความคิดเห็น
+## Comments
 
-คอมเมนต์แบบบรรทัดเดียวขึ้นต้นด้วย `#` และไปจนสุดบรรทัด
+Single-line comments เริ่มด้วย `#` และไปสุดบรรทัด
 
 ```tsl
 # This is a comment
 ```
 
-คอมเมนต์ถูกเพิกเฉยโดย Lexer
+Comments ถูก ignore โดย lexer
 
 ## Identifiers
 
-Identifiers ใช้ตั้งชื่อตัวแปร ฟังก์ชัน และ properties
+Identifiers ใช้ชื่อ variables, functions, และ properties
 
 **กฎ:**
 
-- ต้องขึ้นต้นด้วยตัวอักษร (`a-z`, `A-Z`) หรือขีดล่าง (`_`)
-- ตามด้วยตัวอักษร ตัวเลข (`0-9`) หรือขีดล่างศูนย์หรือมากกว่า
-- แยกตัวพิมพ์ใหญ่เล็ก (`x` และ `X`是不同的)
-- ไม่สามารถใช้เป็น keywords ได้
+- ต้องเริ่มด้วย letter (`a-z`, `A-Z`) หรือ underscore (`_`)
+- ตามด้วย zero หรือมากกว่า letters, digits (`0-9`), หรือ underscores
+- Case sensitive (`x` และ `X` แตกต่างกัน)
+- ไม่ใช่ keyword
 
-**ตัวอย่าง:**
+**Examples:**
 
 ```tsl
 x
@@ -35,7 +35,7 @@ _value
 x2
 ```
 
-**ตัวอย่างที่ไม่ถูกต้อง:**
+**Invalid examples:**
 
 ```tsl
 1x      # starts with a digit
@@ -44,7 +44,7 @@ player-x # hyphen not allowed
 
 ## Keywords
 
-Keywords เป็นคำสงวนที่มีความหมายพิเศษในภาษา ไม่สามารถใช้เป็น identifiers ได้
+Keywords เป็น reserved words ที่มี special meaning ในภาษา ไม่สามารถใช้เป็น identifiers ได้
 
 | Keyword | คำอธิบาย |
 |---------|-------------|
@@ -67,9 +67,9 @@ Keywords เป็นคำสงวนที่มีความหมาย�
 
 ## Literals
 
-### ตัวเลข
+### Numbers
 
-จำนวนเต็มและทศนิยม
+Integers และ floating-point numbers
 
 ```tsl
 10
@@ -78,11 +78,11 @@ Keywords เป็นคำสงวนที่มีความหมาย�
 0.5
 ```
 
-ตัวเลขถูก parse เป็น JavaScript `Number` type
+Numbers ถูก parse เป็น JavaScript `Number` type
 
-### สตริง
+### Strings
 
-สตริงถูกปิดล้อมด้วยเครื่องหมายคำพูดคู่ (`"`) หรือเดี่ยว (`'`)
+Strings ถูก delimited ด้วย double quotes (`"`) หรือ single quotes (`'`)
 
 ```tsl
 "hello"
@@ -91,7 +91,7 @@ Keywords เป็นคำสงวนที่มีความหมาย�
 
 **Escape sequences:**
 
-| Escape | ความหมาย |
+| Escape | Meaning |
 |--------|---------|
 | `\\n` | Newline |
 | `\\t` | Tab |
@@ -104,9 +104,9 @@ Keywords เป็นคำสงวนที่มีความหมาย�
 'say \'hi\''
 ```
 
-### Boolean
+### Booleans
 
-Boolean literals สองค่า:
+Boolean literals สองตัว:
 
 ```tsl
 true
@@ -115,17 +115,17 @@ false
 
 ### Null
 
-`null` literal แทนการไม่มีค่า:
+`null` literal แสดงถึง absence of value:
 
 ```tsl
 null
 ```
 
-## ตัวดำเนินการ
+## Operators
 
-### ทางคณิตศาสตร์
+### Arithmetic
 
-| ตัวดำเนินการ | คำอธิบาย |
+| Operator | คำอธิบาย |
 |----------|-------------|
 | `+` | Addition |
 | `-` | Subtraction |
@@ -133,9 +133,9 @@ null
 | `/` | Division |
 | `%` | Modulo |
 
-### เปรียบเทียบ
+### Comparison
 
-| ตัวดำเนินการ | คำอธิบาย |
+| Operator | คำอธิบาย |
 |----------|-------------|
 | `<` | Less than |
 | `<=` | Less than or equal |
@@ -144,19 +144,19 @@ null
 | `==` | Equal |
 | `!=` | Not equal |
 
-### ตรรกะ
+### Logical
 
-| ตัวดำเนินการ | คำอธิบาย |
+| Operator | คำอธิบาย |
 |----------|-------------|
 | `and` | Logical AND |
 | `or` | Logical OR |
 | `not` | Logical NOT (prefix) |
 
-### ลำดับความสำคัญของตัวดำเนินการ
+### Operator Precedence
 
-จากต่ำไปสูง:
+จาก lowest binding strength ไป highest:
 
-| ความสำคัญ | ตัวดำเนินการ | Associativity |
+| Precedence | Operators | Associativity |
 |------------|-----------|---------------|
 | 1 | `or` | Left |
 | 2 | `and` | Left |
@@ -166,7 +166,7 @@ null
 | 6 | `not` | Right (prefix) |
 | 7 | `()` | N/A |
 
-### ตัวอย่าง
+### Examples
 
 ```tsl
 # Low precedence: (true or false) and false
@@ -181,7 +181,7 @@ result = not x and y
 
 ## Delimiters
 
-| Token | สัญลักษณ์ | คำอธิบาย |
+| Token | Symbol | คำอธิบาย |
 |-------|--------|-------------|
 | Left parenthesis | `(` | Start of grouping / argument list |
 | Right parenthesis | `)` | End of grouping / argument list |
@@ -196,14 +196,14 @@ result = not x and y
 
 ## Block Structure
 
-TSL ใช้ **indentation** สำหรับกำหนด code blocks ไม่ใช่ braces หรือ keywords
+TSL ใช้ **indentation** เพื่อ define code blocks ไม่ใช่ braces หรือ keywords
 
 ### กฎ
 
-1. เครื่องหมาย colon (`:`) บอกจุดเริ่มต้นของ block
-2. เนื้อหาของ block ถูกกำหนดโดย indentation ที่สม่ำเสมอ (ช่องว่าง)
-3. การตรวจจับจุดสิ้นสุด block: บรรทัดที่มี indentation น้อยกว่าหรือเท่ากับ block ปัจจุบันจะสิ้นสุด block
-4. ไม่จำเป็นต้องมี `end` keyword
+1. Colon (`:`) เป็นตัวเริ่ม block
+2. Block body ถูกกำหนดโดย consistent indentation (spaces)
+3. การหาจุดจบ block: บรรทัดที่มี indentation น้อยกว่า (หรือเท่าเดิม) จบ block
+4. ไม่ต้องการ `end` keyword
 
 ### ตัวอย่าง
 
@@ -236,11 +236,11 @@ function greet(name):
 
 ### Indentation
 
-- ใช้ช่องว่างสำหรับ indentation (ไม่รองรับ tabs)
-- ต้องใช้ indentation ที่สม่ำเสมอภายใน block
-- การใช้ indentation ที่ผสมกันจะทำให้เกิด lexer error
+- ใช้ spaces สำหรับ indentation (tabs ไม่รองรับ)
+- ต้องการ consistent indentation ภายใน block
+- Mixed indentation levels สร้าง lexer error
 
-## การควบคุมการไหล
+## Control Flow
 
 ### If Statement
 
@@ -265,7 +265,7 @@ while x > 0:
     x = x - 1
 ```
 
-### Break และ Continue
+### Break and Continue
 
 ```tsl
 for item in collection:
@@ -276,16 +276,16 @@ for item in collection:
     print(item)
 ```
 
-## ฟังก์ชัน
+## Functions
 
-### การประกาศ
+### Declaration
 
 ```tsl
 function add(a, b):
     return a + b
 ```
 
-### การเรียก
+### Call
 
 ```tsl
 result = add(1, 2)
@@ -298,7 +298,7 @@ function square(x):
     return x * x
 ```
 
-Return โดยไม่มีค่า:
+Return โดยไม่มี value:
 
 ```tsl
 function doNothing():

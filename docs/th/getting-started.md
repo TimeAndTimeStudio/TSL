@@ -1,13 +1,13 @@
-# เริ่มต้นใช้งาน TSL
+# Getting Started with TSL
 
-TSL (Tiny Script Language) เป็นภาษาโปรแกรมขนาดเล็กที่ transpile เป็น JavaScript ใช้ indentation สำหรับ blocks มีไวยากรณ์ง่าย ๆ และรันบน JavaScript runtime ใดก็ได้
+TSL (Tiny Script Language) เป็น small programming language ที่ transpiles เป็น JavaScript ใช้ indentation สำหรับ blocks, มี simple syntax และรันบน JavaScript runtime ใดๆ ได้
 
-**เวอร์ชัน:** 1.0.0
-**นามสกุลไฟล์:** `.tsl`
+**Version:** 1.0.0
+**File extension:** `.tsl`
 
 ---
 
-## การติดตั้ง
+## Installation
 
 ```bash
 npm install
@@ -15,7 +15,7 @@ npm install
 
 ---
 
-## เริ่มต้นอย่างรวดเร็ว
+## Quick Start
 
 สร้างไฟล์ `hello.tsl`:
 
@@ -30,7 +30,7 @@ print("Hello, World!")
 node src/cli.js hello.tsl
 ```
 
-ผลลัพธ์:
+Output:
 
 ```
 Loaded: hello.tsl
@@ -43,9 +43,9 @@ console.log("Hello, World!");
 
 ---
 
-## Build เป็น JavaScript
+## Building to JavaScript
 
-เพื่อสร้างไฟล์ JavaScript:
+เพื่อสร้าง JavaScript file:
 
 ```bash
 node src/cli.js hello.tsl -o hello.js
@@ -65,15 +65,15 @@ node hello.js
 
 ---
 
-## ตรวจสอบ Syntax
+## Checking Syntax
 
-เพื่อ validate ไฟล์ TSL โดยไม่ต้อง generate output:
+เพื่อ validate TSL file โดยไม่สร้าง output:
 
 ```bash
 node src/cli.js check hello.tsl
 ```
 
-ผลลัพธ์เมื่อสำเร็จ:
+Output เมื่อสำเร็จ:
 
 ```
 Check passed: hello.tsl
@@ -81,13 +81,13 @@ Check passed: hello.tsl
 
 ---
 
-## เวอร์ชัน
+## Version
 
 ```bash
 node src/cli.js --version
 ```
 
-ผลลัพธ์:
+Output:
 
 ```
 TSL v1.0.0
@@ -95,11 +95,11 @@ TSL v1.0.0
 
 ---
 
-## พื้นฐานภาษา
+## Language Basics
 
-### ตัวแปร
+### Variables
 
-ตัวแปรถูกสร้างเมื่อมีการกำหนดค่าครั้งแรก การประกาศครั้งแรกจะใช้ `let` ใน JavaScript ที่ generate
+Variables ถูกสร้างครั้งแรกที่ assign การ declare ครั้งแรกใช้ `let` ใน JavaScript ที่สร้าง
 
 ```tsl
 name = "TSL"
@@ -109,30 +109,30 @@ active = true
 nothing = null
 ```
 
-การกำหนดค่าใหม่ไม่ใช้ `let`:
+Reassignment ไม่ใช้ `let`:
 
 ```tsl
 x = 10
 x = 20  # reassignment, no let
 ```
 
-### ชนิดข้อมูล
+### Data Types
 
-**ตัวเลข** — จำนวนเต็มและทศนิยม:
+**Numbers** — integers และ floats:
 
 ```tsl
 x = 42
 y = 3.14
 ```
 
-**สตริง** — ใช้เครื่องหมายคำพูดคู่หรือเดี่ยว:
+**Strings** — double หรือ single quotes:
 
 ```tsl
 a = "hello"
 b = 'world'
 ```
 
-**Boolean:**
+**Booleans:**
 
 ```tsl
 is_ready = true
@@ -145,9 +145,9 @@ is_done = false
 value = null
 ```
 
-### ตัวดำเนินการ
+### Operators
 
-**ทางคณิตศาสตร์:**
+**Arithmetic:**
 
 ```tsl
 a = 10 + 5    # addition
@@ -157,7 +157,7 @@ d = 10 / 5    # division
 e = 10 % 3    # modulo
 ```
 
-**เปรียบเทียบ:**
+**Comparison:**
 
 ```tsl
 a == b    # equal
@@ -168,7 +168,7 @@ a > b     # greater than
 a >= b    # greater than or equal
 ```
 
-**ตรรกะ:**
+**Logical:**
 
 ```tsl
 result = (a > 10) and (b < 5)
@@ -176,7 +176,7 @@ result = (a > 10) or (b < 5)
 result = not (a > 10)
 ```
 
-**ลำดับความสำคัญของตัวดำเนินการ** (จากสูงไปต่ำ):
+**Operator Precedence** (high to low):
 
 1. `()`
 2. `not`
@@ -187,20 +187,20 @@ result = not (a > 10)
 7. `and`
 8. `or`
 
-### แสดงความคิดเห็น
+### Comments
 
-ใช้ `#` สำหรับแสดงความคิดเห็นตลอดบรรทัด:
+ใช้ `#` สำหรับ line comments:
 
 ```tsl
 # This is a comment
 x = 10  # inline comment
 ```
 
-คอมเมนต์ถูกเพิกเฉยโดยคอมไพเลอร์
+Compiler ignore comments
 
 ---
 
-### การควบคุมการไหล
+### Control Flow
 
 **If / Else:**
 
@@ -213,7 +213,7 @@ else:
     print("small")
 ```
 
-Blocks ถูกกำหนดโดย indentation (ช่องว่าง) และเครื่องหมาย `:`
+Blocks ถูกกำหนดโดย indentation (spaces) และ colon `:`
 
 **While:**
 
@@ -227,7 +227,7 @@ while counter > 0:
 print("Go!")
 ```
 
-**For (กับ range):**
+**For (with range):**
 
 ```tsl
 for i in range(5):
@@ -245,13 +245,13 @@ for i in range(10):
     print(i)
 ```
 
-`break` และ `continue` ทำงานเฉพาะภายใน loops
+`break` และ `continue` ใช้ได้เฉพาะใน loops เท่านั้น
 
 ---
 
-### ฟังก์ชัน
+### Functions
 
-**การประกาศ:**
+**Declaration:**
 
 ```tsl
 function add(a, b):
@@ -261,7 +261,7 @@ result = add(10, 20)
 print(result)
 ```
 
-**ไม่มีค่าที่ส่งกลับ:**
+**No return value:**
 
 ```tsl
 function greet(name):
@@ -272,15 +272,15 @@ greet("TSL")
 
 ---
 
-### อาร์เรย์
+### Arrays
 
-**สร้าง:**
+**Create:**
 
 ```tsl
 numbers = [1, 2, 3, 4, 5]
 ```
 
-**เข้าถึง:**
+**Access:**
 
 ```tsl
 first = numbers[0]
@@ -289,15 +289,15 @@ last = numbers[4]
 
 ---
 
-### ออบเจกต์
+### Objects
 
-**สร้าง:**
+**Create:**
 
 ```tsl
 player = { x: 100, y: 200, name: "Hero" }
 ```
 
-**เข้าถึง properties:**
+**Access properties:**
 
 ```tsl
 print(player.x)
@@ -317,7 +317,7 @@ print(matrix.data[0])
 ## ตัวอย่างสมบูรณ์
 
 ```tsl
-# Complete example
+# ตัวอย่างสมบูรณ์
 max_value = 10
 counter = 0
 
@@ -337,20 +337,20 @@ print("Done: " + counter)
 
 ---
 
-## อ้างอิง CLI
+## CLI Reference
 
-| คำสั่ง | คำอธิบาย |
+| Command | คำอธิบาย |
 |---------|-------------|
-| `node src/cli.js <file.tsl>` | Compile และแสดง JavaScript ที่ generate |
+| `node src/cli.js <file.tsl>` | Compile และแสดง JavaScript ที่สร้าง |
 | `node src/cli.js <file.tsl> -o <output.js>` | Compile และเขียนไปยังไฟล์ |
-| `node src/cli.js build <file.tsl>` | Build และแสดง JavaScript |
+| `node src/cli.js build <file.tsl>` | Build และพิมพ์ JavaScript |
 | `node src/cli.js build <file.tsl> -o <output.js>` | Build และเขียนไปยังไฟล์ |
 | `node src/cli.js check <file.tsl>` | Validate syntax |
-| `node src/cli.js --version` | แสดงเวอร์ชัน |
+| `node src/cli.js --version` | แสดง version |
 
 ---
 
-## ไพล์ไลน์คอมไพเลอร์
+## Compiler Pipeline
 
 ```
 TSL Source
@@ -364,24 +364,24 @@ Validator  →  (semantic checks)
 Generator  →  JavaScript
 ```
 
-แต่ละขั้นตอนสามารถผลิตข้อผิดพลาดที่มีข้อมูล filename, line, column และ source line
+แต่ละ stage สามารถ produce errors พร้อม filename, line, column และ source line information
 
 ---
 
-## ชนิดข้อผิดพลาด
+## Error Types
 
-| ชนิด | คำอธิบาย |
+| Type | คำอธิบาย |
 |------|-------------|
-| Lexer Error | ตัวอักษรที่ไม่ถูกต้องหรือสตริงที่ไม่มีที่สิ้นสุด |
-| Parser Error | tokens ที่ไม่คาดหรือ syntax ที่ขาดหาย |
-| Semantic Error | `return` นอกฟังก์ชัน, `break`/`continue` นอก loop |
-| Generator Error | AST node type ที่ไม่รู้จัก |
+| Lexer Error | Invalid characters หรือ unterminated strings |
+| Parser Error | Unexpected tokens หรือ missing syntax |
+| Semantic Error | `return` outside function, `break`/`continue` outside loop |
+| Generator Error | Unknown AST node type |
 
 ---
 
-## นอกระยะ (v1.0)
+## Out of Scope (v1.0)
 
-สิ่งต่อไปนี้**ไม่ใช่**ส่วนหนึ่งของ TSL v1.0:
+สิ่งต่อไปนี้ **ไม่ใช่** ส่วนของ TSL v1.0:
 
 - Classes, inheritance, interfaces
 - Modules, packages
@@ -393,9 +393,9 @@ Generator  →  JavaScript
 
 ---
 
-## ตัวอย่าง
+## Examples
 
-ดูใน `examples/` directory สำหรับเพิ่มเติม:
+ดู `examples/` directory สำหรับเพิ่มเติม:
 
 ```
 examples/

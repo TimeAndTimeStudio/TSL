@@ -1,6 +1,6 @@
-# การควบคุมการไหล TSL
+# TSL Control Flow
 
-Control flow statements กำหนดลำดับที่โค้ดถูก execute
+Control flow statements กำหนดลำดับที่ code ถูก execute
 
 ## ภาพรวม
 
@@ -32,7 +32,7 @@ else:
 
 `if` statement ประเมิน condition และ execute consequent block ถ้า truthy
 
-`else` block ที่ไม่บังคับจะ execute เมื่อ condition เป็น falsy
+`else` block ที่เลือกได้จะ execute เมื่อ condition เป็น falsy
 
 ### AST Node
 
@@ -45,7 +45,7 @@ IfStatement {
 }
 ```
 
-### JavaScript ที่ Generate
+### JavaScript ที่สร้าง
 
 ```js
 if (condition) {
@@ -64,7 +64,7 @@ else:
     print("small")
 ```
 
-Generate:
+สร้าง:
 
 ```js
 if (x > 10) {
@@ -86,7 +86,7 @@ else:
     print("small")
 ```
 
-Generate:
+สร้าง:
 
 ```js
 if (x > 10) {
@@ -102,7 +102,7 @@ if (x > 10) {
 
 ### หมายเหตุ
 
-- `elif` ไม่รองรับ ใช้ nested `if/else` แทน
+- ไม่รองรับ `elif` ใช้ nested `if/else` แทน
 - Condition ต้องเป็น expression ที่ประเมินเป็น truthy/falsy value
 
 ---
@@ -118,7 +118,7 @@ while condition:
 
 ### คำอธิบาย
 
-`while` statement execute body ซ้ำ ๆ ตราบเท่าที่ condition เป็น truthy
+`while` statement execute body ซ้ำๆ ตราบเท่าที่ condition เป็น truthy
 
 ### AST Node
 
@@ -130,7 +130,7 @@ WhileStatement {
 }
 ```
 
-### JavaScript ที่ Generate
+### JavaScript ที่สร้าง
 
 ```js
 while (condition) {
@@ -146,7 +146,7 @@ while x < 10:
     x = x + 1
 ```
 
-Generate:
+สร้าง:
 
 ```js
 x = 0;
@@ -162,7 +162,7 @@ while true:
     # body
 ```
 
-Generate:
+สร้าง:
 
 ```js
 while (true) {
@@ -183,7 +183,7 @@ for variable in expression:
 
 ### คำอธิบาย
 
-`for` statement iterate over iterable ใด ๆ (arrays, range results, ฯลฯ)
+`for` statement วนซ้ำผ่าน iterable ใดๆ (arrays, range results, ฯลฯ)
 
 ### AST Node
 
@@ -196,7 +196,7 @@ ForStatement {
 }
 ```
 
-### JavaScript ที่ Generate
+### JavaScript ที่สร้าง
 
 ```js
 for (let variable of iterable) {
@@ -211,7 +211,7 @@ for item in items:
     print(item)
 ```
 
-Generate:
+สร้าง:
 
 ```js
 for (let item of items) {
@@ -226,7 +226,7 @@ for i in range(10):
     print(i)
 ```
 
-Generate:
+สร้าง:
 
 ```js
 for (let i of range(10)) {
@@ -236,8 +236,8 @@ for (let i of range(10)) {
 
 ### หมายเหตุ
 
-- Loop variable ถูกประกาศด้วย `let` ในแต่ละ iteration scope
-- Iterable สามารถเป็น JavaScript iterable ใด ๆ (array, range, ฯลฯ)
+- Loop variable ถูก declare ด้วย `let` ในแต่ละ iteration scope
+- Iterable สามารถเป็น JavaScript iterable ใดๆ (array, range, ฯลฯ)
 
 ---
 
@@ -251,7 +251,7 @@ break
 
 ### คำอธิบาย
 
-`break` statement ออกจาก innermost enclosing loop ทันที
+`break` statement ออกจาก loop ที่สุดภายในทันที
 
 ### AST Node
 
@@ -261,7 +261,7 @@ BreakStatement {
 }
 ```
 
-### JavaScript ที่ Generate
+### JavaScript ที่สร้าง
 
 ```js
 break;
@@ -276,7 +276,7 @@ for item in items:
     print(item)
 ```
 
-Generate:
+สร้าง:
 
 ```js
 for (let item of items) {
@@ -290,7 +290,7 @@ for (let item of items) {
 ### หมายเหตุ
 
 - `break` นอก loop เป็น **Semantic Error**
-- ออกจาก innermost loop เท่านั้น
+- ออกจากเฉพาะ loop ที่สุดภายใน
 
 ---
 
@@ -314,7 +314,7 @@ ContinueStatement {
 }
 ```
 
-### JavaScript ที่ Generate
+### JavaScript ที่สร้าง
 
 ```js
 continue;
@@ -331,7 +331,7 @@ while x < 10:
     print(x)
 ```
 
-Generate:
+สร้าง:
 
 ```js
 x = 0;
@@ -360,7 +360,7 @@ pass
 
 ### คำอธิบาย
 
-`pass` statement เป็น no-op ไม่ทำอะไรตอน runtime
+`pass` statement เป็น no-op ไม่ทำอะไรที่ runtime
 
 ### AST Node
 
@@ -370,7 +370,7 @@ Pass {
 }
 ```
 
-### JavaScript ที่ Generate
+### JavaScript ที่สร้าง
 
 ```js
 // pass
@@ -385,7 +385,7 @@ else:
     print("small")
 ```
 
-Generate:
+สร้าง:
 
 ```js
 if (x > 10) {
@@ -398,7 +398,7 @@ if (x > 10) {
 ### Use Cases
 
 - Placeholder ใน empty blocks
-- แสดงว่าไม่ควรมีการกระทำ
+- บ่งชี้โดยชัดว่าไม่ควรกระทำอะไร
 
 ---
 
@@ -424,7 +424,7 @@ else:
     pass
 ```
 
-Generate:
+สร้าง:
 
 ```js
 numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -452,9 +452,8 @@ if (count > 0) {
 
 ---
 
-## อ้างอิง
+## Reference
 
-- **SPEC**: [SPEC.md #12-#17](../SPEC.md)
 - **Parser**: `src/parser.js` — `parseIf()`, `parseWhile()`, `parseFor()`, `parseBreak()`, `parseContinue()`, `parsePass()`
 - **Generator**: `src/generator.js` — `generateIfStatement()`, `generateWhileStatement()`, `generateForStatement()`, `generateBreakStatement()`, `generateContinueStatement()`, `generatePass()`
 - **AST**: `src/ast.js` — `IfStatement`, `WhileStatement`, `ForStatement`, `BreakStatement`, `ContinueStatement`, `Pass`

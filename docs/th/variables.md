@@ -1,8 +1,8 @@
-# ตัวแปร TSL
+# TSL Variables
 
 ## ภาพรวม
 
-ตัวแปรใน TSL ถูกสร้างเมื่อมีการกำหนดค่าครั้งแรกภายใน scope โดยใช้ `let` ใน JavaScript ที่ generate การกำหนดค่าใหม่ใน scope เดียวหรือ outer scope ไม่ใช้ `let`
+Variables ใน TSL ถูกสร้างครั้งแรกที่ assign ภายใน scope โดยใช้ `let` ใน JavaScript ที่สร้าง การ reassign ใน scope เดิมหรือ outer scope ไม่ใช้ `let`
 
 ```tsl
 x = 10      # First assignment: let x = 10;
@@ -11,9 +11,9 @@ x = 20      # Reassignment: x = 20;
 
 ---
 
-## การประกาศ
+## Declaration
 
-การกำหนดค่าครั้งแรกของชื่อตัวแปรใน visible scope ใด ๆ จะสร้างตัวแปร Generator จะ emit `let`:
+การ assign ตัวแปรชื่อแรกใน visible scope ใดๆ สร้างตัวแปร Generator emit `let`:
 
 ```tsl
 x = 10
@@ -21,7 +21,7 @@ name = "TSL"
 count = 0
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let x = 10;
@@ -31,29 +31,29 @@ let count = 0;
 
 ---
 
-## การกำหนดค่าใหม่
+## Reassignment
 
-เมื่อตัวแปรถูกประกาศใน visible scope ใด ๆ การกำหนดค่าครั้งถัดไปที่ชื่อเดียวกันจะไม่ใช้ `let`:
+เมื่อ variable ถูก declare ใน visible scope ใดๆ การ assign ครั้งต่อไปด้วยชื่อเดียวกันไม่ใช้ `let`:
 
 ```tsl
 x = 10
 x = 20
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let x = 10;
 x = 20;
 ```
 
-คอมไพเลอร์ติดตามตัวแปรที่ประกาศแล้วต่อ scope โดยใช้ stack ของ sets `isDeclared()` ตรวจสอบจาก innermost ไป outermost scope
+Compiler ติดตาม variables ที่ declare แล้วต่อ scope โดยใช้ stack ของ sets `isDeclared()` ตรวจสอบจาก innermost ไป outermost scope
 
 ---
 
-## กฎ Scope
+## Scope Rules
 
-TSL ใช้ **lexical scope** คอมไพเลอร์รักษา `scopeStack` — array ของ sets โดยแต่ละ set ติดตามชื่อตัวแปรที่ประกาศใน scope นั้น
+TSL ใช้ **lexical scope** Compiler รักษา `scopeStack` — array ของ sets โดยแต่ละ set ติดตาม variable names ที่ declare ใน scope นั้น
 
 ### Scope Hierarchy
 
@@ -67,10 +67,10 @@ Scopes ถูกสร้างโดย:
 
 ### กฎ
 
-1. **Inner scope สามารถอ่านตัวแปร outer scope ได้** — `isDeclared()` ตรวจสอบทุก scope จากในออกนอก
-2. **Inner scope สามารถกำหนดค่าใหม่ให้ตัวแปร outer scope ได้** — ถ้าชื่อถูกประกาศใน outer scope การกำหนดค่าใน inner จะไม่ใช้ `let`
-3. **Inner scope สามารถประกาศตัวแปรใหม่ได้** — การกำหนดค่าครั้งแรกใน inner scope ใช้ `let` และ shadow ชื่อ outer
-4. **Outer scope ไม่เห็นตัวแปร inner scope** — ตัวแปรที่ประกาศใน inner scopes ไม่สามารถเข้าถึงได้หลังจาก block สิ้นสุด
+1. **Inner scope อ่าน outer scope variables ได้** — `isDeclared()` ตรวจสอบทุก scope จากในออกนอก
+2. **Inner scope reassign outer scope variables ได้** — ถ้าชื่อ declare ใน outer scope การ assign ใน inner ไม่ใช้ `let`
+3. **Inner scope declare ตัวแปรใหม่ได้** — การ assign ครั้งแรกใน inner scope ใช้ `let` และ shadow outer names
+4. **Outer scope ไม่เห็น inner scope variables** — variables ที่ declare ใน inner scopes ไม่ visible หลัง block จบ
 
 ### ตัวอย่าง: Function Scope
 
@@ -83,7 +83,7 @@ function foo():
     y = 2       # y = 2; (same scope, no let)
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let x = 10;
@@ -104,7 +104,7 @@ if (true):
     y = 3       # let y = 3; (new scope)
 ```
 
-Generate:
+สร้าง:
 
 ```js
 let x = 1;
@@ -123,7 +123,7 @@ else:
     y = 20
 ```
 
-Generate:
+สร้าง:
 
 ```js
 if (true) {
@@ -133,7 +133,7 @@ if (true) {
 }
 ```
 
-แต่ละ branch ประกาศ `y` ของตัวเอง พวกมันไม่ได้ shadow กัน
+แต่ละ branch declare `y` ของตัวเอง ไม่ shadow กัน
 
 ### ตัวอย่าง: For Loop Variable
 
@@ -143,7 +143,7 @@ for i in range(3):
 print(i)
 ```
 
-Generate:
+สร้าง:
 
 ```js
 for (let i of range(3)) {
@@ -152,20 +152,20 @@ for (let i of range(3)) {
 print(i);
 ```
 
-loop variable `i` มี scope ถึง body ของ `for` โดย JavaScript `let` semantics
+Loop variable `i` ถูก scope กับ `for` body โดย JavaScript `let` semantics
 
 ---
 
 ## Member Assignment
 
-การกำหนดค่าให้ object properties ไม่ใช้ `let`:
+การ assign object properties ไม่ใช้ `let`:
 
 ```tsl
 player.x = 100
 player.y = 200
 ```
 
-Generate:
+สร้าง:
 
 ```js
 player.x = 100;
@@ -176,14 +176,14 @@ player.y = 200;
 
 ## Array Assignment
 
-การกำหนดค่าให้ array indices ไม่ใช้ `let`:
+การ assign array indices ไม่ใช้ `let`:
 
 ```tsl
 arr[0] = 10
 arr[1] = 20
 ```
 
-Generate:
+สร้าง:
 
 ```js
 arr[0] = 10;
@@ -194,7 +194,7 @@ arr[1] = 20;
 
 ## Function Parameters
 
-Function parameters ถูกประกาศอัตโนมัติใน function scope การกำหนดค่าให้ parameters ไม่ใช้ `let`:
+Function parameters ถูก declare อัตโนมัติใน function scope การ assign กับ parameters ไม่ใช้ `let`:
 
 ```tsl
 function add(a):
@@ -202,7 +202,7 @@ function add(a):
     return a
 ```
 
-Generate:
+สร้าง:
 
 ```js
 function add(a) {
@@ -213,9 +213,9 @@ function add(a) {
 
 ---
 
-## รายละเอียดการใช้งาน
+## Implementation Details
 
-Generator ติดตาม scope โดยใช้:
+Generator ติดตาม scope ด้วย:
 
 | Function | คำอธิบาย |
 |---|---|
@@ -241,7 +241,7 @@ else:
 
 ---
 
-## ตารางสรุป
+## Summary Table
 
 | TSL Code | Generated JavaScript |
 |---|---|

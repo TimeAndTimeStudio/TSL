@@ -1,341 +1,311 @@
-# ฟังก์ชัน TSL
-
-ฟังก์ชันใน TSL ถูกประกาศด้วย `function` keyword รับ parameters และ return ค่า
+# TSL Functions
 
 ## ภาพรวม
 
-| Feature | Supported |
-|---------|-----------|
-| Declaration | ✅ |
-| Parameters | ✅ |
-| Return value | ✅ |
-| No return | ✅ |
-| Nested functions | ✅ |
-| Default parameters | ❌ |
-| Variadic parameters | ❌ |
-| Closures | ✅ |
-| Recursion | ✅ |
-| Arrow functions | ❌ |
+TSL functions ถูก declare ด้วย `function` keyword ตามด้วย name, parentheses สำหรับ parameters, colon และ indented body block
+
+```tsl
+function name(params):
+    body
+```
+
+Functions สร้าง JavaScript `function` declarations
 
 ---
 
-## การประกาศ
+## Function Declaration
 
 ### Syntax
 
 ```tsl
-function name(parameters):
-    statements
+function name(params):
+    body
 ```
 
-### คำอธิบาย
-
-- `function` keyword ตามด้วย identifier
-- Parameters อยู่ใน `()` คั่นด้วย `,`
-- `:` จบ signature
-- Body เป็น indented block
-
-### AST Node
-
-```js
-FunctionDeclaration {
-    name: Identifier,
-    params: Identifier[],
-    body: Statement[],
-    location: Location
-}
-```
-
-### JavaScript ที่ Generate
-
-```js
-function name(parameters) {
-    // body
-}
-```
+- `function` เป็น reserved keyword
+- `name` เป็น identifier
+- `params` เป็น comma-separated list ของ identifiers
+- `:` จบ function signature line
+- Body เป็น indented block ของ statements
 
 ### ตัวอย่าง
 
 ```tsl
 function add(a, b):
     return a + b
+```
 
+สร้าง:
+
+```js
+function add(a, b) {
+  return a + b;
+}
+```
+
+### No Parameters
+
+Function สามารถไม่มี parameters ได้
+
+```tsl
+function greet():
+    print("Hello!")
+```
+
+สร้าง:
+
+```js
+function greet() {
+  console.log("Hello!");
+}
+```
+
+### Multiple Parameters
+
+Parameters คั่นด้วย commas
+
+```tsl
+function sum(a, b, c):
+    return a + b + c
+```
+
+สร้าง:
+
+```js
+function sum(a, b, c) {
+  return a + b + c;
+}
+```
+
+### Parameter Rules
+
+- แต่ละ parameter ต้องเป็น valid identifier
+- ไม่มี default values
+- ไม่มี rest parameters
+- ไม่มี type annotations (v1.0)
+
+---
+
+## Function Call
+
+Function ถูกเรียกโดยเขียน name ตามด้วย parentheses ที่มี arguments
+
+### Syntax
+
+```tsl
+name(args)
+```
+
+### ตัวอย่าง
+
+```tsl
 result = add(10, 20)
 print(result)
 ```
 
-Generate:
+สร้าง:
 
 ```js
-function add(a, b) {
-  return (a + b);
-}
 let result = add(10, 20);
 console.log(result);
 ```
 
----
-
-## Parameters
-
-### การประกาศ
-
-Parameters ถูกประกาศอัตโนมัติใน function scope:
+### No Arguments
 
 ```tsl
-function greet(name, greeting):
-    print(greeting + ", " + name)
+greet()
 ```
 
-Generate:
+สร้าง:
 
 ```js
-function greet(name, greeting) {
-  console.log((greeting + ", ") + name);
-}
+greet();
 ```
 
-### การใช้งาน
+### Nested Calls
 
-- Parameters เป็น identifiers ที่แยกด้วย `,`
-- ไม่รองรับ default parameters
-- ไม่รองรับ variadic parameters (`...args`)
-- Parameters ถูกประกาศด้วย `let` โดย JavaScript runtime
-
-### Parameter Assignment
+Function calls สามารถ nested ได้
 
 ```tsl
-function modify(x):
-    x = x + 1
-    return x
+result = add(multiply(2, 3), 5)
 ```
 
-Generate:
+สร้าง:
 
 ```js
-function modify(x) {
-  x = (x + 1);
-  return x;
-}
+let result = add(multiply(2, 3), 5);
+```
+
+### Call as Expression
+
+Function call ปรากฏได้ทุกที่ที่ expression ถูกต้อง
+
+```tsl
+x = add(1, 2) + multiply(3, 4)
+```
+
+สร้าง:
+
+```js
+let x = add(1, 2) + multiply(3, 4);
 ```
 
 ---
 
 ## Return
 
-### Syntax
+`return` statement ออกจาก function และ optionally return value
+
+### With Value
 
 ```tsl
-return expression
+function multiply(x, y):
+    return x * y
 ```
 
-### คำอธิบาย
-
-`return` statement ส่งกลับค่าจากฟังก์ชันและหยุด execution
-
-### AST Node
+สร้าง:
 
 ```js
-ReturnStatement {
-    value: Expression,
-    location: Location
+function multiply(x, y) {
+  return x * y;
 }
 ```
 
-### JavaScript ที่ Generate
-
-```js
-return expression;
-```
-
-### ตัวอย่าง
+### Without Value
 
 ```tsl
-function square(n):
-    return n * n
-```
-
-Generate:
-
-```js
-function square(n) {
-  return (n * n);
-}
-```
-
-### Return โดยไม่มีค่า
-
-```tsl
-function doNothing():
+function doSomething():
+    print("doing something")
     return
+    print("this line is unreachable")
 ```
 
-Generate:
+สร้าง:
 
 ```js
-function doNothing() {
+function doSomething() {
+  console.log("doing something");
   return;
+  console.log("this line is unreachable");
 }
 ```
 
-### Return ใน Expression
+### Return Rules
 
-```tsl
-function max(a, b):
-    if a > b:
-        return a
-    else:
-        return b
-```
-
-Generate:
-
-```js
-function max(a, b) {
-  if ((a > b)) {
-    return a;
-  } else {
-    return b;
-  }
-}
-```
-
-### หมายเหตุ
-
-- `return` นอกฟังก์ชันเป็น **Semantic Error**
-- Return โดยไม่มี expression ส่งกลับ `undefined`
+- `return` ต้องอยู่ใน function
+- `return` นอก function เป็น **semantic error**
+- `return` โดยไม่มี value สร้าง `return;`
+- `return` พร้อม expression สร้าง `return <expression>;`
 
 ---
 
-## Function Calls
+## Scope
 
-### Syntax
+แต่ละ function สร้าง new lexical scope
+
+### Local Variables
+
+Variables ที่ assign ภายใน function เป็น local ต่อ function นั้น
 
 ```tsl
-name(arguments)
+function foo():
+    x = 10
+    print(x)
+
+foo()
+# print(x)  # Error: x is not defined here
 ```
 
-### คำอธิบาย
-
-Function calls ใช้ `()` กับ arguments ที่แยกด้วย `,`
-
-### AST Node
+สร้าง:
 
 ```js
-CallExpression {
-    callee: Identifier,
-    args: Expression[],
-    location: Location
+function foo() {
+  let x = 10;
+  console.log(x);
 }
+foo();
 ```
 
-### JavaScript ที่ Generate
+### Accessing Outer Scope
 
-```js
-name(arg1, arg2);
-```
-
-### ตัวอย่าง
+Variables จาก outer scopes เข้าถึงได้ภายใน function
 
 ```tsl
-result = add(10, 20)
-greet("TSL", "Hello")
+outer = 100
+
+function printOuter():
+    print(outer)
+
+printOuter()
 ```
 
-Generate:
+สร้าง:
 
 ```js
-let result = add(10, 20);
-greet("TSL", "Hello");
-```
+let outer = 100;
 
----
-
-## Nested Functions
-
-### คำอธิบาย
-
-ฟังก์ชันสามารถประกาศภายในฟังก์ชันอื่นได้
-
-### ตัวอย่าง
-
-```tsl
-function outer():
-    function inner():
-        print("inner")
-    inner()
-```
-
-Generate:
-
-```js
-function outer() {
-  function inner() {
-    console.log("inner");
-  }
-  inner();
+function printOuter() {
+  console.log(outer);
 }
+printOuter();
 ```
 
----
+### Parameter Scope
 
-## Recursion
-
-### คำอธิบาย
-
-ฟังก์ชันสามารถเรียกตัวเองได้
-
-### ตัวอย่าง
+Function parameters เป็น local ต่อ function body
 
 ```tsl
-function factorial(n):
-    if n <= 1:
-        return 1
-    return n * factorial(n - 1)
+x = 10
+
+function setX(x):
+    x = 20
+    print(x)
+
+setX(5)
+print(x)
 ```
 
-Generate:
+สร้าง:
 
 ```js
-function factorial(n) {
-  if ((n <= 1)) {
-    return 1;
-  }
-  return (n * factorial((n - 1)));
+let x = 10;
+
+function setX(x) {
+  x = 20;
+  console.log(x);
 }
+setX(5);
+console.log(x);
 ```
 
----
+Output:
+```
+20
+10
+```
 
-## Closures
+### Parameter Shadowing
 
-### คำอธิบาย
-
-ฟังก์ชันสามารถเข้าถึงตัวแปรจาก outer scope ได้
-
-### ตัวอย่าง
+Parameter shadow ใดๆ outer variable ที่มีชื่อเดียวกัน
 
 ```tsl
-function makeAdder(x):
-    function add(y):
-        return x + y
-    return add
+value = 1
 
-add5 = makeAdder(5)
-result = add5(10)
+function double(value):
+    print(value)
+
+double(5)
 ```
 
-Generate:
+สร้าง:
 
 ```js
-function makeAdder(x) {
-  function add(y) {
-    return (x + y);
-  }
-  return add;
+let value = 1;
+
+function double(value) {
+  console.log(value);
 }
-let add5 = makeAdder(5);
-let result = add5(10);
+double(5);
 ```
 
 ---
@@ -343,59 +313,122 @@ let result = add5(10);
 ## ตัวอย่างสมบูรณ์
 
 ```tsl
-# Complete function example
-counter = 0
+function greet(name):
+    message = "Hello, " + name + "!"
+    print(message)
+    return message
 
-function increment():
-    counter = counter + 1
-    return counter
-
-function printCount():
-    print("count: " + counter)
-
-for i in range(3):
-    val = increment()
-    print(val)
-
-printCount()
+result = greet("TSL")
+print(result)
 ```
 
-Generate:
+สร้าง:
 
 ```js
-counter = 0;
-function increment() {
-  counter = (counter + 1);
-  return counter;
+function greet(name) {
+  let message = "Hello, " + name + "!";
+  console.log(message);
+  return message;
 }
-function printCount() {
-  console.log(("count: " + counter));
-}
-for (let i of range(3)) {
-  let val = increment();
-  console.log(val);
-}
-printCount();
+let result = greet("TSL");
+console.log(result);
 ```
 
 ---
 
-## ตารางสรุป
+## Render Functions
 
-| TSL | JavaScript |
-|-----|------------|
-| `function f(a, b): return a + b` | `function f(a, b) { return (a + b); }` |
-| `function f(): return` | `function f() { return; }` |
-| `f(1, 2)` | `f(1, 2);` |
-| `function outer(): function inner(): return 1` | `function outer() { function inner() { return 1; } }` |
-| `function make(): function inner(): return x` | `function make() { function inner() { return x; } }` |
-| `function fact(n): if n <= 1: return 1; return n * fact(n-1)` | `function fact(n) { if ((n <= 1)) { return 1; } return (n * fact((n - 1))); }` |
+TSL รองรับสอง special function names สำหรับ render loop: `update` และ `draw`
+
+```tsl
+function update():
+    x = x + 1
+
+function draw():
+    clear()
+    draw_rect(x, 0, 10, 10)
+```
+
+Runtime เรียก `update()` และ `draw()` ใน frame loop Compiler ไม่จัดการ functions เหล่านี้เป็นพิเศษ — สร้างเป็น regular JavaScript functions ธรรมดา
 
 ---
 
-## อ้างอิง
+## Implementation Details
 
-- **SPEC**: [SPEC.md #18-#23](../SPEC.md)
-- **Parser**: `src/parser.js` — `parseFunctionDeclaration()`, `parseReturnStatement()`
-- **Generator**: `src/generator.js` — `generateFunctionDeclaration()`, `generateReturnStatement()`
-- **AST**: `src/ast.js` — `FunctionDeclaration`, `ReturnStatement`
+### AST Node
+
+```js
+FunctionDeclaration(name, parameters, body, location)
+```
+
+- `name` — Identifier
+- `parameters` — Array ของ Identifier nodes
+- `body` — Array ของ statement nodes
+- `location` — Source location
+
+### Parser
+
+Parser จัดการ function declarations ใน statement level:
+
+```
+FUNCTION → IDENTIFIER → LPAREN → paramList → RPAREN → COLON → block
+```
+
+Parameters ถูก parse เป็น comma-separated list ของ identifiers ภายใน parentheses
+
+Body ถูก parse เป็น block: `COLON → INDENT → statements → DEDENT`
+
+### Generator
+
+Generator สร้าง JavaScript ที่ถูกต้อง:
+
+1. Output `function <name>(<params>) {`
+2. Declare แต่ละ parameter ใน scope stack
+3. Generate แต่ละ statement ใน body พร้อมเพิ่ม indentation
+4. ปิด scope และ output `}`
+
+### Scope Stack
+
+Generator รักษา scope stack ไว้:
+
+- `pushScope()` — เรียกเมื่อเข้า function
+- `popScope()` — เรียกเมื่อออก function
+- `declareVar()` — mark variable ว่า declare ใน current scope
+- `isDeclared()` — ตรวจสอบว่า variable มีอยู่ใน current หรือ outer scope ใดๆ หรือไม่
+
+Parameters ถูก declare ก่อน body ถูก generate ดังนั้นจึง visible ตลอด function body
+
+---
+
+## Error Handling
+
+### Semantic Errors
+
+| Condition | Error Type |
+|-----------|-----------|
+| `return` outside a function | Semantic Error |
+
+### Parser Errors
+
+| Condition | Error Type |
+|-----------|-----------|
+| Missing `:` after function signature | Parser Error |
+| Missing `(` after function name | Parser Error |
+| Missing `)` in parameter list | Parser Error |
+| Non-identifier in parameter position | Parser Error |
+
+---
+
+## Out of Scope for v1.0
+
+สิ่งต่อไปนี้ **ไม่** รองรับ:
+
+- Default parameter values
+- Rest parameters (`...args`)
+- Variadic functions
+- Closures (beyond lexical scoping)
+- Anonymous functions
+- Arrow functions
+- Higher-order functions as first-class values (functions can be called but not assigned to variables)
+- Function overloading
+- Recursion (not explicitly prohibited, but not tested)

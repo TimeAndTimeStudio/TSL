@@ -454,7 +454,6 @@ if (count > 0) {
 
 ## Reference
 
-- **SPEC**: [SPEC.md #12-#17](../SPEC.md)
 - **Parser**: `src/parser.js` — `parseIf()`, `parseWhile()`, `parseFor()`, `parseBreak()`, `parseContinue()`, `parsePass()`
 - **Generator**: `src/generator.js` — `generateIfStatement()`, `generateWhileStatement()`, `generateForStatement()`, `generateBreakStatement()`, `generateContinueStatement()`, `generatePass()`
 - **AST**: `src/ast.js` — `IfStatement`, `WhileStatement`, `ForStatement`, `BreakStatement`, `ContinueStatement`, `Pass`

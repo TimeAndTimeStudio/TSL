@@ -1,33 +1,30 @@
-# ตัวอย่าง TSL
+# TSL Examples
 
-## ภาพรวม
+Examples แสดง TSL language features
 
-ตัวอย่างทั้งหมดอยู่ใน `examples/` directory
+แต่ละ `.tsl` file transpiles เป็น JavaScript เมื่อรันด้วย CLI
 
-```
-examples/
-    hello.tsl
-    functions.tsl
-    arrays.tsl
-    objects.tsl
-    if.tsl
-    for.tsl
-    while.tsl
-    strings.tsl
+---
+
+## Running Examples
+
+```bash
+node src/cli.js examples/hello.tsl
+node src/cli.js examples/variables.tsl -o variables.js
 ```
 
 ---
 
 ## Hello World
 
-**ไฟล์:** `examples/hello.tsl`
+**File:** `examples/hello.tsl`
 
 ```tsl
 # Hello World
 print("Hello, World!")
 ```
 
-**ผลลัพธ์:**
+Output:
 
 ```
 Hello, World!
@@ -35,84 +32,169 @@ Hello, World!
 
 ---
 
-## Functions
+## Comments
 
-**ไฟล์:** `examples/functions.tsl`
+**File:** `examples/hello.tsl`
+
+Comments เริ่มด้วย `#` และไปสุดบรรทัด
 
 ```tsl
-# Function example
-function add(a, b):
-    return a + b
+# This is a comment
+print("Hello") # inline comment
+```
 
-result = add(10, 20)
+---
+
+## Variables
+
+**File:** `examples/variables.tsl`
+
+Variables ถูกสร้างด้วยการ assign TSL เป็น dynamically typed
+
+```tsl
+name = "TSL"
+version = 1
+is_ready = true
+nothing = null
+
+print(name)
+print(version)
+print(is_ready)
+print(nothing)
+```
+
+---
+
+## Variable Reassignment
+
+**File:** `examples/reassignment.tsl`
+
+Variables สามารถ reassign เป็น values ใหม่ รวมถึงต่าง types ได้
+
+```tsl
+x = 10
+print(x)
+
+x = 20
+print(x)
+
+x = "changed"
+print(x)
+```
+
+---
+
+## Literals
+
+### Numbers
+
+```tsl
+pi = 3.14
+count = 42
+```
+
+### Strings
+
+```tsl
+greeting = "Hello"
+name = 'World'
+```
+
+### Booleans
+
+```tsl
+a = true
+b = false
+```
+
+### Null
+
+```tsl
+value = null
+```
+
+---
+
+## Operators
+
+### Arithmetic
+
+**File:** `examples/math.tsl`
+
+```tsl
+a = 10
+b = 3
+
+print(a + b)   # 13
+print(a - b)   # 7
+print(a * b)   # 30
+print(a / b)   # 3.333...
+print(a % b)   # 1
+```
+
+### Comparison
+
+**File:** `examples/comparison.tsl`
+
+```tsl
+a = 10
+b = 20
+
+print(a == b)   # false
+print(a != b)   # true
+print(a < b)    # true
+print(a > b)    # false
+print(a <= b)   # true
+print(a >= b)   # false
+```
+
+### Logical
+
+**File:** `examples/logical.tsl`
+
+```tsl
+a = true
+b = false
+
+print(a and b)   # false
+print(a or b)    # true
+print(not a)     # false
+```
+
+### Unary / Negation
+
+**File:** `examples/unary.tsl`
+
+```tsl
+x = 5
+y = 0 - x
+print(y)   # -5
+
+a = true
+result = not a
+print(result)   # false
+```
+
+### Complex Expressions
+
+**File:** `examples/complex_expression.tsl`
+
+Operator precedence: `() > not > * / % > + - > < <= > >= == != > and > or`
+
+```tsl
+result = ((10 + 20) * 3) - (5 / 2)
 print(result)
 ```
 
-**ผลลัพธ์:**
-
-```
-30
-```
-
 ---
 
-## Arrays
+## Control Flow
 
-**ไฟล์:** `examples/arrays.tsl`
+### If / Else
 
-```tsl
-# Array example
-numbers = [1, 2, 3, 4, 5]
-
-for n in numbers:
-    print(n)
-```
-
-**ผลลัพธ์:**
-
-```
-1
-2
-3
-4
-5
-```
-
----
-
-## Objects
-
-**ไฟล์:** `examples/objects.tsl`
+**File:** `examples/if.tsl`
 
 ```tsl
-# Object example
-player = {
-    name: "Hero",
-    health: 100,
-    position: { x: 0, y: 0 }
-}
-
-print(player.name)
-print(player.health)
-print(player.position.x)
-```
-
-**ผลลัพธ์:**
-
-```
-Hero
-100
-0
-```
-
----
-
-## If/Else
-
-**ไฟล์:** `examples/if.tsl`
-
-```tsl
-# If/else example
 x = 15
 
 if x > 10:
@@ -121,42 +203,41 @@ else:
     print("small")
 ```
 
-**ผลลัพธ์:**
+### Nested Conditionals
 
-```
-big
+**File:** `examples/nested.tsl`
+
+```tsl
+x = 15
+y = 20
+
+if x > 10:
+    if y > 15:
+        print("both big")
+    else:
+        print("x big, y small")
+else:
+    print("x small")
 ```
 
 ---
 
-## For Loop
+## Loops
 
-**ไฟล์:** `examples/for.tsl`
+### For Loop
+
+**File:** `examples/for.tsl`
 
 ```tsl
-# For loop example
 for i in range(5):
     print(i)
 ```
 
-**ผลลัพธ์:**
+### While Loop
 
-```
-0
-1
-2
-3
-4
-```
-
----
-
-## While Loop
-
-**ไฟล์:** `examples/while.tsl`
+**File:** `examples/while.tsl`
 
 ```tsl
-# While loop example
 counter = 3
 
 while counter > 0:
@@ -166,110 +247,80 @@ while counter > 0:
 print("Go!")
 ```
 
-**ผลลัพธ์:**
+### Break and Continue
 
-```
-3
-2
-1
-Go!
-```
-
----
-
-## Strings
-
-**ไฟล์:** `examples/strings.tsl`
+**File:** `examples/break_continue.tsl`
 
 ```tsl
-# String example
-name = "TSL"
-greeting = "Hello, " + name
-print(greeting)
-```
-
-**ผลลัพธ์:**
-
-```
-Hello, TSL
-```
-
----
-
-## ตัวอย่างผสม
-
-### Accumulator Pattern
-
-```tsl
-# Accumulator pattern
-numbers = [10, 20, 30, 40, 50]
-sum = 0
-
-for n in numbers:
-    sum = sum + n
-
-print(sum)
-```
-
-**ผลลัพธ์:**
-
-```
-150
-```
-
-### Search Pattern
-
-```tsl
-# Search pattern
-numbers = [1, 5, 3, 9, 2]
-target = 9
-found = false
-
-for n in numbers:
-    if n == target:
-        found = true
+for i in range(10):
+    if i == 3:
+        continue
+    if i == 7:
         break
-
-if found:
-    print("Found!")
-else:
-    print("Not found")
+    print(i)
 ```
 
-**ผลลัพธ์:**
+Output: `0, 1, 2, 4, 5, 6`
 
-```
-Found!
-```
+---
 
-### Nested Objects
+## Functions
+
+### Basic Function
+
+**File:** `examples/functions.tsl`
 
 ```tsl
-# Nested objects
-config = {
-    game: {
-        player: {
-            x: 100,
-            y: 200
-        }
-    }
-}
+function add(a, b):
+    return a + b
 
-print(config.game.player.x)
-print(config.game.player.y)
+result = add(10, 20)
+print(result)
 ```
 
-**ผลลัพธ์:**
+### Guard Pattern
 
+**File:** `examples/function_guard.tsl`
+
+TSL v1.0 ไม่มี default parameters ใช้ guard conditions
+
+```tsl
+function divide(a, b):
+    if b == 0:
+        return null
+    return a / b
+
+result = divide(10, 2)
+print(result)
+
+result = divide(10, 0)
+print(result)
 ```
-100
-200
+
+### Function Chaining
+
+**File:** `examples/function_chaining.tsl`
+
+Functions สามารถเรียก functions อื่นได้
+
+```tsl
+function square(x):
+    return x * x
+
+function cube(x):
+    return square(x) * x
+
+result = cube(3)
+print(result)
 ```
 
 ### Recursion
 
+**File:** `examples/recursion.tsl`
+
+Functions สามารถเรียกตัวเองได้
+
 ```tsl
-# Recursion
 function factorial(n):
     if n <= 1:
         return 1
@@ -279,62 +330,335 @@ result = factorial(5)
 print(result)
 ```
 
-**ผลลัพธ์:**
+---
 
-```
-120
-```
+## Arrays
 
-### Break and Continue
+**File:** `examples/arrays.tsl`
 
 ```tsl
-# Break and continue
-for i in range(10):
-    if i == 3:
-        continue
-    if i == 7:
-        break
-    print(i)
-```
+numbers = [1, 2, 3, 4, 5]
 
-**ผลลัพธ์:**
+first = numbers[0]
+print(first)
 
-```
-0
-1
-2
-4
-5
-6
+last = numbers[4]
+print(last)
 ```
 
 ---
 
-## รันตัวอย่าง
+## Objects
 
-### รันโดยตรง
+**File:** `examples/objects.tsl`
+
+Objects ใช้ `{ key: value }` syntax
+
+```tsl
+player = { x: 100, y: 200, name: "Hero" }
+
+print(player.x)
+print(player.y)
+print(player.name)
+```
+
+### Nested Objects
+
+**File:** `examples/nested_objects.tsl`
+
+```tsl
+person = {
+    name: "Alice",
+    address: {
+        city: "Bangkok",
+        zip: "10100"
+    }
+}
+
+print(person.address.city)
+```
+
+### Arrays of Objects
+
+**File:** `examples/array_of_objects.tsl`
+
+```tsl
+items = [
+    { name: "apple", price: 10 },
+    { name: "banana", price: 5 }
+]
+
+print(items[0].name)
+```
+
+### Complex Objects
+
+**File:** `examples/complex_object.tsl`
+
+```tsl
+config = {
+    title: "My Game",
+    width: 800,
+    height: 600,
+    debug: true
+}
+```
+
+---
+
+## Member Access
+
+**File:** `examples/member_access.tsl`
+
+Access object properties ด้วย dot notation รวมกับ array indexing
+
+```tsl
+matrix = { rows: 3, cols: 4, data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
+
+print(matrix.rows)
+print(matrix.cols)
+print(matrix.data[0])
+```
+
+---
+
+## Strings
+
+### String Concatenation
+
+**File:** `examples/strings.tsl`
+
+Strings สามารถ concatenate ด้วย `+`
+
+```tsl
+first = "Hello"
+last = "World"
+message = first + " " + last
+print(message)
+```
+
+### String Literals
+
+**File:** `examples/string_literals.tsl`
+
+รองรับทั้ง double quotes และ single quotes
+
+```tsl
+a = "double quoted"
+b = 'single quoted'
+```
+
+---
+
+## Type System
+
+### Type Checking
+
+**File:** `examples/type_checking.tsl`
+
+TSL เป็น dynamically typed ใช้ `typeof` เพื่อ check types ที่ runtime
+
+```tsl
+x = 42
+y = "hello"
+
+print(typeof x)   # number
+print(typeof y)   # string
+```
+
+### Type Coercion
+
+**File:** `examples/type_coercion.tsl`
+
+TSL ทำ automatic type coercion ใน expressions
+
+```tsl
+a = 10
+b = "5"
+result = a + b
+print(result)   # "105"
+```
+
+---
+
+## Scope
+
+**File:** `examples/scope.tsl`
+
+TSL ใช้ lexical scoping Functions สร้าง local scopes
+
+```tsl
+x = 10
+
+function foo():
+    x = 20
+    print(x)
+
+foo()
+print(x)
+```
+
+---
+
+## Closure
+
+**File:** `examples/closure.tsl`
+
+Functions สามารถ capture variables จาก enclosing scope
+
+```tsl
+function create_counter():
+    count = 0
+
+    return { value: count }
+
+function counter_increment(counter):
+    counter.value = counter.value + 1
+
+counter = create_counter()
+counter_increment(counter)
+counter_increment(counter)
+print(counter.value)
+```
+
+---
+
+## Object as Function Parameter
+
+**File:** `examples/object_method.tsl`
+
+Objects สามารถ pass ไปยัง functions ได้
+
+```tsl
+function create_point(x, y):
+    return { x: x, y: y }
+
+function point_distance(p1, p2):
+    dx = p2.x - p1.x
+    dy = p2.y - p1.y
+    return dx * dx + dy * dy
+
+p1 = create_point(0, 0)
+p2 = create_point(3, 4)
+print(point_distance(p1, p2))
+```
+
+---
+
+## Function Returning Array
+
+**File:** `examples/function_return_array.tsl`
+
+Functions สามารถ return arrays ได้
+
+```tsl
+function make_range(start, end):
+    result = []
+    i = start
+    while i < end:
+        result[i - start] = i
+        i = i + 1
+    return result
+
+numbers = make_range(1, 5)
+print(numbers)
+```
+
+---
+
+## Function with Array Parameter
+
+**File:** `examples/function_array.tsl`
+
+Functions สามารถรับ arrays เป็น parameters ได้
+
+```tsl
+function sum(arr):
+    total = 0
+    for item in arr:
+        total = total + item
+    return total
+
+numbers = [1, 2, 3, 4, 5]
+print(sum(numbers))
+```
+
+---
+
+## Algorithm Examples
+
+### Fibonacci
+
+**File:** `examples/fibonacci.tsl`
+
+```tsl
+function fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+print(fibonacci(10))
+```
+
+### Binary Search
+
+**File:** `examples/binary_search.tsl`
+
+```tsl
+function binary_search(arr, target):
+    left = 0
+    right = length(arr) - 1
+
+    while left <= right:
+        mid = (left + right) / 2
+        if arr[mid] == target:
+            return mid
+        if arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
+```
+
+### Bubble Sort
+
+**File:** `examples/bubble_sort.tsl`
+
+```tsl
+function bubble_sort(arr):
+    n = length(arr)
+    i = 0
+    while i < n:
+        j = 0
+        while j < n - i - 1:
+            if arr[j] > arr[j + 1]:
+                temp = arr[j]
+                arr[j] = arr[j + 1]
+                arr[j + 1] = temp
+            j = j + 1
+        i = i + 1
+    return arr
+```
+
+---
+
+## CLI Usage
+
+### Run directly (prints generated JS to stdout)
 
 ```bash
 node src/cli.js examples/hello.tsl
 ```
 
-### Build เป็น JavaScript
+### Generate output file
 
 ```bash
 node src/cli.js examples/hello.tsl -o hello.js
-node hello.js
 ```
 
-### Validate
+### Transpile and run
 
 ```bash
-node src/cli.js check examples/hello.tsl
+node src/cli.js examples/hello.tsl | node
 ```
-
----
-
-## อ้างอิง
-
-- **Examples:** `examples/` directory
-- **CLI:** `src/cli.js`
-- **Getting Started:** [getting-started.md](getting-started.md)

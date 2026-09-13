@@ -1,8 +1,10 @@
-# ตัวดำเนินการ TSL
+# TSL Operators
 
-ตัวดำเนินการใน TSL ถูกแปลเป็น JavaScript equivalents โดยคอมไพเลอร์ ตัวดำเนินการทั้งหมดสร้าง JavaScript expressions ที่ถูกต้อง
+Operators ใน TSL ถูก translate เป็น JavaScript equivalents โดย compiler
 
-## ตัวดำเนินการทางคณิตศาสตร์
+Operators ทั้งหมดสร้าง valid JavaScript expressions
+
+## Arithmetic Operators
 
 | TSL | JavaScript | คำอธิบาย |
 |-----|------------|-------------|
@@ -12,7 +14,7 @@
 | `/` | `/` | Division |
 | `%` | `%` | Modulo (remainder) |
 
-**ตัวอย่าง:**
+**Examples:**
 
 ```tsl
 a = 10 + 5      # 15
@@ -22,9 +24,9 @@ d = 10 / 5      # 2
 e = 10 % 3      # 1
 ```
 
-Division และ modulo กับศูนย์สร้าง JavaScript runtime behavior (`Infinity`, `NaN`, หรือ `RangeError`)
+Division และ modulo กับ zero สร้าง JavaScript's runtime behavior (`Infinity`, `NaN`, หรือ `RangeError`)
 
-## ตัวดำเนินการเปรียบเทียบ
+## Comparison Operators
 
 | TSL | JavaScript | คำอธิบาย |
 |-----|------------|-------------|
@@ -35,7 +37,7 @@ Division และ modulo กับศูนย์สร้าง JavaScript run
 | `>` | `>` | Greater than |
 | `>=` | `>=` | Greater than or equal |
 
-**ตัวอย่าง:**
+**Examples:**
 
 ```tsl
 x == y
@@ -46,9 +48,9 @@ x > y
 x >= y
 ```
 
-TSL ใช้ JavaScript loose equality (`==`) สำหรับตัวดำเนินการ `==`
+TSL ใช้ JavaScript's loose equality (`==`) สำหรับ `==` operator
 
-## ตัวดำเนินการตรรกะ
+## Logical Operators
 
 | TSL | JavaScript | คำอธิบาย |
 |-----|------------|-------------|
@@ -56,7 +58,7 @@ TSL ใช้ JavaScript loose equality (`==`) สำหรับตัวดำ
 | `or` | `\|\|` | Logical OR |
 | `not` | `!` | Logical NOT (unary prefix) |
 
-**ตัวอย่าง:**
+**Examples:**
 
 ```tsl
 x and y
@@ -66,14 +68,14 @@ not x
 
 ### `not` (Unary)
 
-`not` เป็น prefix operator ที่ใช้กับ operand เดียว:
+`not` เป็น prefix operator ที่ apply กับ operand เดียว:
 
 ```tsl
 if not flag:
     print("disabled")
 ```
 
-Generate:
+สร้าง:
 
 ```js
 if (!flag) {
@@ -81,14 +83,14 @@ if (!flag) {
 
 ### `and` / `or` (Binary)
 
-`and` และ `or` เป็น infix binary operators พวกมัน generate JavaScript `&&` และ `||` ตามลำดับ ซึ่งเป็น short-circuit operators
+`and` และ `or` เป็น infix binary operators สร้าง JavaScript's `&&` และ `||` ตามลำดับ ซึ่งเป็น short-circuit operators
 
 ```tsl
 if x > 10 and y < 20:
     print("valid")
 ```
 
-Generate:
+สร้าง:
 
 ```js
 if ((x > 10) && (y < 20)) {
@@ -100,29 +102,29 @@ if ((x > 10) && (y < 20)) {
 |-----|------------|-------------|
 | `=` | `let x = ...` / `x = ...` | Assignment |
 
-การกำหนดค่าครั้งแรกของตัวแปรสร้าง `let` การกำหนดค่าครั้งถัดไปใช้ตัวแปรที่มีอยู่แล้ว
+การ assign ตัวแปรครั้งแรกสร้าง `let` การ assign ครั้งต่อไปใช้ variable เดิม
 
 ```tsl
-x = 10      # generates: let x = 10;
-x = 20      # generates: x = 20;
+x = 10      # สร้าง: let x = 10;
+x = 20      # สร้าง: x = 20;
 ```
 
-## ลำดับความสำคัญของตัวดำเนินการ
+## Operator Precedence
 
-ตัวดำเนินการถูกประเมินจากลำดับความสำคัญสูงสุดไปต่ำสุด เครื่องหมายวงเล็บ `()` สามารถ override precedence ได้
+Operators ถูก evaluate จาก precedence สูงสุดไปต่ำสุด Parentheses `()` สามารถ override precedence ได้
 
-| ความสำคัญ | ตัวดำเนินการ | Associativity |
+| Precedence | Operators | Associativity |
 |------------|-----------|---------------|
-| 1 (สูงสุด) | `()` | Grouping |
+| 1 (highest) | `()` | Grouping |
 | 2 | `not` | Right-to-left |
 | 3 | `*`, `/`, `%` | Left-to-right |
 | 4 | `+`, `-` | Left-to-right |
 | 5 | `<`, `<=`, `>`, `>=` | Left-to-right |
 | 6 | `==`, `!=` | Left-to-right |
 | 7 | `and` | Left-to-right |
-| 8 (ต่ำสุด) | `or` | Left-to-right |
+| 8 (lowest) | `or` | Left-to-right |
 
-### ตัวอย่าง Precedence
+### Precedence Examples
 
 ```tsl
 # Multiplication binds tighter than addition
@@ -141,11 +143,11 @@ result = not x and y
 a = (1 + 2) * 3   # 9
 ```
 
-## JavaScript ที่ Generate
+## Generated JavaScript
 
-คอมไพเลอร์สร้าง parenthesized binary และ unary expressions สำหรับความสม่ำเสมอ:
+Compiler สร้าง parenthesized binary และ unary expressions เพื่อความสม่ำเสมอ:
 
-| TSL | JavaScript ที่ Generate |
+| TSL | Generated JavaScript |
 |-----|---------------------|
 | `x and y` | `(x && y)` |
 | `x or y` | `(x \|\| y)` |
@@ -154,7 +156,7 @@ a = (1 + 2) * 3   # 9
 
 ## String Concatenation
 
-TSL ไม่มีตัวดำเนินการ string concatenation โดยเฉพาะ ใช้ตัวดำเนินการ `+` กับ string literals และตัวแปร:
+TSL ไม่มี string concatenation operator แยก ใช้ `+` operator กับ string literals และ variables:
 
 ```tsl
 name = "world"
@@ -165,14 +167,14 @@ message = "hello " + name    # "hello world"
 
 ## Integer Division
 
-TSL ไม่แยกแยะระหว่าง integer และ floating-point division ตัวดำเนินการ `/` สร้าง JavaScript number เสมอ (ซึ่งอาจเป็น float):
+TSL ไม่แยก integer และ floating-point division `/` operator สร้าง JavaScript number เสมอ (ซึ่งอาจเป็น float):
 
 ```tsl
 a = 10 / 3     # 3.333...
 b = 10 / 2     # 5
 ```
 
-สำหรับ integer division ใช้ `Math.floor()` หรือตัวดำเนินการ `%`:
+สำหรับ integer division ใช้ `Math.floor()` หรือ `%` operator:
 
 ```tsl
 a = Math.floor(10 / 3)    # 3
@@ -180,7 +182,7 @@ a = Math.floor(10 / 3)    # 3
 
 ## Type Coercion
 
-TSL ไม่ทำการ type conversion โดยตรง Type coercion ตามกฎของ JavaScript:
+TSL ไม่ทำ explicit type conversion Type coercion ตาม JavaScript rules:
 
 ```tsl
 # Number coercion

@@ -70,7 +70,6 @@ Engine/
 ├── examples/           # Example TSL programs
 ├── release-test/       # Release verification
 ├── package.json
-├── SPEC.md             # Language specification
 ├── AGENTS.md           # Agent instructions
 └── README.md
 ```
