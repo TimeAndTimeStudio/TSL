@@ -5,7 +5,6 @@ const path = require('path');
 
 const CLI = path.join(__dirname, '..', '..', 'src', 'cli.js');
 const EXAMPLES = path.join(__dirname, '..', '..', 'examples');
-const RUNTIME = path.join(__dirname, '..', '..', 'runtime', 'runtime.js');
 
 function test(name, fn) {
   try {

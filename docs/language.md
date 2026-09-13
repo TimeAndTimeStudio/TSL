@@ -405,7 +405,6 @@ Lexer Error
 Parser Error
 Semantic Error
 Generator Error
-Runtime Error
 ```
 
 Every compiler error includes:

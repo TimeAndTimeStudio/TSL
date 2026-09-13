@@ -14,8 +14,6 @@ Parser → ParserError
 Validator → ValidationError
     ↓
 Generator → GeneratorError
-    ↓
-Runtime → RuntimeError
 ```
 
 Each error carries:
@@ -36,7 +34,6 @@ TSL (base)
 ├── ParserError
 ├── ValidationError
 ├── GeneratorError
-└── RuntimeError
 ```
 
 All error classes extend the base `TSL` class from `src/errors.js` and are exported from the same module.
@@ -155,16 +152,6 @@ GeneratorError: Unknown node type: UnknownNode
   at main.tsl:1:1
 ```
 
-### RuntimeError
-
-Raised when a TSL program encounters an error during execution.
-
-**Source:** `src/errors.js`
-
-**Error type label:** `'Runtime Error'`
-
-**Status:** Defined in the error hierarchy but not actively thrown in TSL v1.0. The runtime is minimal and JavaScript native errors surface instead.
-
 ## Error Output Format
 
 Errors are displayed using JavaScript's default `Error.toString()` format via `console.error()`:
@@ -192,7 +179,6 @@ All three exit with code 1 on error.
 | Parser Error | `ParserError` | Parsing | Parser |
 | Semantic Error | `ValidationError` | Validation | Validator |
 | Generator Error | `GeneratorError` | Code generation | Generator |
-| Runtime Error | `RuntimeError` | Execution | Runtime |
 
 ## Source Location
 
@@ -220,7 +206,7 @@ function getSourceLine(source, lineNum) {
 ### Direct Usage
 
 ```js
-const { LexerError, ParserError, ValidationError, GeneratorError, RuntimeError } = require('./src/errors');
+const { LexerError, ParserError, ValidationError, GeneratorError } = require('./src/errors');
 
 throw new LexerError('Unexpected character', 'main.tsl', 5, 12, '    $x = 10');
 ```
@@ -239,8 +225,6 @@ try {
     console.error(`Validation failed at ${err.filename}:${err.line}:${err.column}`);
   } else if (err instanceof GeneratorError) {
     console.error(`Generation failed at ${err.filename}:${err.line}:${err.column}`);
-  } else if (err instanceof RuntimeError) {
-    console.error(`Runtime failed at ${err.filename}:${err.line}:${err.column}`);
   }
 }
 ```
@@ -271,7 +255,6 @@ const ErrorType = {
   PARSER: 'Parser Error',
   SEMANTIC: 'Semantic Error',
   GENERATOR: 'Generator Error',
-  RUNTIME: 'Runtime Error',
 };
 ```
 
@@ -287,7 +270,6 @@ module.exports = {
   ParserError,
   ValidationError,
   GeneratorError,
-  RuntimeError,
   getSourceLine,
 };
 ```

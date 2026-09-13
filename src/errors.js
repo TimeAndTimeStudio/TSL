@@ -5,7 +5,6 @@ const ErrorType = {
   PARSER: 'Parser Error',
   SEMANTIC: 'Semantic Error',
   GENERATOR: 'Generator Error',
-  RUNTIME: 'Runtime Error',
 };
 
 class TSL extends Error {
@@ -48,13 +47,6 @@ class GeneratorError extends TSL {
   }
 }
 
-class RuntimeError extends TSL {
-  constructor(message, filename, line, column, sourceLine) {
-    super(ErrorType.RUNTIME, message, filename, line, column, sourceLine);
-    this.name = 'RuntimeError';
-  }
-}
-
 function getSourceLine(source, lineNum) {
   const lines = source.split('\n');
   if (lineNum >= 1 && lineNum <= lines.length) {
@@ -70,6 +62,5 @@ module.exports = {
   ParserError,
   ValidationError,
   GeneratorError,
-  RuntimeError,
   getSourceLine,
 };

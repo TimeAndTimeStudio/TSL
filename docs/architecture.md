@@ -238,7 +238,6 @@ All errors extend a base `TSL` class with structured metadata.
 | `ParserError` | `Parser Error` |
 | `ValidationError` | `Semantic Error` |
 | `GeneratorError` | `Generator Error` |
-| `RuntimeError` | `Runtime Error` |
 
 **Error Properties**:
 

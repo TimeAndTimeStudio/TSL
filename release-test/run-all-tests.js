@@ -12,7 +12,6 @@ const path = require('path');
 
 const TSL_DIR = path.join(__dirname, '..');
 const CLI = path.join(TSL_DIR, 'src', 'cli.js');
-const RUNTIME = path.join(TSL_DIR, 'runtime', 'runtime.js');
 const EXAMPLES_DIR = path.join(TSL_DIR, 'examples');
 const TESTS_DIR = path.join(TSL_DIR, 'tests');
 
