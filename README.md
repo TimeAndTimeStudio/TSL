@@ -126,7 +126,7 @@ TSL Source
 | Compiler architecture | [docs/compiler.md](docs/compiler.md) |
 | Project architecture | [docs/architecture.md](docs/architecture.md) |
 | Examples | [docs/examples.md](docs/examples.md) |
-| Specification | [SPEC.md](SPEC.md) |
+| Specification | [docs/syntax.md](docs/syntax.md) |
 
 ---
 
@@ -238,7 +238,6 @@ tsl/
 │   └── validator/
 ├── docs/             # Documentation
 ├── release-test/     # Standalone release verification
-├── SPEC.md           # Language specification
 └── README.md         # This file
 ```
 
