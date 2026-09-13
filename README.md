@@ -52,7 +52,6 @@ node src/cli.js build hello.tsl -o hello.js
 ### Run the generated JavaScript
 
 ```bash
-node src/cli.js build hello.tsl -o hello.js
 node hello.js
 ```
 
