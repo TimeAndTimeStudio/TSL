@@ -33,7 +33,7 @@ cd TSL
 
 No dependencies required. TSL runs on Node.js.
 
-### Run a TSL file
+### Compile a TSL file
 
 ```bash
 node src/cli.js hello.tsl
@@ -49,6 +49,13 @@ node src/cli.js build hello.tsl
 node src/cli.js build hello.tsl -o hello.js
 ```
 
+### Run the generated JavaScript
+
+```bash
+node src/cli.js build hello.tsl -o hello.js
+node hello.js
+```
+
 ### CLI Commands
 
 ```bash
@@ -58,8 +65,6 @@ node src/cli.js build <file.tsl> -o <output.js>  # Build to file
 node src/cli.js check <file.tsl>    # Validate only
 node src/cli.js --version           # Show version
 ```
-
-**หมายเหตุ:** `-o` ใช้ได้เฉพาะกับคำสั่ง `build` เท่านั้น
 
 ---
 
