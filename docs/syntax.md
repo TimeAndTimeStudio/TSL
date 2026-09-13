@@ -2,7 +2,7 @@
 
 ## Overview
 
-TSL is a statically typed, indentation-based scripting language. This document describes the complete syntax of TSL.
+TSL is an indentation-based scripting language. This document describes the complete syntax of TSL.
 
 ## Comments
 
