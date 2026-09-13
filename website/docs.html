@@ -54,6 +54,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="docs.html" class="active">Docs</a></li>
+        <li><a href="https://github.com/TimeAndTimeStudio/TSL" target="_blank" rel="noopener">GitHub</a></li>
       </ul>
       <div class="lang-switcher">
         <button class="lang-btn active" data-lang="th" onclick="setLang('th')">TH</button>
@@ -116,8 +117,10 @@
               <h2>เริ่มต้นใช้งาน</h2>
               <p>TSL (Time Script Language) คือภาษาโปรแกรมขนาดเล็กที่ transpile เป็น JavaScript ใช้ indentation สำหรับ block และมี syntax ที่เรียบง่าย</p>
 
-              <h3>Installation</h3>
-              <div class="code-block">npm install</div>
+              <h3>การติดตั้ง</h3>
+              <div class="code-block">git clone https://github.com/TimeAndTimeStudio/TSL.git
+cd TSL
+npm install</div>
 
               <h3>Quick Start</h3>
               <p>สร้างไฟล์ <code>hello.tsl</code>:</p>
@@ -127,13 +130,18 @@
 
               <h3>Build เป็น JavaScript</h3>
               <div class="code-block">node src/cli.js hello.tsl -o hello.js</div>
+
+              <h3>รัน JavaScript ที่สร้าง</h3>
+              <div class="code-block">node hello.js</div>
             </div>
             <div class="lang-en">
               <h2>Getting Started</h2>
               <p>TSL (Time Script Language) is a small programming language that transpiles to JavaScript. It uses indentation for blocks and has simple syntax.</p>
 
               <h3>Installation</h3>
-              <div class="code-block">npm install</div>
+              <div class="code-block">git clone https://github.com/TimeAndTimeStudio/TSL.git
+cd TSL
+npm install</div>
 
               <h3>Quick Start</h3>
               <p>Create a file <code>hello.tsl</code>:</p>
@@ -143,6 +151,9 @@
 
               <h3>Build to JavaScript</h3>
               <div class="code-block">node src/cli.js hello.tsl -o hello.js</div>
+
+              <h3>Run the Generated JavaScript</h3>
+              <div class="code-block">node hello.js</div>
             </div>
           </section>
 
