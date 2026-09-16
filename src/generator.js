@@ -190,6 +190,10 @@ function createGenerator(source, filename = '<anonymous>') {
   function generateProperty(node) {
     const key = generateNode(node.key);
     const value = generateNode(node.value);
+    // ES6 shorthand: {update} instead of {update: update}
+    if (key === value) {
+      return key;
+    }
     return `${key}: ${value}`;
   }
 
