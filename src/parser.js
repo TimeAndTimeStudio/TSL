@@ -634,6 +634,9 @@ function createParser(tokens, source, filename = '<anonymous>') {
     if (token.type === TokenType.FUNCTION) {
       return parseFunction();
     }
+    if (token.type === TokenType.PUBLIC) {
+      return parseFunction();
+    }
     if (token.type === TokenType.RETURN) {
       return parseReturn();
     }
