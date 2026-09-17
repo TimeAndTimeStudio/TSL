@@ -307,13 +307,8 @@ function createParser(tokens, source, filename = '<anonymous>') {
       }
       const keyToken = expect(TokenType.IDENTIFIER);
       const key = Identifier(keyToken.value, makeLocation(keyToken));
-      let value;
-      if (match(TokenType.COLON)) {
-        value = parseExpression();
-      } else {
-        // ES6 shorthand: {update} -> {update: update}
-        value = key;
-      }
+      expect(TokenType.COLON);
+      const value = parseExpression();
       properties.push(Property(key, value, makeLocation(keyToken)));
     }
 
