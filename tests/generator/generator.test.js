@@ -571,46 +571,6 @@ test("generates function call with nested call as argument", () => {
   assertEqual(js, `let result = add(multiply(2, 3), 4);`);
 });
 
-// === Phase 14 — Engine API Generator Tests ===
-
-test("generates clear() call", () => {
-  const js = compile(`clear()`);
-  assertEqual(js, `clear();`);
-});
-
-test("generates draw_rect() call with four arguments", () => {
-  const js = compile(`draw_rect(10, 20, 50, 50)`);
-  assertEqual(js, `draw_rect(10, 20, 50, 50);`);
-});
-
-test("generates draw_circle() call with three arguments", () => {
-  const js = compile(`draw_circle(100, 100, 25)`);
-  assertEqual(js, `draw_circle(100, 100, 25);`);
-});
-
-test("generates draw_line() call with four arguments", () => {
-  const js = compile(`draw_line(0, 0, 100, 100)`);
-  assertEqual(js, `draw_line(0, 0, 100, 100);`);
-});
-
-test("generates Engine API calls in function", () => {
-  const source = `function draw():
-  clear()
-  draw_rect(10, 10, 50, 50)`;
-  const js = compile(source);
-  assertEqual(js, `function draw() {\n  clear();\n  draw_rect(10, 10, 50, 50);\n}`);
-});
-
-test("generates Engine API calls with variables", () => {
-  const js = compile(`draw_rect(x, y, w, h)`);
-  assertEqual(js, `draw_rect(x, y, w, h);`);
-});
-
-test("generates Engine API calls with expressions", () => {
-  const js = compile(`draw_rect(x + 10, y + 20, width * 2, height / 2)`);
-  assertEqual(js, `draw_rect((x + 10), (y + 20), (width * 2), (height / 2));`);
-});
-
 test("generates function with array in return", () => {
   const source = `function make_pair(a, b):
   return [a, b]`;

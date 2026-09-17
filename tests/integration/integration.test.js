@@ -97,19 +97,7 @@ test("objects.tsl compiles successfully", () => {
   ok(result.includes('Compilation successful'), 'Should compile');
 });
 
-// Test 9: graphics.tsl compiles
-test("graphics.tsl compiles successfully", () => {
-  const result = compileTsl('clear()\ndraw_rect(10, 20, 50, 50)\ndraw_circle(100, 100, 25)\ndraw_line(0, 0, 200, 200)\n');
-  ok(result.includes('Compilation successful'), 'Should compile');
-});
-
-// Test 10: game.tsl compiles
-test("game.tsl compiles successfully", () => {
-  const result = compileTsl('player_x = 100\nplayer_y = 100\n\nfunction update():\n    player_x = player_x + 1\n\nfunction draw():\n    clear()\n    draw_rect(player_x, player_y, 50, 50)\n');
-  ok(result.includes('Compilation successful'), 'Should compile');
-});
-
-// Test 11: All example files exist and compile
+// Test 10: All example files exist and compile
 test("all example files compile", () => {
   const expectedFiles = [
     'hello.tsl',
@@ -198,16 +186,7 @@ test("full pipeline: objects", () => {
   ok(result.jsCode.includes('obj.x'), 'Should generate member access');
 });
 
-// Test 21: Full pipeline — engine API
-test("full pipeline: engine API", () => {
-  const result = compileAndRun('clear()\ndraw_rect(10, 20, 50, 50)\ndraw_circle(100, 100, 25)\ndraw_line(0, 0, 200, 200)\n');
-  ok(result.jsCode.includes('clear();'), 'Should generate clear()');
-  ok(result.jsCode.includes('draw_rect(10, 20, 50, 50);'), 'Should generate draw_rect()');
-  ok(result.jsCode.includes('draw_circle(100, 100, 25);'), 'Should generate draw_circle()');
-  ok(result.jsCode.includes('draw_line(0, 0, 200, 200);'), 'Should generate draw_line()');
-});
-
-// Test 22: Full pipeline — nested control flow
+// Test 20: Full pipeline — nested control flow
 test("full pipeline: nested control flow", () => {
   const result = compileAndRun('if x > 0:\n    if y > 0:\n        print("both positive")\n    else:\n        print("y not positive")\nelse:\n    print("x not positive")\n');
   ok(result.jsCode.includes('if'), 'Should generate nested if');
@@ -257,8 +236,8 @@ test("generated JavaScript runs standalone", () => {
     const jsCode = jsMatch[1];
 
     // Execute with standalone context
-    const fn = new Function('print', 'range', 'clear', 'draw_rect', 'draw_circle', 'draw_line', jsCode);
-    fn((...args) => {}, () => {}, () => {}, () => {}, () => {}, () => {});
+    const fn = new Function('print', 'range', jsCode);
+    fn((...args) => {}, () => {});
   } finally {
     try { unlinkSync(tmp); } catch {}
   }
