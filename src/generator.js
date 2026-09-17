@@ -226,10 +226,23 @@ function createGenerator(source, filename = '<anonymous>') {
     return `${indent()}${left} = ${right};`;
   }
 
+  function stripOuterParens(str) {
+    let depth = 0;
+    for (let i = 0; i < str.length; i++) {
+      if (str[i] === '(') depth++;
+      if (str[i] === ')') depth--;
+    }
+    if (depth === 0 && str[0] === '(' && str[str.length - 1] === ')') {
+      return str.slice(1, -1);
+    }
+    return str;
+  }
+
   // === If Statement ===
 
   function generateIfStatement(node) {
-    const condition = generateNode(node.condition);
+    let condition = generateNode(node.condition);
+    condition = stripOuterParens(condition);
     const lines = [];
 
     lines.push(`${indent()}if (${condition}) {`);
@@ -257,7 +270,8 @@ function createGenerator(source, filename = '<anonymous>') {
   // === While Statement ===
 
   function generateWhileStatement(node) {
-    const condition = generateNode(node.condition);
+    let condition = generateNode(node.condition);
+    condition = stripOuterParens(condition);
     const lines = [];
 
     lines.push(`${indent()}while (${condition}) {`);

@@ -135,7 +135,7 @@ test("reassign outer variable inside while block", () => {
 while counter > 0:
   counter = counter - 1`;
   const js = compile(source);
-  assertEqual(js, `let counter = 5;\nwhile ((counter > 0)) {\n  counter = (counter - 1);\n}`);
+  assertEqual(js, `let counter = 5;\nwhile (counter > 0) {\n  counter = (counter - 1);\n}`);
 });
 
 // === Block Scope in For ===
