@@ -336,23 +336,6 @@ console.log(result);
 
 ---
 
-## Render Functions
-
-TSL supports two special function names for the render loop: `update` and `draw`.
-
-```tsl
-function update():
-    x = x + 1
-
-function draw():
-    clear()
-    draw_rect(x, 0, 10, 10)
-```
-
-The runtime calls `update()` and `draw()` in a frame loop. The compiler does not treat these functions specially; it generates them as regular JavaScript functions.
-
----
-
 ## Implementation Details
 
 ### AST Node
