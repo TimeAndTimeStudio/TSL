@@ -227,13 +227,22 @@ function createGenerator(source, filename = '<anonymous>') {
   }
 
   function stripOuterParens(str) {
-    let depth = 0;
-    for (let i = 0; i < str.length; i++) {
-      if (str[i] === '(') depth++;
-      if (str[i] === ')') depth--;
-    }
-    if (depth === 0 && str[0] === '(' && str[str.length - 1] === ')') {
-      return str.slice(1, -1);
+    while (str.length >= 2 && str[0] === '(' && str[str.length - 1] === ')') {
+      let depth = 0;
+      let allParens = true;
+      for (let i = 0; i < str.length; i++) {
+        if (str[i] === '(') depth++;
+        if (str[i] === ')') depth--;
+        if (depth === 0 && i < str.length - 1) {
+          allParens = false;
+          break;
+        }
+      }
+      if (allParens) {
+        str = str.slice(1, -1);
+      } else {
+        break;
+      }
     }
     return str;
   }
