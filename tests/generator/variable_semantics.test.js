@@ -64,7 +64,7 @@ test("function parameters are declared variables", () => {
   x = x + 1
   return x`;
   const js = compile(source);
-  assertEqual(js, `function foo(x) {\n  x = (x + 1);\n  return x;\n}`);
+  assertEqual(js, `function foo(x) {\n  x = x + 1;\n  return x;\n}`);
 });
 
 test("local variables in function use let", () => {
@@ -80,7 +80,7 @@ test("reassignment of parameter in function", () => {
   a = a + 1
   return a`;
   const js = compile(source);
-  assertEqual(js, `function add(a) {\n  a = (a + 1);\n  return a;\n}`);
+  assertEqual(js, `function add(a) {\n  a = a + 1;\n  return a;\n}`);
 });
 
 test("function scope is separate from global scope", () => {
@@ -135,7 +135,7 @@ test("reassign outer variable inside while block", () => {
 while counter > 0:
   counter = counter - 1`;
   const js = compile(source);
-  assertEqual(js, `let counter = 5;\nwhile ((counter > 0)) {\n  counter = (counter - 1);\n}`);
+  assertEqual(js, `let counter = 5;\nwhile (counter > 0) {\n  counter = counter - 1;\n}`);
 });
 
 // === Block Scope in For ===
@@ -145,7 +145,7 @@ test("for loop variable is scoped to loop", () => {
   console.log(i)
 console.log(i)`;
   const js = compile(source);
-  assertEqual(js, `for (let i = 0; (i < 3); i = (i + 1)) {\n  console.log(i);\n}\nconsole.log(i);`);
+  assertEqual(js, `for (let i = 0; i < 3; i = i + 1) {\n  console.log(i);\n}\nconsole.log(i);`);
 });
 
 test("for loop body creates new scope", () => {
@@ -153,7 +153,7 @@ test("for loop body creates new scope", () => {
 for i in range(3):
   x = x + i`;
   const js = compile(source);
-  assertEqual(js, `let x = 1;\nfor (let i = 0; (i < 3); i = (i + 1)) {\n  x = (x + i);\n}`);
+  assertEqual(js, `let x = 1;\nfor (let i = 0; i < 3; i = i + 1) {\n  x = x + i;\n}`);
 });
 
 // === Nested Scopes ===
@@ -186,7 +186,7 @@ test("function with for loop and variable reassignment", () => {
     sum = sum + item
   return sum`;
   const js = compile(source);
-  assertEqual(js, `function total(arr) {\n  let sum = 0;\n  for (let item of arr) {\n    sum = (sum + item);\n  }\n  return sum;\n}`);
+  assertEqual(js, `function total(arr) {\n  let sum = 0;\n  for (let item of arr) {\n    sum = sum + item;\n  }\n  return sum;\n}`);
 });
 
 test("if block with for loop", () => {
@@ -194,7 +194,7 @@ test("if block with for loop", () => {
   for i in range(5):
     console.log(i)`;
   const js = compile(source);
-  assertEqual(js, `if (true) {\n  for (let i = 0; (i < 5); i = (i + 1)) {\n    console.log(i);\n  }\n}`);
+  assertEqual(js, `if (true) {\n  for (let i = 0; i < 5; i = i + 1) {\n    console.log(i);\n  }\n}`);
 });
 
 test("global reassignment after function", () => {
@@ -203,7 +203,7 @@ test("global reassignment after function", () => {
 x = foo()
 x = x + 1`;
   const js = compile(source);
-  assertEqual(js, `function foo() {\n  return 10;\n}\nlet x = foo();\nx = (x + 1);`);
+  assertEqual(js, `function foo() {\n  return 10;\n}\nlet x = foo();\nx = x + 1;`);
 });
 
 // === Phase 10 Checkpoint ===

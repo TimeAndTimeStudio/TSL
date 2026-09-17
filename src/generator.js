@@ -54,6 +54,7 @@ function createGenerator(source, filename = '<anonymous>') {
       Identifier: generateIdentifier,
       BinaryExpression: generateBinaryExpression,
       UnaryExpression: generateUnaryExpression,
+      ParenthesizedExpression: generateParenthesizedExpression,
       CallExpression: generateCallExpression,
       ArrayExpression: generateArrayExpression,
       ObjectExpression: generateObjectExpression,
@@ -155,7 +156,7 @@ function createGenerator(source, filename = '<anonymous>') {
     let op = node.operator;
     if (op === 'and') op = '&&';
     if (op === 'or') op = '||';
-    return `(${left} ${op} ${right})`;
+    return `${left} ${op} ${right}`;
   }
 
   // === Unary Expression ===
@@ -164,7 +165,14 @@ function createGenerator(source, filename = '<anonymous>') {
     const arg = generateNode(node.argument);
     let op = node.operator;
     if (op === 'not') op = '!';
-    return `(${op} ${arg})`;
+    return `${op} ${arg}`;
+  }
+
+  // === Parenthesized Expression ===
+
+  function generateParenthesizedExpression(node) {
+    const expr = generateNode(node.expression);
+    return `(${expr})`;
   }
 
   // === Call Expression ===

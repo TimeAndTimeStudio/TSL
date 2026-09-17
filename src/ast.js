@@ -110,6 +110,12 @@ function ArrayAccess(object, index, location) {
   return node;
 }
 
+function ParenthesizedExpression(expression, location) {
+  const node = new ASTNode('ParenthesizedExpression', location);
+  node.expression = expression;
+  return node;
+}
+
 // Statements
 function Assignment(left, right, location) {
   const node = new ASTNode('Assignment', location);
@@ -184,6 +190,7 @@ module.exports = {
   CallExpression,
   MemberExpression,
   ArrayAccess,
+  ParenthesizedExpression,
   Assignment,
   IfStatement,
   WhileStatement,

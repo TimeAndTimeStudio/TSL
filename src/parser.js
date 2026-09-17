@@ -14,6 +14,7 @@ const {
   CallExpression,
   MemberExpression,
   ArrayAccess,
+  ParenthesizedExpression,
   Assignment,
   IfStatement,
   WhileStatement,
@@ -150,7 +151,7 @@ function createParser(tokens, source, filename = '<anonymous>') {
       advance();
       const expr = parseExpression();
       expect(TokenType.RPAREN);
-      return expr;
+      return new ParenthesizedExpression(expr, token.location);
     }
 
     // Array literal
@@ -255,7 +256,7 @@ function createParser(tokens, source, filename = '<anonymous>') {
       advance();
       const expr = parseExpression();
       expect(TokenType.RPAREN);
-      return expr;
+      return new ParenthesizedExpression(expr, token.location);
     }
 
     throw new ParserError(
@@ -464,7 +465,11 @@ function createParser(tokens, source, filename = '<anonymous>') {
   // === If statement ===
   function parseIf() {
     const ifToken = advance(TokenType.IF);
-    const condition = parseExpression();
+    let condition = parseExpression();
+    // Strip outer ParenthesizedExpression since the parentheses are part of the syntax
+    if (condition.type === 'ParenthesizedExpression') {
+      condition = condition.expression;
+    }
     const consequent = parseBlock();
 
     let alternate = null;
@@ -531,7 +536,11 @@ function createParser(tokens, source, filename = '<anonymous>') {
   // === While statement ===
   function parseWhile() {
     const whileToken = advance(TokenType.WHILE);
-    const condition = parseExpression();
+    let condition = parseExpression();
+    // Strip outer ParenthesizedExpression since the parentheses are part of the syntax
+    if (condition.type === 'ParenthesizedExpression') {
+      condition = condition.expression;
+    }
     const body = parseBlock();
     return WhileStatement(condition, body, makeLocation(whileToken));
   }
