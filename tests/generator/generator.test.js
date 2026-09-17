@@ -104,7 +104,7 @@ test("generates binary logical operators", () => {
 // Unary expressions
 test("generates unary not", () => {
   const js = compile(`x = not true`);
-  assertEqual(js, `let x = ! true;`);
+  assertEqual(js, `let x = !true;`);
 });
 
 // Assignment
@@ -619,7 +619,7 @@ test("generates function with not operator", () => {
     return false
   return true`;
   const js = compile(source);
-  assertEqual(js, `function not_empty(x) {\n  if (! x) {\n    return false;\n  }\n  return true;\n}`);
+  assertEqual(js, `function not_empty(x) {\n  if (!x) {\n    return false;\n  }\n  return true;\n}`);
 });
 
 test("generates function with return of null", () => {

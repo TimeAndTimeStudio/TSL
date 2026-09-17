@@ -169,7 +169,7 @@ function createGenerator(source, filename = '<anonymous>') {
   function generateUnaryExpression(node) {
     const arg = generateNode(node.argument);
     let op = node.operator;
-    if (op === 'not') op = '!';
+    if (op === 'not') return `!${arg}`;
     return `${op} ${arg}`;
   }
 
