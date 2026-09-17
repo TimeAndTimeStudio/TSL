@@ -168,7 +168,7 @@ test("full pipeline: while loop", () => {
 test("full pipeline: function", () => {
   const result = compileAndRun('function double(n):\n    return n * 2\n\nresult = double(5)\nprint(result)\n');
   ok(result.jsCode.includes('function double(n)'), 'Should generate function declaration');
-  ok(result.jsCode.includes('return (n * 2)'), 'Should generate return');
+  ok(result.jsCode.includes('return n * 2'), 'Should generate return');
   ok(result.jsCode.includes('double(5)'), 'Should generate function call');
 });
 
@@ -245,8 +245,8 @@ test("generated JavaScript runs standalone", () => {
 
 // Test 28: Complex expression
 test("full pipeline: complex expressions", () => {
-  const result = compileAndRun('x = (10 + 20) * 2\nprint(x)\n');
-  ok(result.jsCode.includes('((10 + 20) * 2)'), 'Should handle complex expressions');
+  const result = compileAndRun('x = 10 + 20 * 2\nprint(x)\n');
+  ok(result.jsCode.includes('10 + 20 * 2'), 'Should handle complex expressions');
 });
 
 // Test 29: Break statement

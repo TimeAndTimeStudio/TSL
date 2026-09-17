@@ -155,7 +155,7 @@ function createGenerator(source, filename = '<anonymous>') {
     let op = node.operator;
     if (op === 'and') op = '&&';
     if (op === 'or') op = '||';
-    return `(${left} ${op} ${right})`;
+    return `${left} ${op} ${right}`;
   }
 
   // === Unary Expression ===
