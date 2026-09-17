@@ -150,13 +150,14 @@ function ForStatement(variable, iterable, body, location, init = null, condition
   return node;
 }
 
-function FunctionDeclaration(name, parameters, body, location) {
-  const node = new ASTNode('FunctionDeclaration', location);
-  node.name = name;
-  node.parameters = parameters;
-  node.body = body;
-  return node;
-}
+ function FunctionDeclaration(name, parameters, body, isPublic, location) {
+   const node = new ASTNode('FunctionDeclaration', location);
+   node.name = name;
+   node.parameters = parameters;
+   node.body = body;
+   node.isPublic = isPublic || false;
+   return node;
+ }
 
 function ReturnStatement(argument, location) {
   const node = new ASTNode('ReturnStatement', location);

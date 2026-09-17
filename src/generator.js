@@ -6,11 +6,13 @@ function createGenerator(source, filename = '<anonymous>') {
   let indentLevel = 0;
   let scopeStack = [];
   let inFunction = false;
+  let publicFunctions = [];
 
   function reset() {
     indentLevel = 0;
     scopeStack = [new Set()];
     inFunction = false;
+    publicFunctions = [];
   }
 
   function pushScope() {
@@ -95,6 +97,9 @@ function createGenerator(source, filename = '<anonymous>') {
     for (const stmt of node.body) {
       const code = generateStatement(stmt);
       if (code) lines.push(code);
+    }
+    for (const funcName of publicFunctions) {
+      lines.push(`window.${funcName} = ${funcName};`);
     }
     return lines.join('\n') + '\n';
   }
@@ -330,6 +335,10 @@ function createGenerator(source, filename = '<anonymous>') {
     popScope();
 
     lines.push(`${indent()}}`);
+
+    if (node.isPublic) {
+      publicFunctions.push(node.name.name);
+    }
 
     return lines.join('\n');
   }

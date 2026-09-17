@@ -547,12 +547,18 @@ function createParser(tokens, source, filename = '<anonymous>') {
 
   // === Function declaration ===
   function parseFunction() {
-    const funcToken = advance(TokenType.FUNCTION);
+    let isPublic = false;
+    let funcToken;
+    if (peek().type === TokenType.PUBLIC) {
+      advance(TokenType.PUBLIC);
+      isPublic = true;
+    }
+    funcToken = advance(TokenType.FUNCTION);
     const nameToken = expect(TokenType.IDENTIFIER);
     expect(TokenType.LPAREN);
     const params = parseParameterList();
     const body = parseBlock();
-    return FunctionDeclaration(Identifier(nameToken.value, makeLocation(nameToken)), params, body, makeLocation(funcToken));
+    return FunctionDeclaration(Identifier(nameToken.value, makeLocation(nameToken)), params, body, isPublic, makeLocation(funcToken));
   }
 
   function parseParameterList() {
