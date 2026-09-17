@@ -145,7 +145,7 @@ test("for loop variable is scoped to loop", () => {
   console.log(i)
 console.log(i)`;
   const js = compile(source);
-  assertEqual(js, `for (let i of range(3)) {\n  console.log(i);\n}\nconsole.log(i);`);
+  assertEqual(js, `for (let i = 0; i < 3; i = i + 1) {\n  console.log(i);\n}\nconsole.log(i);`);
 });
 
 test("for loop body creates new scope", () => {
@@ -153,7 +153,7 @@ test("for loop body creates new scope", () => {
 for i in range(3):
   x = x + i`;
   const js = compile(source);
-  assertEqual(js, `let x = 1;\nfor (let i of range(3)) {\n  x = x + i;\n}`);
+  assertEqual(js, `let x = 1;\nfor (let i = 0; i < 3; i = i + 1) {\n  x = x + i;\n}`);
 });
 
 // === Nested Scopes ===
@@ -194,7 +194,7 @@ test("if block with for loop", () => {
   for i in range(5):
     console.log(i)`;
   const js = compile(source);
-  assertEqual(js, `if (true) {\n  for (let i of range(5)) {\n    console.log(i);\n  }\n}`);
+  assertEqual(js, `if (true) {\n  for (let i = 0; i < 5; i = i + 1) {\n    console.log(i);\n  }\n}`);
 });
 
 test("global reassignment after function", () => {

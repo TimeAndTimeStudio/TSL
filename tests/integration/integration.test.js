@@ -155,7 +155,7 @@ test("full pipeline: if/else", () => {
 // Test 16: Full pipeline — for loop
 test("full pipeline: for loop", () => {
   const result = compileAndRun('for i in range(10):\n    print(i)\n');
-  ok(result.jsCode.includes('for (let i of range(10))'), 'Should generate for-of loop');
+  ok(result.jsCode.includes('for (let i = 0; i < 10; i = i + 1)'), 'Should generate C-style for loop');
 });
 
 // Test 17: Full pipeline — while loop

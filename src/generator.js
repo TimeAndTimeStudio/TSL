@@ -289,11 +289,22 @@ function createGenerator(source, filename = '<anonymous>') {
   // === For Statement ===
 
   function generateForStatement(node) {
-    const variable = generateNode(node.variable);
-    const iterable = generateNode(node.iterable);
     const lines = [];
 
-    lines.push(`${indent()}for (let ${variable} of ${iterable}) {`);
+    if (node.init !== null) {
+      let init = generateNode(node.init);
+      const condition = generateNode(node.condition);
+      let update = generateNode(node.update);
+      // Remove trailing semicolon and leading whitespace from init/update
+      init = init.replace(/;$/, '').trim();
+      update = update.replace(/;$/, '').trim();
+      lines.push(`${indent()}for (${init}; ${condition}; ${update}) {`);
+    } else {
+      const variable = generateNode(node.variable);
+      const iterable = generateNode(node.iterable);
+      lines.push(`${indent()}for (let ${variable} of ${iterable}) {`);
+    }
+
     pushScope();
     for (const stmt of node.body) {
       lines.push(generateStatement(stmt));

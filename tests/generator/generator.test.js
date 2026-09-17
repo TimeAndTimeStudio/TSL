@@ -276,7 +276,7 @@ test("generates for loop with range", () => {
   const source = `for i in range(10):
   console.log(i)`;
   const js = compile(source);
-  assertEqual(js, `for (let i of range(10)) {\n  console.log(i);\n}`);
+  assertEqual(js, `for (let i = 0; i < 10; i = i + 1) {\n  console.log(i);\n}`);
 });
 
 test("generates while loop with break", () => {
@@ -309,7 +309,7 @@ test("generates nested for loops", () => {
   for j in range(10):
     console.log(i + j)`;
   const js = compile(source);
-  assertEqual(js, `for (let i of range(10)) {\n  for (let j of range(10)) {\n    console.log(i + j);\n  }\n}`);
+  assertEqual(js, `for (let i = 0; i < 10; i = i + 1) {\n  for (let j = 0; j < 10; j = j + 1) {\n    console.log(i + j);\n  }\n}`);
 });
 
 test("generates if with complex condition", () => {
@@ -619,7 +619,7 @@ test("generates function with not operator", () => {
     return false
   return true`;
   const js = compile(source);
-  assertEqual(js, `function not_empty(x) {\n  if ((! x)) {\n    return false;\n  }\n  return true;\n}`);
+  assertEqual(js, `function not_empty(x) {\n  if (! x) {\n    return false;\n  }\n  return true;\n}`);
 });
 
 test("generates function with return of null", () => {

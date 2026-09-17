@@ -488,9 +488,42 @@ function createParser(tokens, source, filename = '<anonymous>') {
   // === For statement ===
   function parseFor() {
     const forToken = advance(TokenType.FOR);
+    const firstToken = peek();
+    
+    // Check if it's a C-style for loop: for (let i = 0; i < 5; i++)
+    if (firstToken.type === TokenType.LET) {
+      advance(); // consume LET
+      const varToken = expect(TokenType.IDENTIFIER);
+      expect(TokenType.EQUAL);
+      const initValue = parseExpression();
+      expect(TokenType.SEMICOLON);
+      const condition = parseExpression();
+      expect(TokenType.SEMICOLON);
+      const update = parseExpression();
+      expect(TokenType.COLON);
+      const body = parseBlock();
+      const init = Assignment(Identifier(varToken.value, varToken.location), initValue, varToken.location);
+      return ForStatement(null, null, body, makeLocation(forToken), init, condition, update);
+    }
+    
+    // Python-style: for item in iterable:
     const varToken = expect(TokenType.IDENTIFIER);
     expect(TokenType.IN);
     const iterable = parseExpression();
+    
+    // Check if it's for i in range(N):
+    if (iterable.type === 'CallExpression' && 
+        iterable.callee.type === 'Identifier' && 
+        iterable.callee.name === 'range' &&
+        iterable.arguments.length === 1) {
+      const limit = iterable.arguments[0];
+      const init = Assignment(Identifier(varToken.value, varToken.location), NumberLiteral(0, varToken.location), varToken.location);
+      const condition = BinaryExpression('<', Identifier(varToken.value, varToken.location), limit, varToken.location);
+      const update = Assignment(Identifier(varToken.value, varToken.location), BinaryExpression('+', Identifier(varToken.value, varToken.location), NumberLiteral(1, varToken.location), varToken.location), varToken.location);
+      const body = parseBlock();
+      return ForStatement(null, null, body, makeLocation(forToken), init, condition, update);
+    }
+    
     const body = parseBlock();
     return ForStatement(Identifier(varToken.value, makeLocation(varToken)), iterable, body, makeLocation(forToken));
   }

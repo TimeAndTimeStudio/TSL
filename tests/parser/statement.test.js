@@ -79,9 +79,10 @@ function parseStatement(source) {
 {
   const stmt = parseStatement('for i in range(10):\n    print(i)');
   equal(stmt.type, 'ForStatement');
-  equal(stmt.variable.name, 'i');
-  equal(stmt.iterable.type, 'CallExpression');
-  equal(stmt.iterable.callee.name, 'range');
+  equal(stmt.variable, null);
+  equal(stmt.init.type, 'Assignment');
+  equal(stmt.condition.type, 'BinaryExpression');
+  equal(stmt.update.type, 'Assignment');
   equal(stmt.body.length, 1);
   console.log('PASS: for statement');
 }

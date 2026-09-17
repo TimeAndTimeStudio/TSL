@@ -133,11 +133,14 @@ function WhileStatement(condition, body, location) {
   return node;
 }
 
-function ForStatement(variable, iterable, body, location) {
+function ForStatement(variable, iterable, body, location, init = null, condition = null, update = null) {
   const node = new ASTNode('ForStatement', location);
   node.variable = variable;
   node.iterable = iterable;
   node.body = body;
+  node.init = init;
+  node.condition = condition;
+  node.update = update;
   return node;
 }
 

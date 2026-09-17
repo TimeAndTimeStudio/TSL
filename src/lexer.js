@@ -11,6 +11,7 @@ const TokenType = {
   STRING: 'STRING',
 
   // Keywords
+  LET: 'LET',
   IF: 'IF',
   ELSE: 'ELSE',
   FOR: 'FOR',
@@ -52,6 +53,7 @@ const TokenType = {
   COMMA: 'COMMA',
   DOT: 'DOT',
   COLON: 'COLON',
+  SEMICOLON: 'SEMICOLON',
 
   // Structure
   NEWLINE: 'NEWLINE',
@@ -63,6 +65,7 @@ const TokenType = {
 
 // Keyword mapping
 const KEYWORDS = {
+  'let': TokenType.LET,
   'if': TokenType.IF,
   'else': TokenType.ELSE,
   'for': TokenType.FOR,
@@ -433,6 +436,10 @@ function createLexer(source, filename = '<anonymous>') {
           continue;
         case ':':
           tokens.push(new Token(TokenType.COLON, ':', line, column));
+          advance();
+          continue;
+        case ';':
+          tokens.push(new Token(TokenType.SEMICOLON, ';', line, column));
           advance();
           continue;
       }
