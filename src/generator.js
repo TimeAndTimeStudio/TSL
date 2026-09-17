@@ -155,7 +155,7 @@ function createGenerator(source, filename = '<anonymous>') {
     let op = node.operator;
     if (op === 'and') op = '&&';
     if (op === 'or') op = '||';
-    return `${left} ${op} ${right}`;
+    return `(${left} ${op} ${right})`;
   }
 
   // === Unary Expression ===
@@ -226,32 +226,10 @@ function createGenerator(source, filename = '<anonymous>') {
     return `${indent()}${left} = ${right};`;
   }
 
-  function stripOuterParens(str) {
-    while (str.length >= 2 && str[0] === '(' && str[str.length - 1] === ')') {
-      let depth = 0;
-      let allParens = true;
-      for (let i = 0; i < str.length; i++) {
-        if (str[i] === '(') depth++;
-        if (str[i] === ')') depth--;
-        if (depth === 0 && i < str.length - 1) {
-          allParens = false;
-          break;
-        }
-      }
-      if (allParens) {
-        str = str.slice(1, -1);
-      } else {
-        break;
-      }
-    }
-    return str;
-  }
-
   // === If Statement ===
 
   function generateIfStatement(node) {
-    let condition = generateNode(node.condition);
-    condition = stripOuterParens(condition);
+    const condition = generateNode(node.condition);
     const lines = [];
 
     lines.push(`${indent()}if (${condition}) {`);
@@ -279,8 +257,7 @@ function createGenerator(source, filename = '<anonymous>') {
   // === While Statement ===
 
   function generateWhileStatement(node) {
-    let condition = generateNode(node.condition);
-    condition = stripOuterParens(condition);
+    const condition = generateNode(node.condition);
     const lines = [];
 
     lines.push(`${indent()}while (${condition}) {`);

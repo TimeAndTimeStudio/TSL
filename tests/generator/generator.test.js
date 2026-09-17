@@ -68,37 +68,37 @@ test("generates variable declaration", () => {
 // Binary expressions
 test("generates binary addition", () => {
   const js = compile(`x = 1 + 2`);
-  assertEqual(js, `let x = 1 + 2;`);
+  assertEqual(js, `let x = (1 + 2);`);
 });
 
 test("generates binary subtraction", () => {
   const js = compile(`x = 5 - 3`);
-  assertEqual(js, `let x = 5 - 3;`);
+  assertEqual(js, `let x = (5 - 3);`);
 });
 
 test("generates binary multiplication", () => {
   const js = compile(`x = 3 * 4`);
-  assertEqual(js, `let x = 3 * 4;`);
+  assertEqual(js, `let x = (3 * 4);`);
 });
 
 test("generates binary division", () => {
   const js = compile(`x = 10 / 2`);
-  assertEqual(js, `let x = 10 / 2;`);
+  assertEqual(js, `let x = (10 / 2);`);
 });
 
 test("generates binary modulo", () => {
   const js = compile(`x = 10 % 3`);
-  assertEqual(js, `let x = 10 % 3;`);
+  assertEqual(js, `let x = (10 % 3);`);
 });
 
 test("generates binary comparisons", () => {
   const js = compile(`x = 1 == 2\ny = 3 != 4\nz = 5 > 3`);
-  assertEqual(js, `let x = 1 == 2;\nlet y = 3 != 4;\nlet z = 5 > 3;`);
+  assertEqual(js, `let x = (1 == 2);\nlet y = (3 != 4);\nlet z = (5 > 3);`);
 });
 
 test("generates binary logical operators", () => {
   const js = compile(`x = true and false\ny = true or false`);
-  assertEqual(js, `let x = true && false;\nlet y = true || false;`);
+  assertEqual(js, `let x = (true && false);\nlet y = (true || false);`);
 });
 
 // Unary expressions
@@ -208,7 +208,7 @@ test("generates multi-statement program", () => {
 y = 20
 console.log(x + y)`;
   const js = compile(source);
-  assertEqual(js, `let x = 10;\nlet y = 20;\nconsole.log(x + y);`);
+  assertEqual(js, `let x = 10;\nlet y = 20;\nconsole.log((x + y));`);
 });
 
 // Full pipeline with function definition
@@ -216,13 +216,13 @@ test("generates function definition", () => {
   const source = `function add(a, b):
   return a + b`;
   const js = compile(source);
-  assertEqual(js, `function add(a, b) {\n  return a + b;\n}`);
+  assertEqual(js, `function add(a, b) {\n  return (a + b);\n}`);
 });
 
 // Function call with complex expressions
 test("generates function call with complex arguments", () => {
   const js = compile(`foo(1 + 2, 3 * 4)`);
-  assertEqual(js, `foo(1 + 2, 3 * 4);`);
+  assertEqual(js, `foo((1 + 2), (3 * 4));`);
 });
 
 // Member access
@@ -276,7 +276,7 @@ test("generates for loop with range", () => {
   const source = `for i in range(10):
   console.log(i)`;
   const js = compile(source);
-  assertEqual(js, `for (let i = 0; i < 10; i = i + 1) {\n  console.log(i);\n}`);
+  assertEqual(js, `for (let i = 0; (i < 10); i = (i + 1)) {\n  console.log(i);\n}`);
 });
 
 test("generates while loop with break", () => {
@@ -292,7 +292,7 @@ while (counter):
   counter = counter - 1
   continue`;
   const js = compile(source);
-  assertEqual(js, `let counter = 10;\nwhile (counter) {\n  counter = counter - 1;\n  continue;\n}`);
+  assertEqual(js, `let counter = 10;\nwhile (counter) {\n  counter = (counter - 1);\n  continue;\n}`);
 });
 
 test("generates for loop with multiple statements", () => {
@@ -301,7 +301,7 @@ for i in items:
   console.log(i)
   total = total + i`;
   const js = compile(source);
-  assertEqual(js, `let total = 0;\nfor (let i of items) {\n  console.log(i);\n  total = total + i;\n}`);
+  assertEqual(js, `let total = 0;\nfor (let i of items) {\n  console.log(i);\n  total = (total + i);\n}`);
 });
 
 test("generates nested for loops", () => {
@@ -309,14 +309,14 @@ test("generates nested for loops", () => {
   for j in range(10):
     console.log(i + j)`;
   const js = compile(source);
-  assertEqual(js, `for (let i = 0; i < 10; i = i + 1) {\n  for (let j = 0; j < 10; j = j + 1) {\n    console.log(i + j);\n  }\n}`);
+  assertEqual(js, `for (let i = 0; (i < 10); i = (i + 1)) {\n  for (let j = 0; (j < 10); j = (j + 1)) {\n    console.log((i + j));\n  }\n}`);
 });
 
 test("generates if with complex condition", () => {
   const source = `if (x > 10 and y < 5):
   console.log("big")`;
   const js = compile(source);
-  assertEqual(js, `if (x > 10 && y < 5) {\n  console.log("big");\n}`);
+  assertEqual(js, `if (((x > 10) && (y < 5))) {\n  console.log("big");\n}`);
 });
 
 test("generates while with break and continue together", () => {
@@ -355,12 +355,12 @@ z = 3`;
 // Nested expressions
 test("generates nested binary expressions", () => {
   const js = compile(`x = 1 + 2 * 3`);
-  assertEqual(js, `let x = 1 + 2 * 3;`);
+  assertEqual(js, `let x = (1 + (2 * 3));`);
 });
 
 test("generates parenthesized expressions", () => {
   const js = compile(`x = (1 + 2) * 3`);
-  assertEqual(js, `let x = 1 + 2 * 3;`);
+  assertEqual(js, `let x = ((1 + 2) * 3);`);
 });
 
 test("generates string in print", () => {
@@ -371,13 +371,13 @@ test("generates string in print", () => {
 // Number operations
 test("generates number operations", () => {
   const js = compile(`x = 10 - 5 / 2`);
-  assertEqual(js, `let x = 10 - 5 / 2;`);
+  assertEqual(js, `let x = (10 - (5 / 2));`);
 });
 
 // Boolean operations
 test("generates boolean operations", () => {
   const js = compile(`x = true and false or true`);
-  assertEqual(js, `let x = true && false || true;`);
+  assertEqual(js, `let x = ((true && false) || true);`);
 });
 
 // Null handling
@@ -418,21 +418,21 @@ test("generates function declaration with single parameter", () => {
   const source = `function double(x):
   return x * 2`;
   const js = compile(source);
-  assertEqual(js, `function double(x) {\n  return x * 2;\n}`);
+  assertEqual(js, `function double(x) {\n  return (x * 2);\n}`);
 });
 
 test("generates function declaration with multiple parameters", () => {
   const source = `function add(a, b):
   return a + b`;
   const js = compile(source);
-  assertEqual(js, `function add(a, b) {\n  return a + b;\n}`);
+  assertEqual(js, `function add(a, b) {\n  return (a + b);\n}`);
 });
 
 test("generates function declaration with three parameters", () => {
   const source = `function sum(a, b, c):
   return a + b + c`;
   const js = compile(source);
-  assertEqual(js, `function sum(a, b, c) {\n  return a + b + c;\n}`);
+  assertEqual(js, `function sum(a, b, c) {\n  return ((a + b) + c);\n}`);
 });
 
 test("generates function call with single argument", () => {
@@ -465,7 +465,7 @@ test("generates function with multiple statements", () => {
     return a
   return b`;
   const js = compile(source);
-  assertEqual(js, `function max(a, b) {\n  if (a > b) {\n    return a;\n  }\n  return b;\n}`);
+  assertEqual(js, `function max(a, b) {\n  if ((a > b)) {\n    return a;\n  }\n  return b;\n}`);
 });
 
 test("generates empty function", () => {
@@ -489,7 +489,7 @@ test("generates function with local variables", () => {
   z = y + 1
   return z`;
   const js = compile(source);
-  assertEqual(js, `function compute(x) {\n  let y = x * 2;\n  let z = y + 1;\n  return z;\n}`);
+  assertEqual(js, `function compute(x) {\n  let y = (x * 2);\n  let z = (y + 1);\n  return z;\n}`);
 });
 
 test("generates function with reassignment of parameter", () => {
@@ -497,7 +497,7 @@ test("generates function with reassignment of parameter", () => {
   x = x + 1
   return x`;
   const js = compile(source);
-  assertEqual(js, `function adjust(x) {\n  x = x + 1;\n  return x;\n}`);
+  assertEqual(js, `function adjust(x) {\n  x = (x + 1);\n  return x;\n}`);
 });
 
 test("generates multiple function declarations", () => {
@@ -507,7 +507,7 @@ test("generates multiple function declarations", () => {
 function sub(a, b):
   return a - b`;
   const js = compile(source);
-  assertEqual(js, `function add(a, b) {\n  return a + b;\n}\nfunction sub(a, b) {\n  return a - b;\n}`);
+  assertEqual(js, `function add(a, b) {\n  return (a + b);\n}\nfunction sub(a, b) {\n  return (a - b);\n}`);
 });
 
 test("generates function call after function declaration", () => {
@@ -516,7 +516,7 @@ test("generates function call after function declaration", () => {
 
 result = add(3, 4)`;
   const js = compile(source);
-  assertEqual(js, `function add(a, b) {\n  return a + b;\n}\nlet result = add(3, 4);`);
+  assertEqual(js, `function add(a, b) {\n  return (a + b);\n}\nlet result = add(3, 4);`);
 });
 
 test("generates function with for loop body", () => {
@@ -526,7 +526,7 @@ test("generates function with for loop body", () => {
     total = total + item
   return total`;
   const js = compile(source);
-  assertEqual(js, `function sum_array(arr) {\n  let total = 0;\n  for (let item of arr) {\n    total = total + item;\n  }\n  return total;\n}`);
+  assertEqual(js, `function sum_array(arr) {\n  let total = 0;\n  for (let item of arr) {\n    total = (total + item);\n  }\n  return total;\n}`);
 });
 
 test("generates function with while loop body", () => {
@@ -535,7 +535,7 @@ test("generates function with while loop body", () => {
     console.log(n)
     n = n - 1`;
   const js = compile(source);
-  assertEqual(js, `function countdown(n) {\n  while (n > 0) {\n    console.log(n);\n    n = n - 1;\n  }\n}`);
+  assertEqual(js, `function countdown(n) {\n  while ((n > 0)) {\n    console.log(n);\n    n = (n - 1);\n  }\n}`);
 });
 
 test("generates function with break", () => {
@@ -545,14 +545,14 @@ test("generates function with break", () => {
       return item
   return null`;
   const js = compile(source);
-  assertEqual(js, `function find(items, target) {\n  for (let item of items) {\n    if (item == target) {\n      return item;\n    }\n  }\n  return null;\n}`);
+  assertEqual(js, `function find(items, target) {\n  for (let item of items) {\n    if ((item == target)) {\n      return item;\n    }\n  }\n  return null;\n}`);
 });
 
 test("generates function with nested function call in return", () => {
   const source = `function outer(x):
   return inner(x + 1)`;
   const js = compile(source);
-  assertEqual(js, `function outer(x) {\n  return inner(x + 1);\n}`);
+  assertEqual(js, `function outer(x) {\n  return inner((x + 1));\n}`);
 });
 
 test("generates function with multiple returns", () => {
@@ -561,7 +561,7 @@ test("generates function with multiple returns", () => {
     return 0 - x
   return x`;
   const js = compile(source);
-  assertEqual(js, `function abs(x) {\n  if (x < 0) {\n    return 0 - x;\n  }\n  return x;\n}`);
+  assertEqual(js, `function abs(x) {\n  if ((x < 0)) {\n    return (0 - x);\n  }\n  return x;\n}`);
 });
 
 test("generates function call with nested call as argument", () => {
@@ -587,7 +587,7 @@ test("generates function with object in return", () => {
 test("generates function call with expression arguments", () => {
   const source = `result = add(1 + 2, 3 * 4)`;
   const js = compile(source);
-  assertEqual(js, `let result = add(1 + 2, 3 * 4);`);
+  assertEqual(js, `let result = add((1 + 2), (3 * 4));`);
 });
 
 test("generates function with member access in body", () => {
@@ -610,7 +610,7 @@ test("generates function with logical operators in condition", () => {
     return true
   return false`;
   const js = compile(source);
-  assertEqual(js, `function check(x, y) {\n  if (x > 0 && y > 0) {\n    return true;\n  }\n  return false;\n}`);
+  assertEqual(js, `function check(x, y) {\n  if (((x > 0) && (y > 0))) {\n    return true;\n  }\n  return false;\n}`);
 });
 
 test("generates function with not operator", () => {
@@ -619,7 +619,7 @@ test("generates function with not operator", () => {
     return false
   return true`;
   const js = compile(source);
-  assertEqual(js, `function not_empty(x) {\n  if (! x) {\n    return false;\n  }\n  return true;\n}`);
+  assertEqual(js, `function not_empty(x) {\n  if ((! x)) {\n    return false;\n  }\n  return true;\n}`);
 });
 
 test("generates function with return of null", () => {
@@ -668,7 +668,7 @@ test("generates function with nested function calls in parameters", () => {
 
 result = combine(add(1, 2), multiply(3, 4))`;
   const js = compile(source);
-  assertEqual(js, `function combine(a, b) {\n  return a + b;\n}\nlet result = combine(add(1, 2), multiply(3, 4));`);
+  assertEqual(js, `function combine(a, b) {\n  return (a + b);\n}\nlet result = combine(add(1, 2), multiply(3, 4));`);
 });
 
 console.log("\nAll generator tests passed!");
