@@ -519,35 +519,6 @@ tsl --version
 
 ---
 
-## Engine API (v1.0)
-
-The compiler generates calls; the runtime implements them.
-
-```text
-clear()
-draw_rect(x, y, width, height)
-draw_circle(x, y, radius)
-draw_line(x1, y1, x2, y2)
-```
-
-The compiler does not understand graphics implementation.
-
----
-
-## Render Model
-
-```tsl
-function update():
-    ...
-
-function draw():
-    ...
-```
-
-The runtime calls `update()` and `draw()` in a frame loop.
-
----
-
 ## Out of Scope for v1.0
 
 ```

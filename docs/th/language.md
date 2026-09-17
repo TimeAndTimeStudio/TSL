@@ -519,35 +519,6 @@ tsl --version
 
 ---
 
-## Engine API (v1.0)
-
-compiler สร้างการเรียก; runtime ทำการ implement
-
-```text
-clear()
-draw_rect(x, y, width, height)
-draw_circle(x, y, radius)
-draw_line(x1, y1, x2, y2)
-```
-
-compiler ไม่เข้าใจ graphics implementation
-
----
-
-## Render Model
-
-```tsl
-function update():
-    ...
-
-function draw():
-    ...
-```
-
-runtime เรียก `update()` และ `draw()` ใน frame loop
-
----
-
 ## ไม่อยู่ในขอบเขต v1.0
 
 ```
