@@ -127,7 +127,7 @@ test("all example files compile", () => {
 // Test 12: Full pipeline — hello.tsl
 test("full pipeline: hello.tsl", () => {
   const result = compileAndRun('print("Integration test")\n');
-  ok(result.jsCode.includes('print("Integration test");'), 'Should generate correct JS');
+  ok(result.jsCode.includes('console.log("Integration test");'), 'Should generate correct JS');
 });
 
 // Test 13: Full pipeline — variables
@@ -206,7 +206,7 @@ test("full pipeline: boolean and logical operators", () => {
   const result = compileAndRun('a = true and false\nb = true or false\nc = not true\nprint(a)\nprint(b)\nprint(c)\n');
   ok(result.jsCode.includes('&&'), 'Should generate &&');
   ok(result.jsCode.includes('||'), 'Should generate ||');
-  ok(result.jsCode.includes('not'), 'Should generate not');
+  ok(result.jsCode.includes('!'), 'Should generate !');
 });
 
 // Test 25: Full pipeline — null

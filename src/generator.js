@@ -162,13 +162,18 @@ function createGenerator(source, filename = '<anonymous>') {
 
   function generateUnaryExpression(node) {
     const arg = generateNode(node.argument);
-    return `(${node.operator} ${arg})`;
+    let op = node.operator;
+    if (op === 'not') op = '!';
+    return `(${op} ${arg})`;
   }
 
   // === Call Expression ===
 
   function generateCallExpression(node) {
-    const callee = generateNode(node.callee);
+    let callee = generateNode(node.callee);
+    if (callee === 'print') {
+      callee = 'console.log';
+    }
     const args = node.arguments.map(arg => generateNode(arg)).join(', ');
     return `${callee}(${args})`;
   }

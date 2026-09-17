@@ -36,22 +36,22 @@ function assertEqual(actual, expected) {
 // Literals
 test("generates string literal", () => {
   const js = compile(`print("hello")`);
-  assertEqual(js, `print("hello");`);
+  assertEqual(js, `console.log("hello");`);
 });
 
 test("generates number literal", () => {
   const js = compile(`print(42)`);
-  assertEqual(js, `print(42);`);
+  assertEqual(js, `console.log(42);`);
 });
 
 test("generates boolean literals", () => {
   const js = compile(`print(true)\nprint(false)`);
-  assertEqual(js, `print(true);\nprint(false);`);
+  assertEqual(js, `console.log(true);\nconsole.log(false);`);
 });
 
 test("generates null literal", () => {
   const js = compile(`print(null)`);
-  assertEqual(js, `print(null);`);
+  assertEqual(js, `console.log(null);`);
 });
 
 // Identifiers
@@ -104,7 +104,7 @@ test("generates binary logical operators", () => {
 // Unary expressions
 test("generates unary not", () => {
   const js = compile(`x = not true`);
-  assertEqual(js, `let x = (not true);`);
+  assertEqual(js, `let x = (! true);`);
 });
 
 // Assignment
@@ -156,34 +156,34 @@ test("generates empty object", () => {
 // Control flow - if
 test("generates if statement", () => {
   const source = `if (true):
-  print(1)`;
+  console.log(1)`;
   const js = compile(source);
-  assertEqual(js, `if (true) {\n  print(1);\n}`);
+  assertEqual(js, `if (true) {\n  console.log(1);\n}`);
 });
 
 test("generates if-else statement", () => {
   const source = `if (true):
-  print(1)
+  console.log(1)
 else:
-  print(2)`;
+  console.log(2)`;
   const js = compile(source);
-  assertEqual(js, `if (true) {\n  print(1);\n} else {\n  print(2);\n}`);
+  assertEqual(js, `if (true) {\n  console.log(1);\n} else {\n  console.log(2);\n}`);
 });
 
 // Control flow - while
 test("generates while loop", () => {
   const source = `while (true):
-  print(1)`;
+  console.log(1)`;
   const js = compile(source);
-  assertEqual(js, `while (true) {\n  print(1);\n}`);
+  assertEqual(js, `while (true) {\n  console.log(1);\n}`);
 });
 
 // Control flow - for
 test("generates for loop", () => {
   const source = `for i in items:
-  print(i)`;
+  console.log(i)`;
   const js = compile(source);
-  assertEqual(js, `for (let i of items) {\n  print(i);\n}`);
+  assertEqual(js, `for (let i of items) {\n  console.log(i);\n}`);
 });
 
 // Return
@@ -206,9 +206,9 @@ test("generates return statement", () => {
 test("generates multi-statement program", () => {
   const source = `x = 10
 y = 20
-print(x + y)`;
+console.log(x + y)`;
   const js = compile(source);
-  assertEqual(js, `let x = 10;\nlet y = 20;\nprint((x + y));`);
+  assertEqual(js, `let x = 10;\nlet y = 20;\nconsole.log((x + y));`);
 });
 
 // Full pipeline with function definition
@@ -255,28 +255,28 @@ test("generates continue statement", () => {
 test("generates nested if statements", () => {
   const source = `if (a):
   if (b):
-    print(1)`;
+    console.log(1)`;
   const js = compile(source);
-  assertEqual(js, `if (a) {\n  if (b) {\n    print(1);\n  }\n}`);
+  assertEqual(js, `if (a) {\n  if (b) {\n    console.log(1);\n  }\n}`);
 });
 
 test("generates if-else with nested if-else", () => {
   const source = `if (a):
-  print(1)
+  console.log(1)
 else:
   if (b):
-    print(2)
+    console.log(2)
   else:
-    print(3)`;
+    console.log(3)`;
   const js = compile(source);
-  assertEqual(js, `if (a) {\n  print(1);\n} else {\n  if (b) {\n    print(2);\n  } else {\n    print(3);\n  }\n}`);
+  assertEqual(js, `if (a) {\n  console.log(1);\n} else {\n  if (b) {\n    console.log(2);\n  } else {\n    console.log(3);\n  }\n}`);
 });
 
 test("generates for loop with range", () => {
   const source = `for i in range(10):
-  print(i)`;
+  console.log(i)`;
   const js = compile(source);
-  assertEqual(js, `for (let i of range(10)) {\n  print(i);\n}`);
+  assertEqual(js, `for (let i of range(10)) {\n  console.log(i);\n}`);
 });
 
 test("generates while loop with break", () => {
@@ -298,25 +298,25 @@ while (counter):
 test("generates for loop with multiple statements", () => {
   const source = `total = 0
 for i in items:
-  print(i)
+  console.log(i)
   total = total + i`;
   const js = compile(source);
-  assertEqual(js, `let total = 0;\nfor (let i of items) {\n  print(i);\n  total = (total + i);\n}`);
+  assertEqual(js, `let total = 0;\nfor (let i of items) {\n  console.log(i);\n  total = (total + i);\n}`);
 });
 
 test("generates nested for loops", () => {
   const source = `for i in range(10):
   for j in range(10):
-    print(i + j)`;
+    console.log(i + j)`;
   const js = compile(source);
-  assertEqual(js, `for (let i of range(10)) {\n  for (let j of range(10)) {\n    print((i + j));\n  }\n}`);
+  assertEqual(js, `for (let i of range(10)) {\n  for (let j of range(10)) {\n    console.log((i + j));\n  }\n}`);
 });
 
 test("generates if with complex condition", () => {
   const source = `if (x > 10 and y < 5):
-  print("big")`;
+  console.log("big")`;
   const js = compile(source);
-  assertEqual(js, `if (((x > 10) && (y < 5))) {\n  print("big");\n}`);
+  assertEqual(js, `if (((x > 10) && (y < 5))) {\n  console.log("big");\n}`);
 });
 
 test("generates while with break and continue together", () => {
@@ -330,9 +330,9 @@ test("generates while with break and continue together", () => {
 
 test("generates for loop with array", () => {
   const source = `for item in [1, 2, 3]:
-  print(item)`;
+  console.log(item)`;
   const js = compile(source);
-  assertEqual(js, `for (let item of [1, 2, 3]) {\n  print(item);\n}`);
+  assertEqual(js, `for (let item of [1, 2, 3]) {\n  console.log(item);\n}`);
 });
 
 
@@ -363,10 +363,9 @@ test("generates parenthesized expressions", () => {
   assertEqual(js, `let x = ((1 + 2) * 3);`);
 });
 
-// String concatenation in print
 test("generates string in print", () => {
   const js = compile(`print("hello world")`);
-  assertEqual(js, `print("hello world");`);
+  assertEqual(js, `console.log("hello world");`);
 });
 
 // Number operations
@@ -533,10 +532,10 @@ test("generates function with for loop body", () => {
 test("generates function with while loop body", () => {
   const source = `function countdown(n):
   while n > 0:
-    print(n)
+    console.log(n)
     n = n - 1`;
   const js = compile(source);
-  assertEqual(js, `function countdown(n) {\n  while ((n > 0)) {\n    print(n);\n    n = (n - 1);\n  }\n}`);
+  assertEqual(js, `function countdown(n) {\n  while ((n > 0)) {\n    console.log(n);\n    n = (n - 1);\n  }\n}`);
 });
 
 test("generates function with break", () => {
@@ -620,7 +619,7 @@ test("generates function with not operator", () => {
     return false
   return true`;
   const js = compile(source);
-  assertEqual(js, `function not_empty(x) {\n  if ((not x)) {\n    return false;\n  }\n  return true;\n}`);
+  assertEqual(js, `function not_empty(x) {\n  if ((! x)) {\n    return false;\n  }\n  return true;\n}`);
 });
 
 test("generates function with return of null", () => {

@@ -98,9 +98,9 @@ result = foo()`;
 test("if block creates new scope", () => {
   const source = `if (true):
   y = 10
-print(y)`;
+console.log(y)`;
   const js = compile(source);
-  assertEqual(js, `if (true) {\n  let y = 10;\n}\nprint(y);`);
+  assertEqual(js, `if (true) {\n  let y = 10;\n}\nconsole.log(y);`);
 });
 
 test("if-else each has own scope", () => {
@@ -125,9 +125,9 @@ if (true):
 test("while block creates new scope", () => {
   const source = `while (true):
   y = 10
-print(y)`;
+console.log(y)`;
   const js = compile(source);
-  assertEqual(js, `while (true) {\n  let y = 10;\n}\nprint(y);`);
+  assertEqual(js, `while (true) {\n  let y = 10;\n}\nconsole.log(y);`);
 });
 
 test("reassign outer variable inside while block", () => {
@@ -142,10 +142,10 @@ while counter > 0:
 
 test("for loop variable is scoped to loop", () => {
   const source = `for i in range(3):
-  print(i)
-print(i)`;
+  console.log(i)
+console.log(i)`;
   const js = compile(source);
-  assertEqual(js, `for (let i of range(3)) {\n  print(i);\n}\nprint(i);`);
+  assertEqual(js, `for (let i of range(3)) {\n  console.log(i);\n}\nconsole.log(i);`);
 });
 
 test("for loop body creates new scope", () => {
@@ -192,9 +192,9 @@ test("function with for loop and variable reassignment", () => {
 test("if block with for loop", () => {
   const source = `if (true):
   for i in range(5):
-    print(i)`;
+    console.log(i)`;
   const js = compile(source);
-  assertEqual(js, `if (true) {\n  for (let i of range(5)) {\n    print(i);\n  }\n}`);
+  assertEqual(js, `if (true) {\n  for (let i of range(5)) {\n    console.log(i);\n  }\n}`);
 });
 
 test("global reassignment after function", () => {
