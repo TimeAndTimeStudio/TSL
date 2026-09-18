@@ -165,7 +165,7 @@ cd TSL</div>
 
               <h3>Comments</h3>
               <p>ใช้ <code>#</code> สำหรับ line comments:</p>
-              <div class="code-block"><span class="comment"># นี่คือ comment</span><br>x = 10  <span class="comment"># inline comment</span></div>
+              <div class="code-block"><span class="comment"># นี่คือ comment</span><br>set x = 10  <span class="comment"># inline comment</span></div>
 
               <h3>Keywords</h3>
               <table>
@@ -173,7 +173,7 @@ cd TSL</div>
                   <tr><th>Keyword</th><th>คำอธิบาย</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td><code>let</code></td><td>ประกาศตัวแปร</td></tr>
+                  <tr><td><code>set</code></td><td>ประกาศตัวแปร (แปลงเป็น let)</td></tr>
                   <tr><td><code>if</code></td><td>Conditional statement</td></tr>
                   <tr><td><code>else</code></td><td>Alternate branch</td></tr>
                   <tr><td><code>for</code></td><td>Loop over iterable</td></tr>
@@ -200,7 +200,7 @@ cd TSL</div>
 
               <h3>Comments</h3>
               <p>Use <code>#</code> for line comments:</p>
-              <div class="code-block"><span class="comment"># This is a comment</span><br>x = 10  <span class="comment"># inline comment</span></div>
+              <div class="code-block"><span class="comment"># This is a comment</span><br>set x = 10  <span class="comment"># inline comment</span></div>
 
               <h3>Keywords</h3>
               <table>
@@ -208,7 +208,7 @@ cd TSL</div>
                   <tr><th>Keyword</th><th>Description</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td><code>let</code></td><td>Variable declaration</td></tr>
+                  <tr><td><code>set</code></td><td>Variable declaration (generates let)</td></tr>
                   <tr><td><code>if</code></td><td>Conditional statement</td></tr>
                   <tr><td><code>else</code></td><td>Alternate branch</td></tr>
                   <tr><td><code>for</code></td><td>Loop over iterable</td></tr>
@@ -237,23 +237,23 @@ cd TSL</div>
               <h2>Data Types</h2>
 
               <h3>Numbers</h3>
-              <div class="code-block">x = 10<br>pi = 3.14</div>
+              <div class="code-block">set x = 10<br>set pi = 3.14</div>
 
               <h3>Strings</h3>
-              <div class="code-block">name = "hello"<br>greeting = 'world'</div>
+              <div class="code-block">set name = "hello"<br>set greeting = 'world'</div>
               <p>Escape sequences: <code>\\n</code>, <code>\\t</code>, <code>\\\\</code>, <code>\\"</code>, <code>\\'</code></p>
 
               <h3>Booleans</h3>
-              <div class="code-block">flag = true<br>disabled = false</div>
+              <div class="code-block">set flag = true<br>set disabled = false</div>
 
               <h3>Null</h3>
-              <div class="code-block">value = null</div>
+              <div class="code-block">set value = null</div>
 
               <h3>Array</h3>
-              <div class="code-block">numbers = [1, 2, 3]<br>mixed = [1, "two", true]</div>
+              <div class="code-block">set numbers = [1, 2, 3]<br>set mixed = [1, "two", true]</div>
 
               <h3>Object</h3>
-              <div class="code-block">person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30<br>}</div>
+              <div class="code-block">set person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30<br>}</div>
 
               <h3>Type Summary</h3>
               <table>
@@ -274,23 +274,23 @@ cd TSL</div>
               <h2>Data Types</h2>
 
               <h3>Numbers</h3>
-              <div class="code-block">x = 10<br>pi = 3.14</div>
+              <div class="code-block">set x = 10<br>set pi = 3.14</div>
 
               <h3>Strings</h3>
-              <div class="code-block">name = "hello"<br>greeting = 'world'</div>
+              <div class="code-block">set name = "hello"<br>set greeting = 'world'</div>
               <p>Escape sequences: <code>\\n</code>, <code>\\t</code>, <code>\\\\</code>, <code>\\"</code>, <code>\\'</code></p>
 
               <h3>Booleans</h3>
-              <div class="code-block">flag = true<br>disabled = false</div>
+              <div class="code-block">set flag = true<br>set disabled = false</div>
 
               <h3>Null</h3>
-              <div class="code-block">value = null</div>
+              <div class="code-block">set value = null</div>
 
               <h3>Array</h3>
-              <div class="code-block">numbers = [1, 2, 3]<br>mixed = [1, "two", true]</div>
+              <div class="code-block">set numbers = [1, 2, 3]<br>set mixed = [1, "two", true]</div>
 
               <h3>Object</h3>
-              <div class="code-block">person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30<br>}</div>
+              <div class="code-block">set person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30<br>}</div>
 
               <h3>Type Summary</h3>
               <table>
@@ -349,7 +349,7 @@ cd TSL</div>
               </table>
 
               <h3>Logical Examples</h3>
-              <div class="code-block">x = true<br>y = false<br><br>print(x <span class="keyword">and</span> y) <span class="comment"># output: false</span><br>print(x <span class="keyword">or</span> y)  <span class="comment"># output: true</span><br>print(<span class="keyword">not</span> x)   <span class="comment"># output: false</span><br>print(<span class="keyword">not</span> y)   <span class="comment"># output: true</span><br><br><span class="comment"># Combining logical operators</span><br>age = 25<br>has_id = true<br><br><span class="keyword">if</span> age &gt;= 18 <span class="keyword">and</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Allowed")<br><br><span class="keyword">if</span> <span class="keyword">not</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("No ID")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Has ID")</div>
+              <div class="code-block">set x = true<br>set y = false<br><br>print(x <span class="keyword">and</span> y) <span class="comment"># output: false</span><br>print(x <span class="keyword">or</span> y)  <span class="comment"># output: true</span><br>print(<span class="keyword">not</span> x)   <span class="comment"># output: false</span><br>print(<span class="keyword">not</span> y)   <span class="comment"># output: true</span><br><br><span class="comment"># Combining logical operators</span><br>set age = 25<br>set has_id = true<br><br><span class="keyword">if</span> age &gt;= 18 <span class="keyword">and</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Allowed")<br><br><span class="keyword">if</span> <span class="keyword">not</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("No ID")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Has ID")</div>
 
               <h3>Operator Precedence (highest to lowest)</h3>
               <ol>
@@ -402,7 +402,7 @@ cd TSL</div>
               </table>
 
               <h3>Logical Examples</h3>
-              <div class="code-block">x = true<br>y = false<br><br>print(x <span class="keyword">and</span> y) <span class="comment"># output: false</span><br>print(x <span class="keyword">or</span> y)  <span class="comment"># output: true</span><br>print(<span class="keyword">not</span> x)   <span class="comment"># output: false</span><br>print(<span class="keyword">not</span> y)   <span class="comment"># output: true</span><br><br><span class="comment"># Combining logical operators</span><br>age = 25<br>has_id = true<br><br><span class="keyword">if</span> age &gt;= 18 <span class="keyword">and</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Allowed")<br><br><span class="keyword">if</span> <span class="keyword">not</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("No ID")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Has ID")</div>
+              <div class="code-block">set x = true<br>set y = false<br><br>print(x <span class="keyword">and</span> y) <span class="comment"># output: false</span><br>print(x <span class="keyword">or</span> y)  <span class="comment"># output: true</span><br>print(<span class="keyword">not</span> x)   <span class="comment"># output: false</span><br>print(<span class="keyword">not</span> y)   <span class="comment"># output: true</span><br><br><span class="comment"># Combining logical operators</span><br>set age = 25<br>set has_id = true<br><br><span class="keyword">if</span> age &gt;= 18 <span class="keyword">and</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Allowed")<br><br><span class="keyword">if</span> <span class="keyword">not</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("No ID")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Has ID")</div>
 
               <h3>Operator Precedence (highest to lowest)</h3>
               <ol>
@@ -421,8 +421,8 @@ cd TSL</div>
           <section id="variables">
             <div class="lang-th">
               <h2>Variables</h2>
-              <p>Assignment ใช้ <code>=</code> การ assign ครั้งแรกใน scope จะสร้างตัวแปร (generate <code>let</code>)</p>
-              <div class="code-block">x = 10      <span class="comment"># generates: let x = 10;</span><br>x = 20      <span class="comment"># generates: x = 20;</span></div>
+              <p>ใช้ <code>set</code> เพื่อประกาศตัวแปร (แปลงเป็น <code>let</code> ใน JavaScript) และการ assign ด้วย <code>=</code> สำหรับตัวแปรที่มีอยู่แล้ว</p>
+              <div class="code-block">set x = 10      <span class="comment"># generates: let x = 10;</span><br>x = 20          <span class="comment"># generates: x = 20;</span></div>
 
               <h3>Identifiers</h3>
               <ul>
@@ -434,8 +434,8 @@ cd TSL</div>
             </div>
             <div class="lang-en">
               <h2>Variables</h2>
-              <p>Assignment uses <code>=</code>. The first assignment in a scope creates a variable (generates <code>let</code>).</p>
-              <div class="code-block">x = 10      <span class="comment"># generates: let x = 10;</span><br>x = 20      <span class="comment"># generates: x = 20;</span></div>
+              <p>Use <code>set</code> to declare variables (generates <code>let</code> in JavaScript) and <code>=</code> for reassignment of existing variables.</p>
+              <div class="code-block">set x = 10      <span class="comment"># generates: let x = 10;</span><br>x = 20          <span class="comment"># generates: x = 20;</span></div>
 
               <h3>Identifiers</h3>
               <ul>
@@ -452,10 +452,10 @@ cd TSL</div>
               <h2>Control Flow</h2>
 
               <h3>If / Else</h3>
-              <div class="code-block">x = 15<br><span class="keyword">if</span> x &gt; 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("big")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("small")</div>
+              <div class="code-block">set x = 15<br><span class="keyword">if</span> x &gt; 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("big")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("small")</div>
 
               <h3>While</h3>
-              <div class="code-block">counter = 3<br><span class="keyword">while</span> counter &gt; 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(counter)<br>&nbsp;&nbsp;&nbsp;&nbsp;counter = counter - 1</div>
+              <div class="code-block">set counter = 3<br><span class="keyword">while</span> counter &gt; 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(counter)<br>&nbsp;&nbsp;&nbsp;&nbsp;counter = counter - 1</div>
 
               <h3>For</h3>
               <div class="code-block"><span class="keyword">for</span> i <span class="keyword">in</span> range(5):<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i)</div>
@@ -467,10 +467,10 @@ cd TSL</div>
               <h2>Control Flow</h2>
 
               <h3>If / Else</h3>
-              <div class="code-block">x = 15<br><span class="keyword">if</span> x &gt; 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("big")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("small")</div>
+              <div class="code-block">set x = 15<br><span class="keyword">if</span> x &gt; 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("big")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("small")</div>
 
               <h3>While</h3>
-              <div class="code-block">counter = 3<br><span class="keyword">while</span> counter &gt; 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(counter)<br>&nbsp;&nbsp;&nbsp;&nbsp;counter = counter - 1</div>
+              <div class="code-block">set counter = 3<br><span class="keyword">while</span> counter &gt; 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(counter)<br>&nbsp;&nbsp;&nbsp;&nbsp;counter = counter - 1</div>
 
               <h3>For</h3>
               <div class="code-block"><span class="keyword">for</span> i <span class="keyword">in</span> range(5):<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i)</div>
@@ -491,7 +491,7 @@ cd TSL</div>
               <div class="code-block"><span class="keyword">function</span> add(a, b):<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> a + b</div>
 
               <h3>Call</h3>
-              <div class="code-block">result = add(3, 5)</div>
+              <div class="code-block">set result =  add(3, 5)</div>
 
               <h3>Public Function</h3>
               <p>ใช้ <code>public</code> หน้า function เพื่อให้ไฟล์ .tsl อื่นเข้าถึงได้</p>
@@ -501,7 +501,7 @@ cd TSL</div>
               <div class="code-block"><span class="keyword">public function</span> sumArray(arr):<br>&nbsp;&nbsp;&nbsp;&nbsp;total = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> item <span class="keyword">in</span> arr:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total = total + item<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total<br><br>print(sumArray([1, 2, 3, 4, 5])) <span class="comment"># output: 15</span></div>
 
               <h3>Public Function with Nested Arrays</h3>
-              <div class="code-block"><span class="keyword">public function</span> flatten(matrix):<br>&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> row <span class="keyword">in</span> matrix:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> item <span class="keyword">in</span> row:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.append(item)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> result<br><br>matrix = [[1, 2], [3, 4], [5, 6]]<br>print(flatten(matrix)) <span class="comment"># output: [1, 2, 3, 4, 5, 6]</span></div>
+              <div class="code-block"><span class="keyword">public function</span> flatten(matrix):<br>&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> row <span class="keyword">in</span> matrix:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> item <span class="keyword">in</span> row:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.append(item)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> result<br><br>set matrix =  [[1, 2], [3, 4], [5, 6]]<br>print(flatten(matrix)) <span class="comment"># output: [1, 2, 3, 4, 5, 6]</span></div>
 
               <div class="note">
                 Functions with <code>public</code> are accessible by other .tsl files.
@@ -517,7 +517,7 @@ cd TSL</div>
               <div class="code-block"><span class="keyword">function</span> add(a, b):<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> a + b</div>
 
               <h3>Call</h3>
-              <div class="code-block">result = add(3, 5)</div>
+              <div class="code-block">set result =  add(3, 5)</div>
 
               <h3>Public Function</h3>
               <p>Use <code>public</code> before function to make it accessible by other .tsl files.</p>
@@ -527,7 +527,7 @@ cd TSL</div>
               <div class="code-block"><span class="keyword">public function</span> sumArray(arr):<br>&nbsp;&nbsp;&nbsp;&nbsp;total = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> item <span class="keyword">in</span> arr:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total = total + item<br>&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total<br><br>print(sumArray([1, 2, 3, 4, 5])) <span class="comment"># output: 15</span></div>
 
               <h3>Public Function with Nested Arrays</h3>
-              <div class="code-block"><span class="keyword">public function</span> flatten(matrix):<br>&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> row <span class="keyword">in</span> matrix:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> item <span class="keyword">in</span> row:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.append(item)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> result<br><br>matrix = [[1, 2], [3, 4], [5, 6]]<br>print(flatten(matrix)) <span class="comment"># output: [1, 2, 3, 4, 5, 6]</span></div>
+              <div class="code-block"><span class="keyword">public function</span> flatten(matrix):<br>&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> row <span class="keyword">in</span> matrix:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> item <span class="keyword">in</span> row:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.append(item)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> result<br><br>set matrix =  [[1, 2], [3, 4], [5, 6]]<br>print(flatten(matrix)) <span class="comment"># output: [1, 2, 3, 4, 5, 6]</span></div>
 
               <div class="note">
                 Functions with <code>public</code> are accessible by other .tsl files.
@@ -540,25 +540,25 @@ cd TSL</div>
               <h2>Arrays</h2>
 
               <h3>Declaration</h3>
-              <div class="code-block">fruits = ["apple", "banana", "cherry"]</div>
+              <div class="code-block">set fruits =  ["apple", "banana", "cherry"]</div>
 
               <h3>Access</h3>
-              <div class="code-block">first = fruits[0]<br>print(first)</div>
+              <div class="code-block">set first =  fruits[0]<br>print(first)</div>
 
               <h3>Methods</h3>
-              <div class="code-block">fruits.append("date")<br>length = fruits.length</div>
+              <div class="code-block">fruits.append("date")<br>set length =  fruits.length</div>
             </div>
             <div class="lang-en">
               <h2>Arrays</h2>
 
               <h3>Declaration</h3>
-              <div class="code-block">fruits = ["apple", "banana", "cherry"]</div>
+              <div class="code-block">set fruits =  ["apple", "banana", "cherry"]</div>
 
               <h3>Access</h3>
-              <div class="code-block">first = fruits[0]<br>print(first)</div>
+              <div class="code-block">set first =  fruits[0]<br>print(first)</div>
 
               <h3>Methods</h3>
-              <div class="code-block">fruits.append("date")<br>length = fruits.length</div>
+              <div class="code-block">fruits.append("date")<br>set length =  fruits.length</div>
             </div>
           </section>
 
@@ -568,25 +568,25 @@ cd TSL</div>
               <p>TSL รองรับ array ที่ซ้อนกันไม่จำกัดระดับ สามารถเข้าถึงข้อมูลด้วย index หลายชั้นได้</p>
 
               <h3>2D Array (Matrix)</h3>
-              <div class="code-block">matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]<br><br>print(matrix[0])   <span class="comment"># output: [1, 2, 3]</span><br>print(matrix[0][0]) <span class="comment"># output: 1</span><br>print(matrix[1][2]) <span class="comment"># output: 6</span><br>print(matrix[2][0]) <span class="comment"># output: 7</span></div>
+              <div class="code-block">set matrix =  [[1, 2, 3], [4, 5, 6], [7, 8, 9]]<br><br>print(matrix[0])   <span class="comment"># output: [1, 2, 3]</span><br>print(matrix[0][0]) <span class="comment"># output: 1</span><br>print(matrix[1][2]) <span class="comment"># output: 6</span><br>print(matrix[2][0]) <span class="comment"># output: 7</span></div>
 
               <h3>3D Array</h3>
-              <div class="code-block">cube = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]<br><br>print(cube[0][0][0]) <span class="comment"># output: 1</span><br>print(cube[0][1][1]) <span class="comment"># output: 4</span><br>print(cube[1][0][0]) <span class="comment"># output: 5</span><br>print(cube[1][1][1]) <span class="comment"># output: 8</span></div>
+              <div class="code-block">set cube =  [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]<br><br>print(cube[0][0][0]) <span class="comment"># output: 1</span><br>print(cube[0][1][1]) <span class="comment"># output: 4</span><br>print(cube[1][0][0]) <span class="comment"># output: 5</span><br>print(cube[1][1][1]) <span class="comment"># output: 8</span></div>
 
               <h3>Mixed Nested Arrays</h3>
-              <div class="code-block">data = [[1, "hello"], [true, null], [3.14, [10, 20]]]<br><br>print(data[0][1])   <span class="comment"># output: "hello"</span><br>print(data[1][0])   <span class="comment"># output: true</span><br>print(data[2][1][0]) <span class="comment"># output: 10</span><br>print(data[2][1][1]) <span class="comment"># output: 20</span></div>
+              <div class="code-block">set data =  [[1, "hello"], [true, null], [3.14, [10, 20]]]<br><br>print(data[0][1])   <span class="comment"># output: "hello"</span><br>print(data[1][0])   <span class="comment"># output: true</span><br>print(data[2][1][0]) <span class="comment"># output: 10</span><br>print(data[2][1][1]) <span class="comment"># output: 20</span></div>
 
               <h3>Loop Through Nested Arrays</h3>
-              <div class="code-block">scores = [[90, 85, 92], [78, 88, 95], [82, 91, 87]]<br><br><span class="keyword">for</span> student <span class="keyword">in</span> scores:<br>&nbsp;&nbsp;&nbsp;&nbsp;total = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> score <span class="keyword">in</span> student:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total = total + score<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Average: " + (total / student.length))</div>
+              <div class="code-block">set scores =  [[90, 85, 92], [78, 88, 95], [82, 91, 87]]<br><br><span class="keyword">for</span> student <span class="keyword">in</span> scores:<br>&nbsp;&nbsp;&nbsp;&nbsp;total = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> score <span class="keyword">in</span> student:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total = total + score<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Average: " + (total / student.length))</div>
 
               <h3>Nested Array with Objects</h3>
-              <div class="code-block">classroom = [<br>&nbsp;&nbsp;&nbsp;&nbsp;[{name: "A", grade: 90}, {name: "B", grade: 85}],<br>&nbsp;&nbsp;&nbsp;&nbsp;[{name: "C", grade: 92}, {name: "D", grade: 78}]<br>]<br><br><span class="keyword">for</span> group <span class="keyword">in</span> classroom:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> student <span class="keyword">in</span> group:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(student.name + ": " + student.grade)</div>
+              <div class="code-block">set classroom =  [<br>&nbsp;&nbsp;&nbsp;&nbsp;[{name: "A", grade: 90}, {name: "B", grade: 85}],<br>&nbsp;&nbsp;&nbsp;&nbsp;[{name: "C", grade: 92}, {name: "D", grade: 78}]<br>]<br><br><span class="keyword">for</span> group <span class="keyword">in</span> classroom:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> student <span class="keyword">in</span> group:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(student.name + ": " + student.grade)</div>
 
               <h3>Array of Arrays with Different Lengths</h3>
-              <div class="code-block">ragged = [[1], [2, 3], [4, 5, 6], [7, 8, 9, 10]]<br><br><span class="keyword">for</span> i <span class="keyword">in</span> range(ragged.length):<br>&nbsp;&nbsp;&nbsp;&nbsp;row = ragged[i]<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Row " + i + " has " + row.length + " elements")<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> range(row.length):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("  [" + j + "] = " + row[j])</div>
+              <div class="code-block">set ragged =  [[1], [2, 3], [4, 5, 6], [7, 8, 9, 10]]<br><br><span class="keyword">for</span> i <span class="keyword">in</span> range(ragged.length):<br>&nbsp;&nbsp;&nbsp;&nbsp;row = ragged[i]<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Row " + i + " has " + row.length + " elements")<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> range(row.length):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("  [" + j + "] = " + row[j])</div>
 
               <h3>Building Nested Arrays</h3>
-              <div class="code-block">result = []<br><span class="keyword">for</span> i <span class="keyword">in</span> range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;row = []<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row.append(i * 3 + j)<br>&nbsp;&nbsp;&nbsp;&nbsp;result.append(row)<br><br>print(result) <span class="comment"># [[0, 1, 2], [3, 4, 5], [6, 7, 8]]</span></div>
+              <div class="code-block">set result =  []<br><span class="keyword">for</span> i <span class="keyword">in</span> range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;row = []<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row.append(i * 3 + j)<br>&nbsp;&nbsp;&nbsp;&nbsp;result.append(row)<br><br>print(result) <span class="comment"># [[0, 1, 2], [3, 4, 5], [6, 7, 8]]</span></div>
 
               <div class="note">
                 <strong>Tip:</strong> Nested arrays สามารถเข้าถึงได้หลายระดับ เช่น <code>arr[0][1][2]</code> โดยแต่ละ index จะลดลงหนึ่งระดับจนได้ค่าสุดท้าย
@@ -597,25 +597,25 @@ cd TSL</div>
               <p>TSL supports arrays nested at unlimited levels. You can access data using multiple index levels.</p>
 
               <h3>2D Array (Matrix)</h3>
-              <div class="code-block">matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]<br><br>print(matrix[0])   <span class="comment"># output: [1, 2, 3]</span><br>print(matrix[0][0]) <span class="comment"># output: 1</span><br>print(matrix[1][2]) <span class="comment"># output: 6</span><br>print(matrix[2][0]) <span class="comment"># output: 7</span></div>
+              <div class="code-block">set matrix =  [[1, 2, 3], [4, 5, 6], [7, 8, 9]]<br><br>print(matrix[0])   <span class="comment"># output: [1, 2, 3]</span><br>print(matrix[0][0]) <span class="comment"># output: 1</span><br>print(matrix[1][2]) <span class="comment"># output: 6</span><br>print(matrix[2][0]) <span class="comment"># output: 7</span></div>
 
               <h3>3D Array</h3>
-              <div class="code-block">cube = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]<br><br>print(cube[0][0][0]) <span class="comment"># output: 1</span><br>print(cube[0][1][1]) <span class="comment"># output: 4</span><br>print(cube[1][0][0]) <span class="comment"># output: 5</span><br>print(cube[1][1][1]) <span class="comment"># output: 8</span></div>
+              <div class="code-block">set cube =  [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]<br><br>print(cube[0][0][0]) <span class="comment"># output: 1</span><br>print(cube[0][1][1]) <span class="comment"># output: 4</span><br>print(cube[1][0][0]) <span class="comment"># output: 5</span><br>print(cube[1][1][1]) <span class="comment"># output: 8</span></div>
 
               <h3>Mixed Nested Arrays</h3>
-              <div class="code-block">data = [[1, "hello"], [true, null], [3.14, [10, 20]]]<br><br>print(data[0][1])   <span class="comment"># output: "hello"</span><br>print(data[1][0])   <span class="comment"># output: true</span><br>print(data[2][1][0]) <span class="comment"># output: 10</span><br>print(data[2][1][1]) <span class="comment"># output: 20</span></div>
+              <div class="code-block">set data =  [[1, "hello"], [true, null], [3.14, [10, 20]]]<br><br>print(data[0][1])   <span class="comment"># output: "hello"</span><br>print(data[1][0])   <span class="comment"># output: true</span><br>print(data[2][1][0]) <span class="comment"># output: 10</span><br>print(data[2][1][1]) <span class="comment"># output: 20</span></div>
 
               <h3>Loop Through Nested Arrays</h3>
-              <div class="code-block">scores = [[90, 85, 92], [78, 88, 95], [82, 91, 87]]<br><br><span class="keyword">for</span> student <span class="keyword">in</span> scores:<br>&nbsp;&nbsp;&nbsp;&nbsp;total = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> score <span class="keyword">in</span> student:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total = total + score<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Average: " + (total / student.length))</div>
+              <div class="code-block">set scores =  [[90, 85, 92], [78, 88, 95], [82, 91, 87]]<br><br><span class="keyword">for</span> student <span class="keyword">in</span> scores:<br>&nbsp;&nbsp;&nbsp;&nbsp;total = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> score <span class="keyword">in</span> student:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total = total + score<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Average: " + (total / student.length))</div>
 
               <h3>Nested Array with Objects</h3>
-              <div class="code-block">classroom = [<br>&nbsp;&nbsp;&nbsp;&nbsp;[{name: "A", grade: 90}, {name: "B", grade: 85}],<br>&nbsp;&nbsp;&nbsp;&nbsp;[{name: "C", grade: 92}, {name: "D", grade: 78}]<br>]<br><br><span class="keyword">for</span> group <span class="keyword">in</span> classroom:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> student <span class="keyword">in</span> group:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(student.name + ": " + student.grade)</div>
+              <div class="code-block">set classroom =  [<br>&nbsp;&nbsp;&nbsp;&nbsp;[{name: "A", grade: 90}, {name: "B", grade: 85}],<br>&nbsp;&nbsp;&nbsp;&nbsp;[{name: "C", grade: 92}, {name: "D", grade: 78}]<br>]<br><br><span class="keyword">for</span> group <span class="keyword">in</span> classroom:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> student <span class="keyword">in</span> group:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(student.name + ": " + student.grade)</div>
 
               <h3>Array of Arrays with Different Lengths</h3>
-              <div class="code-block">ragged = [[1], [2, 3], [4, 5, 6], [7, 8, 9, 10]]<br><br><span class="keyword">for</span> i <span class="keyword">in</span> range(ragged.length):<br>&nbsp;&nbsp;&nbsp;&nbsp;row = ragged[i]<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Row " + i + " has " + row.length + " elements")<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> range(row.length):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("  [" + j + "] = " + row[j])</div>
+              <div class="code-block">set ragged =  [[1], [2, 3], [4, 5, 6], [7, 8, 9, 10]]<br><br><span class="keyword">for</span> i <span class="keyword">in</span> range(ragged.length):<br>&nbsp;&nbsp;&nbsp;&nbsp;row = ragged[i]<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Row " + i + " has " + row.length + " elements")<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> range(row.length):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("  [" + j + "] = " + row[j])</div>
 
               <h3>Building Nested Arrays</h3>
-              <div class="code-block">result = []<br><span class="keyword">for</span> i <span class="keyword">in</span> range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;row = []<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row.append(i * 3 + j)<br>&nbsp;&nbsp;&nbsp;&nbsp;result.append(row)<br><br>print(result) <span class="comment"># [[0, 1, 2], [3, 4, 5], [6, 7, 8]]</span></div>
+              <div class="code-block">set result =  []<br><span class="keyword">for</span> i <span class="keyword">in</span> range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;row = []<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row.append(i * 3 + j)<br>&nbsp;&nbsp;&nbsp;&nbsp;result.append(row)<br><br>print(result) <span class="comment"># [[0, 1, 2], [3, 4, 5], [6, 7, 8]]</span></div>
 
               <div class="note">
                 <strong>Tip:</strong> Nested arrays can be accessed at multiple levels, e.g., <code>arr[0][1][2]</code>. Each index reduces the nesting level until you get the final value.
@@ -628,25 +628,25 @@ cd TSL</div>
               <h2>Objects</h2>
 
               <h3>Declaration</h3>
-              <div class="code-block">person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30,<br>&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok"<br>}</div>
+              <div class="code-block">set person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30,<br>&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok"<br>}</div>
 
               <h3>Access</h3>
               <div class="code-block">print(person.name)<br>print(person["age"])</div>
 
               <h3>Methods</h3>
-              <div class="code-block">keys = person.keys()<br>values = person.values()</div>
+              <div class="code-block">set keys =  person.keys()<br>set values =  person.values()</div>
             </div>
             <div class="lang-en">
               <h2>Objects</h2>
 
               <h3>Declaration</h3>
-              <div class="code-block">person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30,<br>&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok"<br>}</div>
+              <div class="code-block">set person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30,<br>&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok"<br>}</div>
 
               <h3>Access</h3>
               <div class="code-block">print(person.name)<br>print(person["age"])</div>
 
               <h3>Methods</h3>
-              <div class="code-block">keys = person.keys()<br>values = person.values()</div>
+              <div class="code-block">set keys =  person.keys()<br>set values =  person.values()</div>
             </div>
           </section>
 
@@ -655,25 +655,25 @@ cd TSL</div>
               <h2>Member Access</h2>
 
               <h3>Dot Notation</h3>
-              <div class="code-block">person = {name: "Bob", age: 25}<br>print(person.name)</div>
+              <div class="code-block">set person = {name: "Bob", age: 25}<br>print(person.name)</div>
 
               <h3>Bracket Notation</h3>
-              <div class="code-block">person = {name: "Bob", age: 25}<br>print(person["name"])</div>
+              <div class="code-block">set person = {name: "Bob", age: 25}<br>print(person["name"])</div>
 
               <h3>Nested Access</h3>
-              <div class="code-block">company = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "TSL Studio",<br>&nbsp;&nbsp;&nbsp;&nbsp;address: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country: "Thailand"<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>print(company.address.city)    <span class="comment"># output: "Bangkok"</span><br>print(company["address"]["country"]) <span class="comment"># output: "Thailand"</span></div>
+              <div class="code-block">set company =  {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "TSL Studio",<br>&nbsp;&nbsp;&nbsp;&nbsp;address: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country: "Thailand"<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>print(company.address.city)    <span class="comment"># output: "Bangkok"</span><br>print(company["address"]["country"]) <span class="comment"># output: "Thailand"</span></div>
             </div>
             <div class="lang-en">
               <h2>Member Access</h2>
 
               <h3>Dot Notation</h3>
-              <div class="code-block">person = {name: "Bob", age: 25}<br>print(person.name)</div>
+              <div class="code-block">set person = {name: "Bob", age: 25}<br>print(person.name)</div>
 
               <h3>Bracket Notation</h3>
-              <div class="code-block">person = {name: "Bob", age: 25}<br>print(person["name"])</div>
+              <div class="code-block">set person = {name: "Bob", age: 25}<br>print(person["name"])</div>
 
               <h3>Nested Access</h3>
-              <div class="code-block">company = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "TSL Studio",<br>&nbsp;&nbsp;&nbsp;&nbsp;address: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country: "Thailand"<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>print(company.address.city)    <span class="comment"># output: "Bangkok"</span><br>print(company["address"]["country"]) <span class="comment"># output: "Thailand"</span></div>
+              <div class="code-block">set company =  {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "TSL Studio",<br>&nbsp;&nbsp;&nbsp;&nbsp;address: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country: "Thailand"<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>print(company.address.city)    <span class="comment"># output: "Bangkok"</span><br>print(company["address"]["country"]) <span class="comment"># output: "Thailand"</span></div>
             </div>
           </section>
 

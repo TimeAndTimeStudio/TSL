@@ -12,6 +12,7 @@ const TokenType = {
 
   // Keywords
   LET: 'LET',
+  SET: 'SET',
   IF: 'IF',
   ELSE: 'ELSE',
   FOR: 'FOR',
@@ -67,6 +68,7 @@ const TokenType = {
 // Keyword mapping
 const KEYWORDS = {
   'let': TokenType.LET,
+  'set': TokenType.SET,
   'if': TokenType.IF,
   'else': TokenType.ELSE,
   'for': TokenType.FOR,

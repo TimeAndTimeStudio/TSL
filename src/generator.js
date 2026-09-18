@@ -64,6 +64,7 @@ function createGenerator(source, filename = '<anonymous>') {
       MemberExpression: generateMemberExpression,
       ArrayAccess: generateArrayAccess,
       Assignment: generateAssignment,
+      SetStatement: generateSetStatement,
       IfStatement: generateIfStatement,
       WhileStatement: generateWhileStatement,
       ForStatement: generateForStatement,
@@ -93,7 +94,7 @@ function createGenerator(source, filename = '<anonymous>') {
 
   function generateProgram(node) {
     reset();
-    const lines = [];
+    const lines = ["'use strict';"];
     for (const stmt of node.body) {
       const code = generateStatement(stmt);
       if (code) lines.push(code);
@@ -227,16 +228,31 @@ function createGenerator(source, filename = '<anonymous>') {
       return `${indent()}${left} = ${right};`;
     }
 
-    // Check if variable was already declared in any scope
-    const varName = node.left.name;
-    const isDeclaration = !isDeclared(varName);
+    return `${indent()}${left} = ${right};`;
+  }
 
-    if (isDeclaration) {
-      declareVar(varName);
+  // === Set Statement (variable declaration) ===
+
+  function generateSetStatement(node) {
+    const left = generateNode(node.left);
+    const right = generateNode(node.right);
+
+    // Determine if this is a member access assignment (e.g., player.x = 100)
+    if (node.left.type === 'MemberExpression') {
+      declareVar(node.left.object.name);
       return `${indent()}let ${left} = ${right};`;
     }
 
-    return `${indent()}${left} = ${right};`;
+    // Determine if this is an array access assignment (e.g., arr[0] = 10)
+    if (node.left.type === 'ArrayAccess') {
+      declareVar(node.left.object.name);
+      return `${indent()}let ${left} = ${right};`;
+    }
+
+    // Regular variable declaration
+    const varName = node.left.name;
+    declareVar(varName);
+    return `${indent()}let ${left} = ${right};`;
   }
 
   // === If Statement ===

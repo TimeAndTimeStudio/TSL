@@ -49,6 +49,7 @@ function createValidator(source, filename = '<anonymous>') {
         break;
 
       case 'Assignment':
+      case 'SetStatement':
       case 'ExpressionStatement':
         break;
 

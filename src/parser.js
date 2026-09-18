@@ -16,6 +16,7 @@ const {
   ArrayAccess,
   ParenthesizedExpression,
   Assignment,
+  SetStatement,
   IfStatement,
   WhileStatement,
   ForStatement,
@@ -462,6 +463,32 @@ function createParser(tokens, source, filename = '<anonymous>') {
     return Assignment(left, value, makeLocation(nameToken));
   }
 
+  // === Set Statement (variable declaration) ===
+  function parseSet() {
+    const setNameToken = advance(TokenType.SET);
+    const nameToken = advance(TokenType.IDENTIFIER);
+    let left = Identifier(nameToken.value, makeLocation(nameToken));
+
+    // Handle member access (e.g., set player.x = 100)
+    while (peek().type === TokenType.DOT) {
+      advance(TokenType.DOT);
+      const propToken = expect(TokenType.IDENTIFIER);
+      left = MemberExpression(left, Identifier(propToken.value, makeLocation(propToken)), makeLocation(propToken));
+    }
+
+    // Handle array access (e.g., set arr[0] = 10)
+    while (peek().type === TokenType.LBRACKET) {
+      advance(TokenType.LBRACKET);
+      const index = parseExpression();
+      expect(TokenType.RBRACKET);
+      left = ArrayAccess(left, index, makeLocation(index));
+    }
+
+    expect(TokenType.EQUAL);
+    const value = parseExpression();
+    return SetStatement(left, value, makeLocation(nameToken));
+  }
+
   // === If statement ===
   function parseIf() {
     const ifToken = advance(TokenType.IF);
@@ -622,6 +649,9 @@ function createParser(tokens, source, filename = '<anonymous>') {
     const token = current();
 
     // Keywords that start statements
+    if (token.type === TokenType.SET) {
+      return parseSet();
+    }
     if (token.type === TokenType.IF) {
       return parseIf();
     }

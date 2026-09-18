@@ -124,6 +124,13 @@ function Assignment(left, right, location) {
   return node;
 }
 
+function SetStatement(left, right, location) {
+  const node = new ASTNode('SetStatement', location);
+  node.left = left;
+  node.right = right;
+  return node;
+}
+
 function IfStatement(condition, consequent, alternate, location) {
   const node = new ASTNode('IfStatement', location);
   node.condition = condition;
@@ -193,6 +200,7 @@ module.exports = {
   ArrayAccess,
   ParenthesizedExpression,
   Assignment,
+  SetStatement,
   IfStatement,
   WhileStatement,
   ForStatement,
