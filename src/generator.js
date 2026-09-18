@@ -218,16 +218,6 @@ function createGenerator(source, filename = '<anonymous>') {
     const left = generateNode(node.left);
     const right = generateNode(node.right);
 
-    // Determine if this is a member access assignment (e.g., player.x = 100)
-    if (node.left.type === 'MemberExpression') {
-      return `${indent()}${left} = ${right};`;
-    }
-
-    // Determine if this is an array access assignment (e.g., arr[0] = 10)
-    if (node.left.type === 'ArrayAccess') {
-      return `${indent()}${left} = ${right};`;
-    }
-
     return `${indent()}${left} = ${right};`;
   }
 

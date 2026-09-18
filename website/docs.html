@@ -173,7 +173,7 @@ cd TSL</div>
                   <tr><th>Keyword</th><th>คำอธิบาย</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td><code>set</code></td><td>ประกาศตัวแปร (แปลงเป็น let)</td></tr>
+                  <tr><td><code>set</code></td><td>ประกาศตัวแปร (แปลงเป็น let ใน JS)</td></tr>
                   <tr><td><code>if</code></td><td>Conditional statement</td></tr>
                   <tr><td><code>else</code></td><td>Alternate branch</td></tr>
                   <tr><td><code>for</code></td><td>Loop over iterable</td></tr>
@@ -208,7 +208,7 @@ cd TSL</div>
                   <tr><th>Keyword</th><th>Description</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td><code>set</code></td><td>Variable declaration (generates let)</td></tr>
+                  <tr><td><code>set</code></td><td>Variable declaration (generates let in JS)</td></tr>
                   <tr><td><code>if</code></td><td>Conditional statement</td></tr>
                   <tr><td><code>else</code></td><td>Alternate branch</td></tr>
                   <tr><td><code>for</code></td><td>Loop over iterable</td></tr>
@@ -421,8 +421,8 @@ cd TSL</div>
           <section id="variables">
             <div class="lang-th">
               <h2>Variables</h2>
-              <p>ใช้ <code>set</code> เพื่อประกาศตัวแปร (แปลงเป็น <code>let</code> ใน JavaScript) และการ assign ด้วย <code>=</code> สำหรับตัวแปรที่มีอยู่แล้ว</p>
-              <div class="code-block">set x = 10      <span class="comment"># generates: let x = 10;</span><br>x = 20          <span class="comment"># generates: x = 20;</span></div>
+              <p>ใช้ <code>set</code> เพื่อประกาศตัวแปร (แปลงเป็น <code>let</code> ใน JavaScript) และการ assign ด้วย <code>=</code> สำหรับตัวแปรที่เคยประกาศไว้แล้วเท่านั้น</p>
+              <div class="code-block">set x = 10      <span class="comment"># generates: let x = 10;</span><br>x = 20          <span class="comment"># generates: x = 20;</span><br>set y = x       <span class="comment"># generates: let y = x;</span></div>
 
               <h3>Identifiers</h3>
               <ul>
@@ -434,8 +434,8 @@ cd TSL</div>
             </div>
             <div class="lang-en">
               <h2>Variables</h2>
-              <p>Use <code>set</code> to declare variables (generates <code>let</code> in JavaScript) and <code>=</code> for reassignment of existing variables.</p>
-              <div class="code-block">set x = 10      <span class="comment"># generates: let x = 10;</span><br>x = 20          <span class="comment"># generates: x = 20;</span></div>
+              <p>Use <code>set</code> to declare variables (generates <code>let</code> in JavaScript) and <code>=</code> for reassignment of previously declared variables only.</p>
+              <div class="code-block">set x = 10      <span class="comment"># generates: let x = 10;</span><br>x = 20          <span class="comment"># generates: x = 20;</span><br>set y = x       <span class="comment"># generates: let y = x;</span></div>
 
               <h3>Identifiers</h3>
               <ul>

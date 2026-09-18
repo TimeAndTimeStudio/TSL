@@ -11,7 +11,6 @@ const TokenType = {
   STRING: 'STRING',
 
   // Keywords
-  LET: 'LET',
   SET: 'SET',
   IF: 'IF',
   ELSE: 'ELSE',
@@ -67,7 +66,6 @@ const TokenType = {
 
 // Keyword mapping
 const KEYWORDS = {
-  'let': TokenType.LET,
   'set': TokenType.SET,
   'if': TokenType.IF,
   'else': TokenType.ELSE,
