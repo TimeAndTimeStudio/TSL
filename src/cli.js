@@ -53,7 +53,15 @@ function runCommand(file) {
     console.log('--- End of Generated Code ---');
 
   } catch (err) {
-    if (err && typeof err.toString === 'function') {
+    if (err && err.errorType) {
+      console.error(`${err.errorType}: ${err.message}`);
+      if (err.line) {
+        console.error(`  at ${filename}:${err.line}:${err.column}`);
+      }
+      if (err.sourceLine) {
+        console.error(`  | ${err.sourceLine}`);
+      }
+    } else if (err && typeof err.toString === 'function') {
       console.error(err.toString());
     } else {
       console.error('Unknown error:', err);
@@ -88,7 +96,15 @@ function buildCommand(file, outputFile) {
     }
 
   } catch (err) {
-    if (err && typeof err.toString === 'function') {
+    if (err && err.errorType) {
+      console.error(`${err.errorType}: ${err.message}`);
+      if (err.line) {
+        console.error(`  at ${filename}:${err.line}:${err.column}`);
+      }
+      if (err.sourceLine) {
+        console.error(`  | ${err.sourceLine}`);
+      }
+    } else if (err && typeof err.toString === 'function') {
       console.error(err.toString());
     } else {
       console.error('Unknown error:', err);
@@ -116,7 +132,15 @@ function checkCommand(file) {
     compileSource(source, filename);
     console.log(`Check passed: ${filename}`);
   } catch (err) {
-    if (err && typeof err.toString === 'function') {
+    if (err && err.errorType) {
+      console.error(`${err.errorType}: ${err.message}`);
+      if (err.line) {
+        console.error(`  at ${filename}:${err.line}:${err.column}`);
+      }
+      if (err.sourceLine) {
+        console.error(`  | ${err.sourceLine}`);
+      }
+    } else if (err && typeof err.toString === 'function') {
       console.error(err.toString());
     } else {
       console.error('Unknown error:', err);
