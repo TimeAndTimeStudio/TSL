@@ -218,6 +218,22 @@ function createGenerator(source, filename = '<anonymous>') {
     const left = generateNode(node.left);
     const right = generateNode(node.right);
 
+    // Check if variable is declared (for simple identifiers)
+    if (node.left.type === 'Identifier') {
+      const varName = node.left.name;
+      if (!isDeclared(varName)) {
+        const loc = node.location || {};
+        const sourceLine = getSourceLine(source, loc.line);
+        throw new GeneratorError(
+          `Variable '${varName}' is not declared. Use 'set' to declare variables.`,
+          filename,
+          loc.line,
+          loc.column,
+          sourceLine
+        );
+      }
+    }
+
     return `${indent()}${left} = ${right};`;
   }
 
