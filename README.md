@@ -95,6 +95,23 @@ function fib(n) {
 }
 ```
 
+### Array Example
+
+```tsl
+set numbers = [1, 2, 3, 4, 5]
+for n in numbers:
+    print(n)
+```
+
+Compiles to:
+
+```js
+var numbers = [1, 2, 3, 4, 5];
+for (let n of numbers) {
+  console.log(n);
+}
+```
+
 ### Public Function Example
 
 ```tsl
