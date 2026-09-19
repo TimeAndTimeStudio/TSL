@@ -10,6 +10,7 @@ Designed for learning, game prototyping, and writing clean, readable code with m
 ## Features
 
 - **Simple syntax** — colon (`:`) and indentation for blocks, no braces or keywords
+- **Variable declarations** — use `set` keyword to declare variables (e.g., `set x = 10`)
 - **Full compiler pipeline** — Lexer → Parser → AST → Validator → Generator
 - **JavaScript backend** — generates clean, readable, valid JavaScript
 - **Deterministic output** — same source always produces the same JavaScript
@@ -71,27 +72,26 @@ node src/cli.js --version           # Show version
 
 ```tsl
 # Fibonacci
+set result = fib(10)
+print(result)
+
 function fib(n):
     if n <= 1:
         return n
     return fib(n - 1) + fib(n - 2)
-
-for i in range(10):
-    print(fib(i))
 ```
 
 Compiles to:
 
 ```js
+var result = fib(10);
+console.log(result);
+
 function fib(n) {
   if (n <= 1) {
     return n;
   }
   return fib(n - 1) + fib(n - 2);
-}
-
-for (let i of range(10)) {
-  console.log(fib(i));
 }
 ```
 
@@ -99,7 +99,7 @@ for (let i of range(10)) {
 
 ```tsl
 public function loadingset(bool):
-    loading = bool
+    set loading = bool
 ```
 
 Compiles to:
