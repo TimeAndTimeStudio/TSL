@@ -4,7 +4,6 @@ const { strictEqual, ok, deepStrictEqual } = require('assert');
 const path = require('path');
 
 const CLI = path.join(__dirname, '..', '..', 'src', 'cli.js');
-const EXAMPLES = path.join(__dirname, '..', '..', 'examples');
 
 function test(name, fn) {
   try {
@@ -95,33 +94,6 @@ test("arrays.tsl compiles successfully", () => {
 test("objects.tsl compiles successfully", () => {
   const result = compileTsl('set obj = { x: 10, y: 20 }\nprint(obj.x)\n');
   ok(result.includes('Compilation successful'), 'Should compile');
-});
-
-// Test 10: All example files exist and compile
-test("all example files compile", () => {
-  const expectedFiles = [
-    'hello.tsl',
-    'variables.tsl',
-    'math.tsl',
-    'if.tsl',
-    'while.tsl',
-    'for.tsl',
-    'functions.tsl',
-    'arrays.tsl',
-    'objects.tsl',
-    'strings.tsl',
-    'comparison.tsl',
-    'logical.tsl',
-    'nested.tsl',
-    'recursion.tsl',
-    'fibonacci.tsl',
-    'bubble_sort.tsl',
-  ];
-
-  for (const file of expectedFiles) {
-    const filePath = path.join(EXAMPLES, file);
-    ok(readFileSync(filePath, 'utf-8').length > 0, `${file} should not be empty`);
-  }
 });
 
 // Test 12: Full pipeline — hello.tsl

@@ -1,2 +1,0 @@
-set obj = { x: 10, y: 20 }
-print(obj.x)
