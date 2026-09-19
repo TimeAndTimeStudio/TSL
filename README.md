@@ -97,8 +97,21 @@ function fib(n) {
 
 ### Array Example
 
+Arrays support both comma-separated and newline-separated elements:
+
 ```tsl
+# Comma-separated (single line)
 set numbers = [1, 2, 3, 4, 5]
+
+# Newline-separated (multi-line)
+set assets = [
+    "music/lobby.mp3",
+    "menu/button.png",
+    "menu/text.png",
+    "player-idle/1.png",
+    "player-idle/3.png"
+]
+
 for n in numbers:
     print(n)
 ```
@@ -107,6 +120,13 @@ Compiles to:
 
 ```js
 var numbers = [1, 2, 3, 4, 5];
+var assets = [
+    "music/lobby.mp3",
+    "menu/button.png",
+    "menu/text.png",
+    "player-idle/1.png",
+    "player-idle/3.png"
+];
 for (let n of numbers) {
   console.log(n);
 }
