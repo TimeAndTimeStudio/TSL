@@ -335,8 +335,39 @@ function createParser(tokens, source, filename = '<anonymous>') {
     const properties = [];
 
     while (!match(TokenType.RBRACE)) {
+      // Skip structural tokens (NEWLINE, INDENT) inside objects
+      while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
+        advance();
+      }
+      
+      // If we hit RBRACE again (trailing comma case), stop
+      if (peek().type === TokenType.RBRACE) {
+        break;
+      }
+      
+      // If we hit DEDENT, consume it (object is closing at outer scope)
+      if (peek().type === TokenType.DEDENT) {
+        advance();
+        // Now expect RBRACE
+        expect(TokenType.RBRACE);
+        break;
+      }
+      
       if (properties.length > 0) {
         expect(TokenType.COMMA);
+        // Skip structural tokens after comma too
+        while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
+          advance();
+        }
+        // Check again for RBRACE/DEDENT after comma+whitespace
+        if (peek().type === TokenType.RBRACE) {
+          break;
+        }
+        if (peek().type === TokenType.DEDENT) {
+          advance();
+          expect(TokenType.RBRACE);
+          break;
+        }
       }
       const keyToken = expect(TokenType.IDENTIFIER);
       const key = Identifier(keyToken.value, makeLocation(keyToken));
