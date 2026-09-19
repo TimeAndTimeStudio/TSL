@@ -347,7 +347,7 @@ const { strictEqual: equal, ok, deepEqual } = require('assert');
     ),
     WhileStatement(Identifier('c', loc), [], loc),
     ForStatement(Identifier('i', loc), Identifier('it', loc), [], loc),
-    FunctionDeclaration(Identifier('f', loc), [], [], loc),
+    FunctionDeclaration(Identifier('f', loc), [], [], false, loc),
     ReturnStatement(null, loc),
     BreakStatement(loc),
     ContinueStatement(loc),

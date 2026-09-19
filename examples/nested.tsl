@@ -1,0 +1,8 @@
+set x = 10
+if x > 5:
+    if x < 15:
+        print("x is between 5 and 15")
+    else:
+        print("x is 15 or more")
+else:
+    print("x is 5 or less")

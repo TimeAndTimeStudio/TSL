@@ -300,10 +300,11 @@ function parse(source) {
 // === Test 33: Grouped expression ===
 {
   const node = parse('(10 + 20)');
-  equal(node.type, 'BinaryExpression');
-  equal(node.operator, '+');
-  equal(node.left.value, 10);
-  equal(node.right.value, 20);
+  equal(node.type, 'ParenthesizedExpression');
+  equal(node.expression.type, 'BinaryExpression');
+  equal(node.expression.operator, '+');
+  equal(node.expression.left.value, 10);
+  equal(node.expression.right.value, 20);
   console.log('PASS: grouped expression');
 }
 
@@ -380,10 +381,11 @@ function parse(source) {
   const node = parse('(10 + 20) * 3');
   equal(node.type, 'BinaryExpression');
   equal(node.operator, '*');
-  equal(node.left.type, 'BinaryExpression');
-  equal(node.left.operator, '+');
-  equal(node.left.left.value, 10);
-  equal(node.left.right.value, 20);
+  equal(node.left.type, 'ParenthesizedExpression');
+  equal(node.left.expression.type, 'BinaryExpression');
+  equal(node.left.expression.operator, '+');
+  equal(node.left.expression.left.value, 10);
+  equal(node.left.expression.right.value, 20);
   equal(node.right.value, 3);
   console.log('PASS: complex expression with grouping');
 }
@@ -484,8 +486,9 @@ function parse(source) {
   const node = parse('not (a and b)');
   equal(node.type, 'UnaryExpression');
   equal(node.operator, 'not');
-  equal(node.argument.type, 'BinaryExpression');
-  equal(node.argument.operator, 'and');
+  equal(node.argument.type, 'ParenthesizedExpression');
+  equal(node.argument.expression.type, 'BinaryExpression');
+  equal(node.argument.expression.operator, 'and');
   console.log('PASS: not with grouping');
 }
 

@@ -1,0 +1,2 @@
+set items = [1, 2, 3]
+print(items[0])

@@ -57,19 +57,19 @@ test("hello.tsl compiles successfully", () => {
 
 // Test 2: variables.tsl compiles
 test("variables.tsl compiles successfully", () => {
-  const result = compileTsl('x = 10\ny = "hello"\nz = true\nprint(x)\nprint(y)\nprint(z)\n');
+  const result = compileTsl('set x = 10\nset y = "hello"\nset z = true\nprint(x)\nprint(y)\nprint(z)\n');
   ok(result.includes('Compilation successful'), 'Should compile');
 });
 
 // Test 3: math.tsl compiles
 test("math.tsl compiles successfully", () => {
-  const result = compileTsl('a = 10\nb = 3\nprint(a + b)\nprint(a * b)\nprint(a % b)\n');
+  const result = compileTsl('set a = 10\nset b = 3\nprint(a + b)\nprint(a * b)\nprint(a % b)\n');
   ok(result.includes('Compilation successful'), 'Should compile');
 });
 
 // Test 4: if.tsl compiles
 test("if.tsl compiles successfully", () => {
-  const result = compileTsl('x = 15\nif x > 10:\n    print("big")\nelse:\n    print("small")\n');
+  const result = compileTsl('set x = 15\nif x > 10:\n    print("big")\nelse:\n    print("small")\n');
   ok(result.includes('Compilation successful'), 'Should compile');
 });
 
@@ -81,19 +81,19 @@ test("loops.tsl compiles successfully", () => {
 
 // Test 6: functions.tsl compiles
 test("functions.tsl compiles successfully", () => {
-  const result = compileTsl('function add(a, b):\n    return a + b\n\nresult = add(5, 10)\nprint(result)\n');
+  const result = compileTsl('function add(a, b):\n    return a + b\n\nset result = add(5, 10)\nprint(result)\n');
   ok(result.includes('Compilation successful'), 'Should compile');
 });
 
 // Test 7: arrays.tsl compiles
 test("arrays.tsl compiles successfully", () => {
-  const result = compileTsl('items = [1, 2, 3]\nprint(items[0])\n');
+  const result = compileTsl('set items = [1, 2, 3]\nprint(items[0])\n');
   ok(result.includes('Compilation successful'), 'Should compile');
 });
 
 // Test 8: objects.tsl compiles
 test("objects.tsl compiles successfully", () => {
-  const result = compileTsl('obj = { x: 10, y: 20 }\nprint(obj.x)\n');
+  const result = compileTsl('set obj = { x: 10, y: 20 }\nprint(obj.x)\n');
   ok(result.includes('Compilation successful'), 'Should compile');
 });
 
@@ -132,13 +132,13 @@ test("full pipeline: hello.tsl", () => {
 
 // Test 13: Full pipeline — variables
 test("full pipeline: variables", () => {
-  const result = compileAndRun('x = 42\nprint(x)\n');
+  const result = compileAndRun('set x = 42\nprint(x)\n');
   ok(result.jsCode.includes('let x = 42;'), 'Should declare variable');
 });
 
 // Test 14: Full pipeline — math operations
 test("full pipeline: math operations", () => {
-  const result = compileAndRun('a = 10\nb = 3\nprint(a + b)\nprint(a - b)\nprint(a * b)\nprint(a / b)\n');
+  const result = compileAndRun('set a = 10\nset b = 3\nprint(a + b)\nprint(a - b)\nprint(a * b)\nprint(a / b)\n');
   ok(result.jsCode.includes('(a + b)'), 'Should generate addition');
   ok(result.jsCode.includes('(a - b)'), 'Should generate subtraction');
   ok(result.jsCode.includes('(a * b)'), 'Should generate multiplication');
@@ -160,13 +160,13 @@ test("full pipeline: for loop", () => {
 
 // Test 17: Full pipeline — while loop
 test("full pipeline: while loop", () => {
-  const result = compileAndRun('while x > 0:\n    print(x)\n    x = x - 1\n');
+  const result = compileAndRun('set x = 10\nwhile x > 0:\n    print(x)\n    x = x - 1\n');
   ok(result.jsCode.includes('while'), 'Should generate while');
 });
 
 // Test 18: Full pipeline — function
 test("full pipeline: function", () => {
-  const result = compileAndRun('function double(n):\n    return n * 2\n\nresult = double(5)\nprint(result)\n');
+  const result = compileAndRun('function double(n):\n    return n * 2\n\nset result = double(5)\nprint(result)\n');
   ok(result.jsCode.includes('function double(n)'), 'Should generate function declaration');
   ok(result.jsCode.includes('return n * 2'), 'Should generate return');
   ok(result.jsCode.includes('double(5)'), 'Should generate function call');
@@ -174,14 +174,14 @@ test("full pipeline: function", () => {
 
 // Test 19: Full pipeline — arrays
 test("full pipeline: arrays", () => {
-  const result = compileAndRun('arr = [1, 2, 3]\nx = arr[0]\nprint(x)\n');
+  const result = compileAndRun('set arr = [1, 2, 3]\nset x = arr[0]\nprint(x)\n');
   ok(result.jsCode.includes('[1, 2, 3]'), 'Should generate array literal');
   ok(result.jsCode.includes('arr[0]'), 'Should generate array access');
 });
 
 // Test 20: Full pipeline — objects
 test("full pipeline: objects", () => {
-  const result = compileAndRun('obj = { x: 10, y: 20 }\nprint(obj.x)\n');
+  const result = compileAndRun('set obj = { x: 10, y: 20 }\nprint(obj.x)\n');
   ok(result.jsCode.includes('{ x: 10, y: 20 }'), 'Should generate object literal');
   ok(result.jsCode.includes('obj.x'), 'Should generate member access');
 });
@@ -195,7 +195,7 @@ test("full pipeline: nested control flow", () => {
 
 // Test 23: Full pipeline — function with loop
 test("full pipeline: function with loop", () => {
-  const result = compileAndRun('function sum_array(arr):\n    total = 0\n    for item in arr:\n        total = total + item\n    return total\n\nresult = sum_array([1, 2, 3])\nprint(result)\n');
+  const result = compileAndRun('function sum_array(arr):\n    set total = 0\n    for item in arr:\n        total = total + item\n    return total\n\nset result = sum_array([1, 2, 3])\nprint(result)\n');
   ok(result.jsCode.includes('function sum_array(arr)'), 'Should generate function');
   ok(result.jsCode.includes('for (let item of arr)'), 'Should generate for inside function');
   ok(result.jsCode.includes('return total'), 'Should generate return');
@@ -203,7 +203,7 @@ test("full pipeline: function with loop", () => {
 
 // Test 24: Full pipeline — boolean and logical
 test("full pipeline: boolean and logical operators", () => {
-  const result = compileAndRun('a = true and false\nb = true or false\nc = not true\nprint(a)\nprint(b)\nprint(c)\n');
+  const result = compileAndRun('set a = true and false\nset b = true or false\nset c = not true\nprint(a)\nprint(b)\nprint(c)\n');
   ok(result.jsCode.includes('&&'), 'Should generate &&');
   ok(result.jsCode.includes('||'), 'Should generate ||');
   ok(result.jsCode.includes('!'), 'Should generate !');
@@ -211,13 +211,13 @@ test("full pipeline: boolean and logical operators", () => {
 
 // Test 25: Full pipeline — null
 test("full pipeline: null literal", () => {
-  const result = compileAndRun('value = null\nprint(value)\n');
+  const result = compileAndRun('set value = null\nprint(value)\n');
   ok(result.jsCode.includes('null'), 'Should generate null');
 });
 
 // Test 26: Generated JavaScript is valid
 test("generated JavaScript is syntactically valid", () => {
-  const result = compileAndRun('x = 10\nprint(x)\n');
+  const result = compileAndRun('set x = 10\nprint(x)\n');
   // Try to parse the generated JS
   try {
     new Function(result.jsCode);
@@ -229,7 +229,7 @@ test("generated JavaScript is syntactically valid", () => {
 // Test 27: Generated JavaScript runs standalone
 test("generated JavaScript runs standalone", () => {
   const tmp = `/tmp/integration_run_${Date.now()}.tsl`;
-  writeFileSync(tmp, 'x = 10\nprint(x)\n', 'utf-8');
+  writeFileSync(tmp, 'set x = 10\nprint(x)\n', 'utf-8');
   try {
     const result = execSync(`node ${CLI} "${tmp}"`, { encoding: 'utf-8' });
     const jsMatch = result.match(/--- Generated JavaScript ---\s*\n([\s\S]*?)\s*--- End of Generated Code ---/);
@@ -245,7 +245,7 @@ test("generated JavaScript runs standalone", () => {
 
 // Test 28: Complex expression
 test("full pipeline: complex expressions", () => {
-  const result = compileAndRun('x = 10 + 20 * 2\nprint(x)\n');
+  const result = compileAndRun('set x = 10 + 20 * 2\nprint(x)\n');
   ok(result.jsCode.includes('10 + 20 * 2'), 'Should handle complex expressions');
 });
 

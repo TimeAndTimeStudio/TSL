@@ -313,11 +313,25 @@ function createGenerator(source, filename = '<anonymous>') {
     const lines = [];
 
     if (node.init !== null) {
-      let init = generateNode(node.init);
+      // Extract variable name from init assignment
+      let varName = '';
+      if (node.init.left && node.init.left.type === 'Identifier') {
+        varName = node.init.left.name;
+      }
+      // Declare the loop variable in the scope
+      if (varName) {
+        declareVar(varName);
+      }
+      
+      // Generate init as a declaration (add 'let')
+      let init = '';
+      if (varName) {
+        const right = generateNode(node.init.right);
+        init = `let ${varName} = ${right}`;
+      }
       const condition = generateNode(node.condition);
       let update = generateNode(node.update);
       // Remove trailing semicolon and leading whitespace from init/update
-      init = init.replace(/;$/, '').trim();
       update = update.replace(/;$/, '').trim();
       lines.push(`${indent()}for (${init}; ${condition}; ${update}) {`);
     } else {

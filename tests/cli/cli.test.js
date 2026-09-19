@@ -73,7 +73,7 @@ function cleanup(path) {
 
 // Test 6: build command (stdout)
 {
-  const tmp = writeTempTsl('x = 10\nprint(x)\n');
+  const tmp = writeTempTsl('set x = 10\nprint(x)\n');
   const r = run(`build ${tmp}`);
   cleanup(tmp);
   strictEqual(r.exitCode, 0);
@@ -83,7 +83,7 @@ function cleanup(path) {
 
 // Test 7: build command with -o flag
 {
-  const tmp = writeTempTsl('x = 20\nprint(x)\n');
+  const tmp = writeTempTsl('set x = 20\nprint(x)\n');
   const out = `/tmp/test_output_${Date.now()}.js`;
   const r = run(`build ${tmp} -o ${out}`);
   strictEqual(r.exitCode, 0);
@@ -96,7 +96,7 @@ function cleanup(path) {
 
 // Test 8: check command (valid file)
 {
-  const tmp = writeTempTsl('x = 30\nprint(x)\n');
+  const tmp = writeTempTsl('set x = 30\nprint(x)\n');
   const r = run(`check ${tmp}`);
   cleanup(tmp);
   strictEqual(r.exitCode, 0);

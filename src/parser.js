@@ -598,10 +598,9 @@ function createParser(tokens, source, filename = '<anonymous>') {
     expect(TokenType.EQUAL);
     const value = parseExpression();
     
-    // Consume trailing SEMICOLON, NEWLINE, or DEDENT
+    // Consume trailing SEMICOLON or NEWLINE
     match(TokenType.SEMICOLON);
     match(TokenType.NEWLINE);
-    match(TokenType.DEDENT);
     
     return SetStatement(left, value, makeLocation(nameToken));
   }

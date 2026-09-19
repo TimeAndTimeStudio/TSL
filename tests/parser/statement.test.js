@@ -392,7 +392,7 @@ function parseStatement(source) {
   equal(stmt.body.length, 1);
   equal(stmt.body[0].argument.type, 'BinaryExpression');
   equal(stmt.body[0].argument.operator, '*');
-  equal(stmt.body[0].argument.left.type, 'BinaryExpression');
+  equal(stmt.body[0].argument.left.type, 'ParenthesizedExpression');
   console.log('PASS: function with grouped arithmetic in return');
 }
 
@@ -402,7 +402,7 @@ function parseStatement(source) {
   equal(stmt.type, 'IfStatement');
   equal(stmt.condition.type, 'BinaryExpression');
   equal(stmt.condition.operator, '>');
-  equal(stmt.condition.left.type, 'BinaryExpression');
+  equal(stmt.condition.left.type, 'ParenthesizedExpression');
   console.log('PASS: if with grouped condition');
 }
 
