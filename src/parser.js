@@ -320,7 +320,7 @@ function createParser(tokens, source, filename = '<anonymous>') {
         advance();
       }
       
-      // Check for trailing comma
+      // Check for trailing comma or newline (newline acts as separator)
       if (peek().type === TokenType.COMMA) {
         advance(); // consume comma
         // Skip structural tokens after comma
@@ -343,6 +343,9 @@ function createParser(tokens, source, filename = '<anonymous>') {
         }
       } else if (peek().type === TokenType.RBRACKET) {
         break;
+      } else if (peek().type === TokenType.NEWLINE || peek().type === TokenType.DEDENT) {
+        // Newline/Dedent acts as element separator in arrays
+        continue;
       } else {
         expect(TokenType.COMMA);
       }
