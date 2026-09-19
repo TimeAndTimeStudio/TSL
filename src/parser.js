@@ -288,8 +288,25 @@ function createParser(tokens, source, filename = '<anonymous>') {
     const elements = [];
 
     while (!match(TokenType.RBRACKET)) {
+      // Skip structural tokens (NEWLINE, INDENT) inside arrays
+      while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
+        advance();
+      }
+      
+      // If we hit DEDENT, consume it (array is closing at outer scope)
+      if (peek().type === TokenType.DEDENT) {
+        advance();
+        // Now expect RBRACKET
+        expect(TokenType.RBRACKET);
+        break;
+      }
+      
       if (elements.length > 0) {
         expect(TokenType.COMMA);
+        // Skip structural tokens after comma too
+        while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
+          advance();
+        }
       }
       elements.push(parseExpression());
     }
@@ -486,6 +503,12 @@ function createParser(tokens, source, filename = '<anonymous>') {
 
     expect(TokenType.EQUAL);
     const value = parseExpression();
+    
+    // Consume trailing SEMICOLON, NEWLINE, or DEDENT
+    match(TokenType.SEMICOLON);
+    match(TokenType.NEWLINE);
+    match(TokenType.DEDENT);
+    
     return SetStatement(left, value, makeLocation(nameToken));
   }
 
