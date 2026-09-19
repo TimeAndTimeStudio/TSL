@@ -286,8 +286,9 @@ function createParser(tokens, source, filename = '<anonymous>') {
     const startToken = current();
     advance(); // LBRACKET
     const elements = [];
+    let rbracketConsumed = false;
 
-    while (!match(TokenType.RBRACKET)) {
+    while (peek().type !== TokenType.RBRACKET && peek().type !== TokenType.EOF) {
       // Skip structural tokens (NEWLINE, INDENT) inside arrays
       while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
         advance();
@@ -302,29 +303,54 @@ function createParser(tokens, source, filename = '<anonymous>') {
       if (peek().type === TokenType.DEDENT) {
         advance();
         // Now expect RBRACKET
-        expect(TokenType.RBRACKET);
-        break;
+        if (peek().type === TokenType.RBRACKET) {
+          advance();
+          rbracketConsumed = true;
+          break;
+        }
+        // If there's still content after DEDENT (malformed), continue
+        continue;
       }
       
-      if (elements.length > 0) {
-        expect(TokenType.COMMA);
-        // Skip structural tokens after comma too
+      // Parse element
+      elements.push(parseExpression());
+      
+      // Skip structural tokens after element
+      while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
+        advance();
+      }
+      
+      // Check for trailing comma
+      if (peek().type === TokenType.COMMA) {
+        advance(); // consume comma
+        // Skip structural tokens after comma
         while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
           advance();
         }
-        // Check again for RBRACKET/DEDENT after comma+whitespace
+        // Check if next is RBRACKET (trailing comma case)
         if (peek().type === TokenType.RBRACKET) {
           break;
         }
+        // Check for DEDENT after comma
         if (peek().type === TokenType.DEDENT) {
           advance();
-          expect(TokenType.RBRACKET);
-          break;
+          if (peek().type === TokenType.RBRACKET) {
+            advance();
+            rbracketConsumed = true;
+            break;
+          }
+          continue;
         }
+      } else if (peek().type === TokenType.RBRACKET) {
+        break;
+      } else {
+        expect(TokenType.COMMA);
       }
-      elements.push(parseExpression());
     }
 
+    if (!rbracketConsumed) {
+      expect(TokenType.RBRACKET);
+    }
     return ArrayExpression(elements, makeLocation(startToken));
   }
 
@@ -333,8 +359,9 @@ function createParser(tokens, source, filename = '<anonymous>') {
     const startToken = current();
     advance(); // LBRACE
     const properties = [];
+    let rbraceConsumed = false;
 
-    while (!match(TokenType.RBRACE)) {
+    while (peek().type !== TokenType.RBRACE && peek().type !== TokenType.EOF) {
       // Skip structural tokens (NEWLINE, INDENT) inside objects
       while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
         advance();
@@ -349,33 +376,55 @@ function createParser(tokens, source, filename = '<anonymous>') {
       if (peek().type === TokenType.DEDENT) {
         advance();
         // Now expect RBRACE
-        expect(TokenType.RBRACE);
-        break;
+        if (peek().type === TokenType.RBRACE) {
+          advance();
+          rbraceConsumed = true;
+          break;
+        }
+        continue;
       }
       
-      if (properties.length > 0) {
-        expect(TokenType.COMMA);
-        // Skip structural tokens after comma too
-        while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
-          advance();
-        }
-        // Check again for RBRACE/DEDENT after comma+whitespace
-        if (peek().type === TokenType.RBRACE) {
-          break;
-        }
-        if (peek().type === TokenType.DEDENT) {
-          advance();
-          expect(TokenType.RBRACE);
-          break;
-        }
-      }
+      // Parse key
       const keyToken = expect(TokenType.IDENTIFIER);
       const key = Identifier(keyToken.value, makeLocation(keyToken));
       expect(TokenType.COLON);
       const value = parseExpression();
       properties.push(Property(key, value, makeLocation(keyToken)));
+      
+      // Skip structural tokens after value
+      while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
+        advance();
+      }
+      
+      // Check for trailing comma
+      if (peek().type === TokenType.COMMA) {
+        advance(); // consume comma
+        // Skip structural tokens after comma
+        while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
+          advance();
+        }
+        // Check if next is RBRACE (trailing comma case)
+        if (peek().type === TokenType.RBRACE) {
+          break;
+        }
+        // Check for DEDENT after comma
+        if (peek().type === TokenType.DEDENT) {
+          advance();
+          if (peek().type === TokenType.RBRACE) {
+            advance();
+            rbraceConsumed = true;
+            break;
+          }
+          continue;
+        }
+      } else if (peek().type !== TokenType.RBRACE) {
+        expect(TokenType.COMMA);
+      }
     }
 
+    if (!rbraceConsumed) {
+      expect(TokenType.RBRACE);
+    }
     return ObjectExpression(properties, makeLocation(startToken));
   }
 
