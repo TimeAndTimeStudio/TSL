@@ -420,6 +420,7 @@ cd TSL</div>
                 <thead><tr><th>ข้อจำกัด</th><th>ตัวอย่างที่ใช้ไม่ได้</th><th>วิธีแก้</th></tr></thead>
                 <tbody>
                   <tr><td>ไม่รองรับ unary minus (ติดลบโดยตรง)</td><td><code>set x = -5</code></td><td><code>set x = 0 - 5</code> หรือ <code>set x = -1 * 5</code></td></tr>
+                  <tr><td>ไม่รองรับ -=, +=</td><td><code>x += 5</code>, <code>x -= 5</code></td><td><code>x = x + 5</code>, <code>x = x - 5</code></td></tr>
                 </tbody>
               </table>
 
@@ -495,6 +496,7 @@ cd TSL</div>
                 <thead><tr><th>Limitation</th><th>Invalid Example</th><th>Workaround</th></tr></thead>
                 <tbody>
                   <tr><td>Unary minus not supported (cannot write negative numbers directly)</td><td><code>set x = -5</code></td><td><code>set x = 0 - 5</code> or <code>set x = -1 * 5</code></td></tr>
+                  <tr><td>-=, += not supported</td><td><code>x += 5</code>, <code>x -= 5</code></td><td><code>x = x + 5</code>, <code>x = x - 5</code></td></tr>
                 </tbody>
               </table>
 
