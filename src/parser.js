@@ -293,6 +293,11 @@ function createParser(tokens, source, filename = '<anonymous>') {
         advance();
       }
       
+      // If we hit RBRACKET again (trailing comma case), stop
+      if (peek().type === TokenType.RBRACKET) {
+        break;
+      }
+      
       // If we hit DEDENT, consume it (array is closing at outer scope)
       if (peek().type === TokenType.DEDENT) {
         advance();
@@ -306,6 +311,15 @@ function createParser(tokens, source, filename = '<anonymous>') {
         // Skip structural tokens after comma too
         while (peek().type === TokenType.NEWLINE || peek().type === TokenType.INDENT) {
           advance();
+        }
+        // Check again for RBRACKET/DEDENT after comma+whitespace
+        if (peek().type === TokenType.RBRACKET) {
+          break;
+        }
+        if (peek().type === TokenType.DEDENT) {
+          advance();
+          expect(TokenType.RBRACKET);
+          break;
         }
       }
       elements.push(parseExpression());
