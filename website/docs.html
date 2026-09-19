@@ -412,6 +412,15 @@ cd TSL</div>
                 </tbody>
               </table>
 
+              <h3>ข้อจำกัดของตัวดำเนินการ</h3>
+              <table>
+                <thead><tr><th>ข้อจำกัด</th><th>ตัวอย่างที่ใช้ไม่ได้</th><th>วิธีแก้</th></tr></thead>
+                <tbody>
+                  <tr><td>ไม่รองรับ unary minus (ติดลบโดยตรง)</td><td><code>set x = -5</code></td><td><code>set x = 0 - 5</code> หรือ <code>set x = -1 * 5</code></td></tr>
+                  <tr><td>ไม่รองรับ compound assignment</td><td><code>x += 5</code>, <code>x -= 5</code>, <code>x *= 5</code></td><td><code>x = x + 5</code>, <code>x = x - 5</code>, <code>x = x * 5</code></td></tr>
+                </tbody>
+              </table>
+
               <h3>Logical Examples</h3>
               <div class="code-block">set x = true<br>set y = false<br><br>print(x <span class="keyword">and</span> y) <span class="comment"># output: false</span><br>print(x <span class="keyword">or</span> y)  <span class="comment"># output: true</span><br>print(<span class="keyword">not</span> x)   <span class="comment"># output: false</span><br>print(<span class="keyword">not</span> y)   <span class="comment"># output: true</span><br><br><span class="comment"># Combining logical operators</span><br>set age = 25<br>set has_id = true<br><br><span class="keyword">if</span> age &gt;= 18 <span class="keyword">and</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Allowed")<br><br><span class="keyword">if</span> <span class="keyword">not</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("No ID")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Has ID")</div>
 
@@ -473,6 +482,15 @@ cd TSL</div>
                 <thead><tr><th>Operator</th><th>Description</th></tr></thead>
                 <tbody>
                   <tr><td><code>=</code></td><td>Assignment (reassignment only)</td></tr>
+                </tbody>
+              </table>
+
+              <h3>Operator Limitations</h3>
+              <table>
+                <thead><tr><th>Limitation</th><th>Invalid Example</th><th>Workaround</th></tr></thead>
+                <tbody>
+                  <tr><td>Unary minus not supported (cannot write negative numbers directly)</td><td><code>set x = -5</code></td><td><code>set x = 0 - 5</code> or <code>set x = -1 * 5</code></td></tr>
+                  <tr><td>Compound assignment not supported</td><td><code>x += 5</code>, <code>x -= 5</code>, <code>x *= 5</code></td><td><code>x = x + 5</code>, <code>x = x - 5</code>, <code>x = x * 5</code></td></tr>
                 </tbody>
               </table>
 
