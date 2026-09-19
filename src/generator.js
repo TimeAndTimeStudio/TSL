@@ -188,6 +188,9 @@ function createGenerator(source, filename = '<anonymous>') {
     if (callee === 'print') {
       callee = 'console.log';
     }
+    if (callee.endsWith('.append')) {
+      callee = callee.replace('.append', '.push');
+    }
     const args = node.arguments.map(arg => generateNode(arg)).join(', ');
     return `${callee}(${args})`;
   }
