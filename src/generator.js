@@ -209,6 +209,30 @@ function createGenerator(source, filename = '<anonymous>') {
     if (callee.endsWith('.append')) {
       callee = callee.replace('.append', '.push');
     }
+    
+    // Math functions
+    const mathFunctions = {
+      'abs': 'Math.abs',
+      'sqrt': 'Math.sqrt',
+      'pow': 'Math.pow',
+      'floor': 'Math.floor',
+      'ceil': 'Math.ceil',
+      'round': 'Math.round',
+      'min': 'Math.min',
+      'max': 'Math.max',
+      'sin': 'Math.sin',
+      'cos': 'Math.cos',
+      'tan': 'Math.tan',
+      'log': 'Math.log',
+      'exp': 'Math.exp',
+      'random': 'Math.random',
+      'PI': 'Math.PI'
+    };
+    
+    if (mathFunctions[callee]) {
+      callee = mathFunctions[callee];
+    }
+    
     const args = node.arguments.map(arg => generateNode(arg)).join(', ');
     return `${callee}(${args})`;
   }

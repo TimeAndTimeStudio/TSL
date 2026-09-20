@@ -80,6 +80,7 @@
               <li><a href="#indentation">Indentation</a></li>
               <li><a href="#data-types">Data Types</a></li>
               <li><a href="#operators">Operators</a></li>
+              <li><a href="#math-functions">ฟังก์ชันคณิตศาสตร์</a></li>
               <li><a href="#variables">Variables</a></li>
               <li><a href="#control-flow">Control Flow</a></li>
               <li><a href="#functions">Functions</a></li>
@@ -103,6 +104,7 @@
               <li><a href="#indentation">Indentation</a></li>
               <li><a href="#data-types">Data Types</a></li>
               <li><a href="#operators">Operators</a></li>
+              <li><a href="#math-functions">Math Functions</a></li>
               <li><a href="#variables">Variables</a></li>
               <li><a href="#control-flow">Control Flow</a></li>
               <li><a href="#functions">Functions</a></li>
@@ -514,6 +516,83 @@ cd TSL</div>
                 <li><code>and</code></li>
                 <li><code>or</code></li>
               </ol>
+            </div>
+            <div class="lang-en">
+            </div>
+          </section>
+
+          <section id="math-functions">
+            <div class="lang-th">
+              <h2>ฟังก์ชันคณิตศาสตร์</h2>
+              <p>TSL รองรับฟังก์ชันคณิตศาสตร์พื้นฐานที่ map ไปยัง <code>Math</code> ของ JavaScript</p>
+
+              <h3>ฟังก์ชัน</h3>
+              <table>
+                <thead><tr><th>ฟังก์ชัน</th><th>คำอธิบาย</th><th>ตัวอย่าง</th><th>ผลลัพธ์</th></tr></thead>
+                <tbody>
+                  <tr><td><code>abs(x)</code></td><td>ค่าสัมบูรณ์</td><td><code>abs(-5)</code></td><td><code>5</code></td></tr>
+                  <tr><td><code>sqrt(x)</code></td><td>รากที่สอง</td><td><code>sqrt(16)</code></td><td><code>4</code></td></tr>
+                  <tr><td><code>pow(x, y)</code></td><td>x กำลัง y</td><td><code>pow(2, 3)</code></td><td><code>8</code></td></tr>
+                  <tr><td><code>floor(x)</code></td><td>ปัดลง</td><td><code>floor(3.7)</code></td><td><code>3</code></td></tr>
+                  <tr><td><code>ceil(x)</code></td><td>ปัดขึ้น</td><td><code>ceil(3.2)</code></td><td><code>4</code></td></tr>
+                  <tr><td><code>round(x)</code></td><td>ปัดเศษใกล้ที่สุด</td><td><code>round(3.5)</code></td><td><code>4</code></td></tr>
+                  <tr><td><code>min(x, y)</code></td><td>ค่าน้อยสุด</td><td><code>min(3, 7)</code></td><td><code>3</code></td></tr>
+                  <tr><td><code>max(x, y)</code></td><td>ค่ามากสุด</td><td><code>max(3, 7)</code></td><td><code>7</code></td></tr>
+                  <tr><td><code>sin(x)</code></td><td>ไซน์ (เรเดียน)</td><td><code>sin(0)</code></td><td><code>0</code></td></tr>
+                  <tr><td><code>cos(x)</code></td><td>โคไซน์ (เรเดียน)</td><td><code>cos(0)</code></td><td><code>1</code></td></tr>
+                  <tr><td><code>tan(x)</code></td><td>แทนเจนต์ (เรเดียน)</td><td><code>tan(0)</code></td><td><code>0</code></td></tr>
+                  <tr><td><code>log(x)</code></td><td>ลอการิทึมธรรมชาติ</td><td><code>log(1)</code></td><td><code>0</code></td></tr>
+                  <tr><td><code>exp(x)</code></td><td>e กำลัง x</td><td><code>exp(0)</code></td><td><code>1</code></td></tr>
+                  <tr><td><code>random()</code></td><td>เลขสุ่ม 0-1</td><td><code>random()</code></td><td><code>0.xxxx</code></td></tr>
+                </tbody>
+              </table>
+
+              <h3>ค่าคงที่</h3>
+              <table>
+                <thead><tr><th>ค่าคงที่</th><th>คำอธิบาย</th><th>ค่า</th></tr></thead>
+                <tbody>
+                  <tr><td><code>PI</code></td><td>π (พาย)</td><td><code>3.141592653589793</code></td></tr>
+                </tbody>
+              </table>
+
+              <h3>ตัวอย่าง</h3>
+              <div class="code-block"><span class="comment"># คำนวณพื้นที่วงกลม</span><br>set radius = 5<br>set area = PI * pow(radius, 2)<br>print(area)  <span class="comment"># output: 78.53981633974483</span><br><br><span class="comment"># แปลงองศาเป็นเรเดียน</span><br>set degrees = 180<br>set radians = degrees * PI / 180<br>print(radians)  <span class="comment"># output: 3.141592653589793</span><br><br><span class="comment"># คำนวณระยะทาง (ทฤษฎีบทพิทาโกรัส)</span><br>set a = 3<br>set b = 4<br>set c = sqrt(pow(a, 2) + pow(b, 2))<br>print(c)  <span class="comment"># output: 5</span><br><br><span class="comment"># ปัดเศษ</span><br>set price = 99.9<br>set rounded = round(price)  <span class="comment"># output: 100</span><br>set floored = floor(price)  <span class="comment"># output: 99</span></div>
+            </div>
+            <div class="lang-en">
+              <h2>Math Functions</h2>
+              <p>TSL supports basic math functions that map to JavaScript's <code>Math</code> object.</p>
+
+              <h3>Functions</h3>
+              <table>
+                <thead><tr><th>Function</th><th>Description</th><th>Example</th><th>Output</th></tr></thead>
+                <tbody>
+                  <tr><td><code>abs(x)</code></td><td>Absolute value</td><td><code>abs(-5)</code></td><td><code>5</code></td></tr>
+                  <tr><td><code>sqrt(x)</code></td><td>Square root</td><td><code>sqrt(16)</code></td><td><code>4</code></td></tr>
+                  <tr><td><code>pow(x, y)</code></td><td>x to the power of y</td><td><code>pow(2, 3)</code></td><td><code>8</code></td></tr>
+                  <tr><td><code>floor(x)</code></td><td>Round down</td><td><code>floor(3.7)</code></td><td><code>3</code></td></tr>
+                  <tr><td><code>ceil(x)</code></td><td>Round up</td><td><code>ceil(3.2)</code></td><td><code>4</code></td></tr>
+                  <tr><td><code>round(x)</code></td><td>Round to nearest</td><td><code>round(3.5)</code></td><td><code>4</code></td></tr>
+                  <tr><td><code>min(x, y)</code></td><td>Minimum value</td><td><code>min(3, 7)</code></td><td><code>3</code></td></tr>
+                  <tr><td><code>max(x, y)</code></td><td>Maximum value</td><td><code>max(3, 7)</code></td><td><code>7</code></td></tr>
+                  <tr><td><code>sin(x)</code></td><td>Sine (radians)</td><td><code>sin(0)</code></td><td><code>0</code></td></tr>
+                  <tr><td><code>cos(x)</code></td><td>Cosine (radians)</td><td><code>cos(0)</code></td><td><code>1</code></td></tr>
+                  <tr><td><code>tan(x)</code></td><td>Tangent (radians)</td><td><code>tan(0)</code></td><td><code>0</code></td></tr>
+                  <tr><td><code>log(x)</code></td><td>Natural logarithm</td><td><code>log(1)</code></td><td><code>0</code></td></tr>
+                  <tr><td><code>exp(x)</code></td><td>e to the power of x</td><td><code>exp(0)</code></td><td><code>1</code></td></tr>
+                  <tr><td><code>random()</code></td><td>Random number (0-1)</td><td><code>random()</code></td><td><code>0.xxxx</code></td></tr>
+                </tbody>
+              </table>
+
+              <h3>Constants</h3>
+              <table>
+                <thead><tr><th>Constant</th><th>Description</th><th>Value</th></tr></thead>
+                <tbody>
+                  <tr><td><code>PI</code></td><td>π (Pi)</td><td><code>3.141592653589793</code></td></tr>
+                </tbody>
+              </table>
+
+              <h3>Examples</h3>
+              <div class="code-block"><span class="comment"># Calculate circle area</span><br>set radius = 5<br>set area = PI * pow(radius, 2)<br>print(area)  <span class="comment"># output: 78.53981633974483</span><br><br><span class="comment"># Convert degrees to radians</span><br>set degrees = 180<br>set radians = degrees * PI / 180<br>print(radians)  <span class="comment"># output: 3.141592653589793</span><br><br><span class="comment"># Calculate distance (Pythagorean theorem)</span><br>set a = 3<br>set b = 4<br>set c = sqrt(pow(a, 2) + pow(b, 2))<br>print(c)  <span class="comment"># output: 5</span><br><br><span class="comment"># Rounding</span><br>set price = 99.9<br>set rounded = round(price)  <span class="comment"># output: 100</span><br>set floored = floor(price)  <span class="comment"># output: 99</span></div>
             </div>
           </section>
 
