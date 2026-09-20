@@ -491,6 +491,11 @@ main {
   font-size: 1.75rem;
   margin: 40px 0 16px;
   padding-top: 16px;
+  scroll-margin-top: 80px;
+}
+
+.docs-content section {
+  scroll-margin-top: 80px;
 }
 
 .docs-content h2:first-child {
