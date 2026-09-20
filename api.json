@@ -1,0 +1,454 @@
+{
+  "items": [
+    {
+      "name": "tokenize",
+      "kind": "function",
+      "description": "Tokenizes TSL source code into a flat stream of tokens.",
+      "parameters": [
+        {
+          "name": "source",
+          "type": "string",
+          "description": "The TSL source code string to tokenize."
+        },
+        {
+          "name": "filename",
+          "type": "string",
+          "description": "Optional filename for error reporting."
+        }
+      ],
+      "returnType": "array"
+    },
+    {
+      "name": "createLexer",
+      "kind": "function",
+      "description": "Creates a lexer instance with tokenize method.",
+      "parameters": [
+        {
+          "name": "source",
+          "type": "string",
+          "description": "The TSL source code string."
+        },
+        {
+          "name": "filename",
+          "type": "string",
+          "description": "Optional filename for error reporting."
+        }
+      ],
+      "returnType": "object"
+    },
+    {
+      "name": "TokenType",
+      "kind": "object",
+      "description": "Token type constants used by the lexer."
+    },
+    {
+      "name": "Token",
+      "kind": "object",
+      "description": "Token constructor function."
+    },
+    {
+      "name": "LexerError",
+      "kind": "object",
+      "description": "Lexer error class."
+    },
+    {
+      "name": "createParser",
+      "kind": "function",
+      "description": "Creates a parser instance with parsing methods.",
+      "parameters": [
+        {
+          "name": "tokens",
+          "type": "array",
+          "description": "Array of tokens from the lexer."
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "description": "The original TSL source code string."
+        },
+        {
+          "name": "filename",
+          "type": "string",
+          "description": "Optional filename for error reporting."
+        }
+      ],
+      "returnType": "object"
+    },
+    {
+      "name": "ParserError",
+      "kind": "object",
+      "description": "Parser error class."
+    },
+    {
+      "name": "parseStatements",
+      "kind": "function",
+      "description": "Parses top-level statements from tokens.",
+      "parameters": [
+        {
+          "name": "parser",
+          "type": "object",
+          "description": "Parser instance returned by createParser."
+        }
+      ],
+      "returnType": "array"
+    },
+    {
+      "name": "parseStatement",
+      "kind": "function",
+      "description": "Parses a single statement.",
+      "parameters": [
+        {
+          "name": "parser",
+          "type": "object",
+          "description": "Parser instance returned by createParser."
+        }
+      ],
+      "returnType": "object"
+    },
+    {
+      "name": "parseExpression",
+      "kind": "function",
+      "description": "Parses an expression using precedence climbing.",
+      "parameters": [
+        {
+          "name": "parser",
+          "type": "object",
+          "description": "Parser instance returned by createParser."
+        }
+      ],
+      "returnType": "object"
+    },
+    {
+      "name": "parsePrimary",
+      "kind": "function",
+      "description": "Parses primary expressions (literals, identifiers).",
+      "parameters": [
+        {
+          "name": "parser",
+          "type": "object",
+          "description": "Parser instance returned by createParser."
+        }
+      ],
+      "returnType": "object"
+    },
+    {
+      "name": "parseUnary",
+      "kind": "function",
+      "description": "Parses unary expressions (not).",
+      "parameters": [
+        {
+          "name": "parser",
+          "type": "object",
+          "description": "Parser instance returned by createParser."
+        }
+      ],
+      "returnType": "object"
+    },
+    {
+      "name": "parseBlock",
+      "kind": "function",
+      "description": "Parses an indented block (colon + INDENT + statements + DEDENT).",
+      "parameters": [
+        {
+          "name": "parser",
+          "type": "object",
+          "description": "Parser instance returned by createParser."
+        }
+      ],
+      "returnType": "array"
+    },
+    {
+      "name": "Location",
+      "kind": "function",
+      "description": "AST node location constructor."
+    },
+    {
+      "name": "Program",
+      "kind": "function",
+      "description": "AST Program node constructor."
+    },
+    {
+      "name": "NumberLiteral",
+      "kind": "function",
+      "description": "AST number literal node constructor."
+    },
+    {
+      "name": "StringLiteral",
+      "kind": "function",
+      "description": "AST string literal node constructor."
+    },
+    {
+      "name": "BooleanLiteral",
+      "kind": "function",
+      "description": "AST boolean literal node constructor."
+    },
+    {
+      "name": "NullLiteral",
+      "kind": "function",
+      "description": "AST null literal node constructor."
+    },
+    {
+      "name": "Identifier",
+      "kind": "function",
+      "description": "AST identifier node constructor."
+    },
+    {
+      "name": "ArrayExpression",
+      "kind": "function",
+      "description": "AST array expression node constructor."
+    },
+    {
+      "name": "ObjectExpression",
+      "kind": "function",
+      "description": "AST object expression node constructor."
+    },
+    {
+      "name": "Property",
+      "kind": "function",
+      "description": "AST property node constructor."
+    },
+    {
+      "name": "UnaryExpression",
+      "kind": "function",
+      "description": "AST unary expression node constructor."
+    },
+    {
+      "name": "BinaryExpression",
+      "kind": "function",
+      "description": "AST binary expression node constructor."
+    },
+    {
+      "name": "CallExpression",
+      "kind": "function",
+      "description": "AST function call expression node constructor."
+    },
+    {
+      "name": "MemberExpression",
+      "kind": "function",
+      "description": "AST member access expression node constructor."
+    },
+    {
+      "name": "ArrayAccess",
+      "kind": "function",
+      "description": "AST array access expression node constructor."
+    },
+    {
+      "name": "ParenthesizedExpression",
+      "kind": "function",
+      "description": "AST parenthesized expression node constructor."
+    },
+    {
+      "name": "Assignment",
+      "kind": "function",
+      "description": "AST assignment node constructor."
+    },
+    {
+      "name": "SetStatement",
+      "kind": "function",
+      "description": "AST set statement node constructor."
+    },
+    {
+      "name": "IfStatement",
+      "kind": "function",
+      "description": "AST if statement node constructor."
+    },
+    {
+      "name": "WhileStatement",
+      "kind": "function",
+      "description": "AST while statement node constructor."
+    },
+    {
+      "name": "ForStatement",
+      "kind": "function",
+      "description": "AST for statement node constructor."
+    },
+    {
+      "name": "FunctionDeclaration",
+      "kind": "function",
+      "description": "AST function declaration node constructor."
+    },
+    {
+      "name": "ReturnStatement",
+      "kind": "function",
+      "description": "AST return statement node constructor."
+    },
+    {
+      "name": "BreakStatement",
+      "kind": "function",
+      "description": "AST break statement node constructor."
+    },
+    {
+      "name": "ContinueStatement",
+      "kind": "function",
+      "description": "AST continue statement node constructor."
+    },
+    {
+      "name": "createValidator",
+      "kind": "function",
+      "description": "Creates a validator instance for semantic validation.",
+      "parameters": [
+        {
+          "name": "source",
+          "type": "string",
+          "description": "The TSL source code string."
+        },
+        {
+          "name": "filename",
+          "type": "string",
+          "description": "Optional filename for error reporting."
+        }
+      ],
+      "returnType": "object"
+    },
+    {
+      "name": "validate",
+      "kind": "function",
+      "description": "Validates the AST for semantic errors.",
+      "parameters": [
+        {
+          "name": "program",
+          "type": "object",
+          "description": "AST Program node."
+        }
+      ],
+      "returnType": "void"
+    },
+    {
+      "name": "ValidationError",
+      "kind": "object",
+      "description": "Validation error class."
+    },
+    {
+      "name": "createGenerator",
+      "kind": "function",
+      "description": "Creates a code generator instance.",
+      "parameters": [
+        {
+          "name": "source",
+          "type": "string",
+          "description": "The TSL source code string."
+        },
+        {
+          "name": "filename",
+          "type": "string",
+          "description": "Optional filename for error reporting."
+        }
+      ],
+      "returnType": "object"
+    },
+    {
+      "name": "generate",
+      "kind": "function",
+      "description": "Generates JavaScript code from AST.",
+      "parameters": [
+        {
+          "name": "ast",
+          "type": "object",
+          "description": "AST Program node."
+        }
+      ],
+      "returnType": "string"
+    },
+    {
+      "name": "GeneratorError",
+      "kind": "object",
+      "description": "Generator error class."
+    },
+    {
+      "name": "ErrorType",
+      "kind": "object",
+      "description": "Error type constants (LEXER, PARSER, SEMANTIC, GENERATOR)."
+    },
+    {
+      "name": "TSL",
+      "kind": "object",
+      "description": "Base TSL error class."
+    },
+    {
+      "name": "getSourceLine",
+      "kind": "function",
+      "description": "Gets the source line at a given position for error reporting.",
+      "parameters": [
+        {
+          "name": "source",
+          "type": "string",
+          "description": "The TSL source code string."
+        },
+        {
+          "name": "line",
+          "type": "number",
+          "description": "Line number (1-indexed)."
+        }
+      ],
+      "returnType": "string"
+    },
+    {
+      "name": "runCommand",
+      "kind": "function",
+      "description": "CLI command: compile and display generated JavaScript.",
+      "parameters": [
+        {
+          "name": "file",
+          "type": "string",
+          "description": "Path to the .tsl file to compile."
+        }
+      ],
+      "returnType": "void"
+    },
+    {
+      "name": "buildCommand",
+      "kind": "function",
+      "description": "CLI command: compile and optionally write to file.",
+      "parameters": [
+        {
+          "name": "file",
+          "type": "string",
+          "description": "Path to the .tsl file to compile."
+        },
+        {
+          "name": "outputFile",
+          "type": "string",
+          "description": "Optional output .js file path."
+        }
+      ],
+      "returnType": "void"
+    },
+    {
+      "name": "checkCommand",
+      "kind": "function",
+      "description": "CLI command: validate only, no output.",
+      "parameters": [
+        {
+          "name": "file",
+          "type": "string",
+          "description": "Path to the .tsl file to validate."
+        }
+      ],
+      "returnType": "void"
+    },
+    {
+      "name": "showVersion",
+      "kind": "function",
+      "description": "CLI command: print TSL version.",
+      "returnType": "void"
+    },
+    {
+      "name": "compileSource",
+      "kind": "function",
+      "description": "Core compilation function: source -> AST -> JS code.",
+      "parameters": [
+        {
+          "name": "source",
+          "type": "string",
+          "description": "The TSL source code string."
+        },
+        {
+          "name": "filename",
+          "type": "string",
+          "description": "Optional filename for error reporting."
+        }
+      ],
+      "returnType": "object"
+    }
+  ]
+}
