@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
     TSL (Time and Time Studio Language)
     Copyright (C) 2026 Time And Time Studio
@@ -15,8 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#!/usr/bin/env node
 
 'use strict';
 
