@@ -438,7 +438,18 @@ function createParser(tokens, source, filename = '<anonymous>') {
           }
           continue;
         }
-      } else if (peek().type !== TokenType.RBRACE) {
+      } else if (peek().type === TokenType.RBRACE) {
+        break;
+      } else if (peek().type === TokenType.DEDENT) {
+        // DEDENT without trailing comma: object closes at outer scope
+        advance();
+        if (peek().type === TokenType.RBRACE) {
+          advance();
+          rbraceConsumed = true;
+          break;
+        }
+        continue;
+      } else {
         expect(TokenType.COMMA);
       }
     }

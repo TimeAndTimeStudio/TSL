@@ -69,27 +69,27 @@
 
         <aside class="docs-sidebar">
           <div class="lang-th">
-            <h3>Reference</h3>
+            <h3>เอกสารอ้างอิง</h3>
             <div class="search-box">
               <input type="text" id="docSearchTh" class="docSearch" placeholder="ค้นหาเอกสาร..." autocomplete="off">
               <div class="search-results" id="searchResultsTh" data-role="searchResults"></div>
             </div>
             <ul id="docNav">
               <li><a href="#getting-started" class="active">เริ่มต้นใช้งาน</a></li>
-              <li><a href="#syntax">Syntax</a></li>
-              <li><a href="#indentation">Indentation</a></li>
-              <li><a href="#data-types">Data Types</a></li>
-              <li><a href="#operators">Operators</a></li>
+              <li><a href="#syntax">ไวยกรณ์</a></li>
+              <li><a href="#indentation">การย่อหน้า</a></li>
+              <li><a href="#data-types">ชนิดข้อมูล</a></li>
+              <li><a href="#operators">ตัวดำเนินการ</a></li>
               <li><a href="#math-functions">ฟังก์ชันคณิตศาสตร์</a></li>
-              <li><a href="#variables">Variables</a></li>
-              <li><a href="#control-flow">Control Flow</a></li>
-              <li><a href="#functions">Functions</a></li>
-              <li><a href="#arrays">Arrays</a></li>
-              <li><a href="#nested-arrays">Nested Arrays</a></li>
-              <li><a href="#objects">Objects</a></li>
-              <li><a href="#member-access">Member Access</a></li>
+              <li><a href="#variables">ตัวแปร</a></li>
+              <li><a href="#control-flow">การควบคุมการทำงาน</a></li>
+              <li><a href="#functions">ฟังก์ชัน</a></li>
+              <li><a href="#arrays">อาร์เรย์</a></li>
+              <li><a href="#nested-arrays">อาร์เรย์ซ้อน</a></li>
+              <li><a href="#objects">ออบเจกต์</a></li>
+              <li><a href="#member-access">การเข้าถึงสมาชิก</a></li>
               <li><a href="#cli">CLI</a></li>
-              <li><a href="#errors">Errors</a></li>
+              <li><a href="#errors">ข้อผิดพลาด</a></li>
             </ul>
           </div>
           <div class="lang-en">
@@ -129,10 +129,10 @@
               <div class="code-block">git clone https://github.com/TimeAndTimeStudio/TSL.git
 cd TSL</div>
 
-              <h3>Quick Start</h3>
+              <h3>เริ่มต้นอย่างรวดเร็ว</h3>
               <p>สร้างไฟล์ <code>hello.tsl</code>:</p>
               <div class="code-block"><span class="comment"># Hello World</span><br>print("Hello, World!")</div>
-              <p>Compile:</p>
+              <p>คอมไพล์:</p>
               <div class="code-block">node src/cli.js hello.tsl</div>
 
               <h3>Build เป็น JavaScript</h3>
@@ -165,37 +165,37 @@ cd TSL</div>
 
           <section id="syntax">
             <div class="lang-th">
-              <h2>Syntax</h2>
+              <h2>ไวยกรณ์</h2>
 
-              <h3>Comments</h3>
+              <h3>ความคิดเห็น (Comments)</h3>
               <p>ใช้ <code>#</code> สำหรับ line comments:</p>
               <div class="code-block"><span class="comment"># นี่คือ comment</span><br>set x = 10  <span class="comment"># inline comment</span></div>
 
-              <h3>Keywords</h3>
+              <h3>คีย์เวิร์ด (Keywords)</h3>
               <table>
                 <thead>
-                  <tr><th>Keyword</th><th>คำอธิบาย</th></tr>
+                  <tr><th>คีย์เวิร์ด</th><th>คำอธิบาย</th></tr>
                 </thead>
                 <tbody>
                   <tr><td><code>set</code></td><td>ประกาศตัวแปร (แปลงเป็น let ใน JS)</td></tr>
-                  <tr><td><code>if</code></td><td>Conditional statement</td></tr>
-                  <tr><td><code>else</code></td><td>Alternate branch</td></tr>
-                  <tr><td><code>for</code></td><td>Loop over iterable</td></tr>
-                  <tr><td><code>in</code></td><td>Used with for / membership test</td></tr>
-                  <tr><td><code>while</code></td><td>Conditional loop</td></tr>
-                  <tr><td><code>function</code></td><td>Function declaration</td></tr>
-                  <tr><td><code>public</code></td><td>Public function (export to window)</td></tr>
-                  <tr><td><code>return</code></td><td>Return from function</td></tr>
-                  <tr><td><code>break</code></td><td>Exit loop early</td></tr>
-                  <tr><td><code>continue</code></td><td>Skip to next iteration</td></tr>
-                  <tr><td><code>pass</code></td><td>No-op statement</td></tr>
-                  <tr><td><code>true</code> / <code>false</code></td><td>Boolean literals</td></tr>
-                  <tr><td><code>null</code></td><td>Null literal</td></tr>
-                  <tr><td><code>and</code> / <code>or</code> / <code>not</code></td><td>Logical operators</td></tr>
+                  <tr><td><code>if</code></td><td>เงื่อนไข (Conditional statement)</td></tr>
+                  <tr><td><code>else</code></td><td>สาขาทางเลือกเมื่อเงื่อนไขไม่เป็นจริง</td></tr>
+                  <tr><td><code>for</code></td><td>วนลูปเหนือค่าที่วนซ้ำได้</td></tr>
+                  <tr><td><code>in</code></td><td>ใช้คู่กับ for / ทดสอบการเป็นสมาชิก (membership)</td></tr>
+                  <tr><td><code>while</code></td><td>ลูปตามเงื่อนไข</td></tr>
+                  <tr><td><code>function</code></td><td>ประกาศฟังก์ชัน</td></tr>
+                  <tr><td><code>public</code></td><td>ฟังก์ชันสาธารณะ (export ไปยัง window)</td></tr>
+                  <tr><td><code>return</code></td><td>คืนค่าออกจากฟังก์ชัน</td></tr>
+                  <tr><td><code>break</code></td><td>ออกจากลูปก่อนกำหนด</td></tr>
+                  <tr><td><code>continue</code></td><td>ข้ามไปยังรอบถัดไป</td></tr>
+                  <tr><td><code>pass</code></td><td>คำสั่งไม่ทำอะไร (No-op)</td></tr>
+                  <tr><td><code>true</code> / <code>false</code></td><td>ค่าคงที่บูลีน</td></tr>
+                  <tr><td><code>null</code></td><td>ค่าคงที่ null</td></tr>
+                  <tr><td><code>and</code> / <code>or</code> / <code>not</code></td><td>ตัวดำเนินการลอจิก</td></tr>
                 </tbody>
               </table>
 
-              <h3>Block Structure</h3>
+              <h3>โครงสร้างบล็อก (Block Structure)</h3>
               <p>TSL ใช้ <strong>indentation</strong> เพื่อกำหนด code block และ <code>:</code> ที่ท้ายบรรทัดเพื่อบอกว่า block ต่อไปจะย่อหน้า</p>
               <div class="code-block"><span class="keyword">if</span> x &gt; 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(x)<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("small")</div>
             </div>
@@ -238,7 +238,7 @@ cd TSL</div>
 
           <section id="indentation">
             <div class="lang-th">
-              <h2>Indentation & Block Rules</h2>
+              <h2>การย่อหน้าและกฎของบล็อก</h2>
 
               <h3>หลักการ</h3>
               <p>TSL ใช้ <strong>การย่อหน้า (Indentation)</strong> เพื่อกำหนดขอบเขตของ block แทนการใช้เครื่องหมาย <code>{ }</code> เหมือนใน JavaScript</p>
@@ -289,34 +289,34 @@ cd TSL</div>
 
           <section id="data-types">
             <div class="lang-th">
-              <h2>Data Types</h2>
+              <h2>ชนิดข้อมูล</h2>
 
-              <h3>Numbers</h3>
+              <h3>ตัวเลข (Numbers)</h3>
               <div class="code-block">set x = 10<br>set pi = 3.14</div>
 
-              <h3>Strings</h3>
+              <h3>สตริง (Strings)</h3>
               <div class="code-block">set name = "hello"<br>set greeting = 'world'</div>
-              <p>Escape sequences: <code>\\n</code>, <code>\\t</code>, <code>\\\\</code>, <code>\\"</code>, <code>\\'</code></p>
+              <p>ลำดับหลบหนี (Escape sequences): <code>\\n</code>, <code>\\t</code>, <code>\\\\</code>, <code>\\"</code>, <code>\\'</code></p>
 
-              <h3>String Length</h3>
+              <h3>ความยาวสตริง (String Length)</h3>
               <div class="code-block">set text = "Hello"<br>print(text.length)  <span class="comment"># output: 5</span><br><br>set empty = ""<br>print(empty.length)  <span class="comment"># output: 0</span><br><br>set space = " "<br>print(space.length)  <span class="comment"># output: 1</span><br><br>set emoji = "👋🎉"<br>print(emoji.length)  <span class="comment"># output: 2</span></div>
 
-              <h3>Booleans</h3>
+              <h3>บูลีน (Booleans)</h3>
               <div class="code-block">set flag = true<br>set disabled = false</div>
 
-              <h3>Null</h3>
+              <h3>ค่าว่าง (Null)</h3>
               <div class="code-block">set value = null</div>
 
-              <h3>Array</h3>
+              <h3>อาร์เรย์ (Array)</h3>
               <div class="code-block">set numbers = [1, 2, 3]<br>set mixed = [1, "two", true]</div>
 
-              <h3>Object</h3>
+              <h3>ออบเจกต์ (Object)</h3>
               <div class="code-block">set person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30<br>}</div>
 
-              <h3>Type Summary</h3>
+              <h3>สรุปชนิดข้อมูล</h3>
               <table>
                 <thead>
-                  <tr><th>Type</th><th>TSL Literal</th><th>JavaScript Output</th></tr>
+                  <tr><th>ชนิดข้อมูล</th><th>Literal ใน TSL</th><th>ผลลัพธ์ใน JavaScript</th></tr>
                 </thead>
                 <tbody>
                   <tr><td>Number</td><td><code>10</code>, <code>3.14</code></td><td><code>10</code>, <code>3.14</code></td></tr>
@@ -372,54 +372,54 @@ cd TSL</div>
 
           <section id="operators">
             <div class="lang-th">
-              <h2>Operators</h2>
+              <h2>ตัวดำเนินการ</h2>
 
-              <h3>Arithmetic</h3>
+              <h3>การคำนวณ (Arithmetic)</h3>
               <table>
-                <thead><tr><th>Operator</th><th>คำอธิบาย</th></tr></thead>
+                <thead><tr><th>ตัวดำเนินการ</th><th>คำอธิบาย</th></tr></thead>
                 <tbody>
-                  <tr><td><code>+</code></td><td>Addition</td></tr>
-                  <tr><td><code>-</code></td><td>Subtraction</td></tr>
-                  <tr><td><code>*</code></td><td>Multiplication</td></tr>
-                  <tr><td><code>/</code></td><td>Division</td></tr>
+                  <tr><td><code>+</code></td><td>บวก</td></tr>
+                  <tr><td><code>-</code></td><td>ลบ</td></tr>
+                  <tr><td><code>*</code></td><td>คูณ</td></tr>
+                  <tr><td><code>/</code></td><td>หาร</td></tr>
                   <tr><td><code>%</code></td><td>Modulo (เหลือเศษ)</td></tr>
                 </tbody>
               </table>
 
-              <h3>Modulo Examples</h3>
+              <h3>ตัวอย่าง Modulo</h3>
               <div class="code-block">set remainder = 10 % 3   <span class="comment"># output: 1 (10 หาร 3 เหลือเศษ 1)</span><br>print(remainder)<br><br>set result1 = 15 % 5   <span class="comment"># output: 0 (15 หาร 5 ลงตัว)</span><br>set result2 = 7 % 2    <span class="comment"># output: 1 (7 หาร 2 เหลือเศษ 1)</span><br>set result3 = 100 % 7  <span class="comment"># output: 2 (100 หาร 7 เหลือเศษ 2)</span><br><br><span class="comment"># ใช้ตรวจสอบเลขคู่/เลขคี่</span><br>set number = 7<br><span class="keyword">if</span> number % 2 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("even")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("odd")  <span class="comment"># output: odd</span></div>
 
-              <h3>Comparison</h3>
+              <h3>การเปรียบเทียบ (Comparison)</h3>
               <table>
-                <thead><tr><th>Operator</th><th>คำอธิบาย</th></tr></thead>
+                <thead><tr><th>ตัวดำเนินการ</th><th>คำอธิบาย</th></tr></thead>
                 <tbody>
-                  <tr><td><code>&lt;</code></td><td>Less than</td></tr>
-                  <tr><td><code>&lt;=</code></td><td>Less than or equal</td></tr>
-                  <tr><td><code>&gt;</code></td><td>Greater than</td></tr>
-                  <tr><td><code>&gt;=</code></td><td>Greater than or equal</td></tr>
-                  <tr><td><code>==</code></td><td>Equal (strict equality)</td></tr>
-                  <tr><td><code>!=</code></td><td>Not equal</td></tr>
+                  <tr><td><code>&lt;</code></td><td>น้อยกว่า</td></tr>
+                  <tr><td><code>&lt;=</code></td><td>น้อยกว่าหรือเท่ากับ</td></tr>
+                  <tr><td><code>&gt;</code></td><td>มากกว่า</td></tr>
+                  <tr><td><code>&gt;=</code></td><td>มากกว่าหรือเท่ากับ</td></tr>
+                  <tr><td><code>==</code></td><td>เท่ากับ (เปรียบเทียบเข้มงวด)</td></tr>
+                  <tr><td><code>!=</code></td><td>ไม่เท่ากับ</td></tr>
                 </tbody>
               </table>
 
-              <h3>Equality Note</h3>
-              <p>TSL uses <code>==</code> for strict equality comparison (no type coercion). There is no <code>===</code> operator in TSL—<code>==</code> already behaves like JavaScript's <code>===</code>.</p>
+              <h3>หมายเหตุเรื่องความเท่ากัน</h3>
+              <p>TSL ใช้ <code>==</code> สำหรับการเปรียบเทียบความเท่ากันแบบเข้มงวด (ไม่มีการ coerce ชนิดข้อมูล) ใน TSL ไม่มีตัวดำเนินการ <code>===</code> — <code>==</code> มีพฤติกรรมเหมือน <code>===</code> ของ JavaScript อยู่แล้ว</p>
 
-              <h3>Logical</h3>
+              <h3>ลอจิก (Logical)</h3>
               <table>
-                <thead><tr><th>Operator</th><th>คำอธิบาย</th></tr></thead>
+                <thead><tr><th>ตัวดำเนินการ</th><th>คำอธิบาย</th></tr></thead>
                 <tbody>
-                  <tr><td><code>and</code></td><td>Logical AND</td></tr>
-                  <tr><td><code>or</code></td><td>Logical OR</td></tr>
-                  <tr><td><code>not</code></td><td>Logical NOT (prefix)</td></tr>
+                  <tr><td><code>and</code></td><td>ลอจิก AND</td></tr>
+                  <tr><td><code>or</code></td><td>ลอจิก OR</td></tr>
+                  <tr><td><code>not</code></td><td>ลอจิก NOT (prefix)</td></tr>
                 </tbody>
               </table>
 
-              <h3>Assignment</h3>
+              <h3>การกำหนดค่า (Assignment)</h3>
               <table>
-                <thead><tr><th>Operator</th><th>คำอธิบาย</th></tr></thead>
+                <thead><tr><th>ตัวดำเนินการ</th><th>คำอธิบาย</th></tr></thead>
                 <tbody>
-                  <tr><td><code>=</code></td><td>Assignment (reassignment only)</td></tr>
+                  <tr><td><code>=</code></td><td>กำหนดค่า (ใช้สำหรับ reassignment เท่านั้น)</td></tr>
                 </tbody>
               </table>
 
@@ -432,10 +432,10 @@ cd TSL</div>
                 </tbody>
               </table>
 
-              <h3>Logical Examples</h3>
+              <h3>ตัวอย่างลอจิก</h3>
               <div class="code-block">set x = true<br>set y = false<br><br>print(x <span class="keyword">and</span> y) <span class="comment"># output: false</span><br>print(x <span class="keyword">or</span> y)  <span class="comment"># output: true</span><br>print(<span class="keyword">not</span> x)   <span class="comment"># output: false</span><br>print(<span class="keyword">not</span> y)   <span class="comment"># output: true</span><br><br><span class="comment"># Combining logical operators</span><br>set age = 25<br>set has_id = true<br><br><span class="keyword">if</span> age &gt;= 18 <span class="keyword">and</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Allowed")<br><br><span class="keyword">if</span> <span class="keyword">not</span> has_id:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("No ID")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Has ID")</div>
 
-              <h3>Operator Precedence (highest to lowest)</h3>
+              <h3>ลำดับความสำคัญของตัวดำเนินการ (จากสูงไปต่ำ)</h3>
               <ol>
                 <li><code>()</code></li>
                 <li><code>not</code></li>
@@ -523,8 +523,6 @@ cd TSL</div>
                 <li><code>or</code></li>
               </ol>
             </div>
-            <div class="lang-en">
-            </div>
           </section>
 
           <section id="math-functions">
@@ -604,19 +602,19 @@ cd TSL</div>
 
           <section id="variables">
             <div class="lang-th">
-              <h2>Variables</h2>
+              <h2>ตัวแปร</h2>
               <p>ใช้ <code>set</code> เพื่อประกาศตัวแปร (แปลงเป็น <code>let</code> ใน JavaScript) และการ assign ด้วย <code>=</code> สำหรับตัวแปรที่เคยประกาศไว้แล้วเท่านั้น</p>
               <div class="code-block">set x = 10      <span class="comment"># generates: let x = 10;</span><br>x = 20          <span class="comment"># generates: x = 20;</span><br>set y = x       <span class="comment"># generates: let y = x;</span></div>
 
-              <h3>Identifiers</h3>
+              <h3>ตัวระบุ (Identifiers)</h3>
               <ul>
-                <li>Must start with a letter or <code>_</code></li>
-                <li>Followed by letters, digits, or <code>_</code></li>
-                <li>Case-sensitive</li>
-                <li>Cannot be a keyword</li>
+                <li>ต้องขึ้นต้นด้วยตัวอักษรหรือ <code>_</code></li>
+                <li>ตามด้วยตัวอักษร ตัวเลข หรือ <code>_</code></li>
+                <li>ตัวพิมพ์เล็ก/ใหญ่ต่างกันถือว่าต่างกัน (Case-sensitive)</li>
+                <li>ห้ามเป็นคีย์เวิร์ด</li>
               </ul>
 
-              <h3>Examples</h3>
+              <h3>ตัวอย่าง</h3>
               <div class="code-block"><span class="comment"># ✅ ถูกต้อง</span><br>set name = "Alice"<br>set age = 25<br>name = "Bob"        <span class="comment"># อัปเดตค่า</span><br><br><span class="comment"># ❌ Error: ไม่ได้ set ไว้</span><br>unknown = 10        <span class="comment"># Error: Variable 'unknown' is not declared</span></div>
             </div>
             <div class="lang-en">
@@ -639,15 +637,15 @@ cd TSL</div>
 
           <section id="control-flow">
             <div class="lang-th">
-              <h2>Control Flow</h2>
+              <h2>การควบคุมการทำงาน</h2>
 
-              <h3>If / Else</h3>
+              <h3>เงื่อนไข If / Else</h3>
               <div class="code-block">set x = 15<br><span class="keyword">if</span> x &gt; 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("big")<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("small")</div>
 
-              <h3>While</h3>
+              <h3>ลูป While</h3>
               <div class="code-block">set counter = 3<br><span class="keyword">while</span> counter &gt; 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(counter)<br>&nbsp;&nbsp;&nbsp;&nbsp;counter = counter - 1</div>
 
-              <h3>For</h3>
+              <h3>ลูป For</h3>
               <div class="code-block"><span class="keyword">for</span> i <span class="keyword">in</span> range(5):<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i)</div>
 
               <h3>Break / Continue</h3>
@@ -672,29 +670,29 @@ cd TSL</div>
 
           <section id="functions">
             <div class="lang-th">
-              <h2>Functions</h2>
+              <h2>ฟังก์ชัน</h2>
 
-              <h3>Declaration</h3>
+              <h3>การประกาศ (Declaration)</h3>
               <div class="code-block"><span class="keyword">function</span> greet(name):<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Hello, " + name)</div>
 
-              <h3>Return</h3>
+              <h3>คืนค่า (Return)</h3>
               <div class="code-block"><span class="keyword">function</span> add(a, b):<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> a + b</div>
 
-              <h3>Call</h3>
+              <h3>การเรียกใช้งาน (Call)</h3>
               <div class="code-block">set result =  add(3, 5)</div>
 
-              <h3>Public Function</h3>
+              <h3>ฟังก์ชันสาธารณะ (Public Function)</h3>
               <p>ใช้ <code>public</code> หน้า function เพื่อให้ไฟล์ .tsl อื่นเข้าถึงได้</p>
               <div class="code-block"><span class="keyword">public function</span> greet(name):<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Hello, " + name)<br><br><span class="keyword">public function</span> calculate(a, b, op):<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> op == "add":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> a + b<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> op == "sub":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> a - b<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> op == "mul":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> a * b<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> op == "div":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> b != 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> a / b<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> null<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> null<br><br>print(calculate(10, 5, "add")) <span class="comment"># output: 15</span><br>print(calculate(10, 5, "mul")) <span class="comment"># output: 50</span></div>
 
-              <h3>Public Function with Arrays</h3>
+              <h3>ฟังก์ชันสาธารณะที่ใช้กับอาร์เรย์</h3>
               <div class="code-block"><span class="keyword">public function</span> sumArray(arr):<br>&nbsp;&nbsp;&nbsp;&nbsp;total = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> item <span class="keyword">in</span> arr:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total = total + item<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total<br><br>print(sumArray([1, 2, 3, 4, 5])) <span class="comment"># output: 15</span></div>
 
-              <h3>Public Function with Nested Arrays</h3>
+              <h3>ฟังก์ชันสาธารณะที่ใช้กับอาร์เรย์ซ้อน</h3>
               <div class="code-block"><span class="keyword">public function</span> flatten(matrix):<br>&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> row <span class="keyword">in</span> matrix:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> item <span class="keyword">in</span> row:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.append(item)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> result<br><br>set matrix =  [[1, 2], [3, 4], [5, 6]]<br>print(flatten(matrix)) <span class="comment"># output: [1, 2, 3, 4, 5, 6]</span></div>
 
               <div class="note">
-                Functions with <code>public</code> are accessible by other .tsl files.
+                ฟังก์ชันที่มี <code>public</code> สามารถเข้าถึงได้จากไฟล์ .tsl อื่น
               </div>
             </div>
             <div class="lang-en">
@@ -727,28 +725,28 @@ cd TSL</div>
 
           <section id="arrays">
             <div class="lang-th">
-              <h2>Arrays</h2>
+              <h2>อาร์เรย์</h2>
 
-               <h3>Declaration</h3>
+               <h3>การประกาศ (Declaration)</h3>
                <div class="code-block">set fruits =  ["apple", "banana", "cherry"]</div>
 
-               <h3>Multi-line (รองรับ indent)</h3>
+               <h3>หลายบรรทัด (รองรับ indent)</h3>
                <p>ใช้ comma หรือขึ้นบรรทัดใหม่เป็นตัวคั่น element ได้:</p>
                <div class="code-block">set fruits = [<br>&nbsp;&nbsp;&nbsp;&nbsp;"apple",<br>&nbsp;&nbsp;&nbsp;&nbsp;"banana",<br>&nbsp;&nbsp;&nbsp;&nbsp;"cherry"<br>]</div>
 
-               <h3>Multi-line without comma (newline separator)</h3>
+               <h3>หลายบรรทัดไม่มี comma (คั่นด้วยขึ้นบรรทัดใหม่)</h3>
                <div class="code-block">set assets = [<br>&nbsp;&nbsp;&nbsp;&nbsp;"music/lobby.mp3",<br>&nbsp;&nbsp;&nbsp;&nbsp;"menu/button.png",<br>&nbsp;&nbsp;&nbsp;&nbsp;"menu/text.png",<br>&nbsp;&nbsp;&nbsp;&nbsp;"player-idle/1.png",<br>&nbsp;&nbsp;&nbsp;&nbsp;"player-idle/3.png"<br>]</div>
 
-               <h3>Multi-line with trailing comma</h3>
+               <h3>หลายบรรทัดมี trailing comma</h3>
               <div class="code-block">set numbers = [<br>&nbsp;&nbsp;&nbsp;&nbsp;1,<br>&nbsp;&nbsp;&nbsp;&nbsp;2,<br>&nbsp;&nbsp;&nbsp;&nbsp;3,<br>]</div>
 
-              <h3>Multi-line nested arrays</h3>
+              <h3>อาร์เรย์ซ้อนหลายบรรทัด</h3>
               <div class="code-block">set matrix = [<br>&nbsp;&nbsp;&nbsp;&nbsp;[1, 2, 3],<br>&nbsp;&nbsp;&nbsp;&nbsp;[4, 5, 6],<br>&nbsp;&nbsp;&nbsp;&nbsp;[7, 8, 9]<br>]</div>
 
-              <h3>Access</h3>
+              <h3>การเข้าถึง (Access)</h3>
               <div class="code-block">set first =  fruits[0]<br>print(first)</div>
 
-               <h3>Methods</h3>
+               <h3>เมธอด (Methods)</h3>
                <div class="code-block">fruits.append("date")  <span class="comment"># แปลงเป็น fruits.push("date") ใน JS</span><br>set length =  fruits.length</div>
             </div>
             <div class="lang-en">
@@ -780,32 +778,32 @@ cd TSL</div>
 
           <section id="nested-arrays">
             <div class="lang-th">
-              <h2>Nested Arrays (Array ซ้อน Array)</h2>
+              <h2>อาร์เรย์ซ้อน (Array ซ้อน Array)</h2>
               <p>TSL รองรับ array ที่ซ้อนกันไม่จำกัดระดับ สามารถเข้าถึงข้อมูลด้วย index หลายชั้นได้</p>
 
-              <h3>2D Array (Matrix)</h3>
+              <h3>อาร์เรย์ 2 มิติ (Matrix)</h3>
               <div class="code-block">set matrix =  [[1, 2, 3], [4, 5, 6], [7, 8, 9]]<br><br>print(matrix[0])   <span class="comment"># output: [1, 2, 3]</span><br>print(matrix[0][0]) <span class="comment"># output: 1</span><br>print(matrix[1][2]) <span class="comment"># output: 6</span><br>print(matrix[2][0]) <span class="comment"># output: 7</span></div>
 
-              <h3>3D Array</h3>
+              <h3>อาร์เรย์ 3 มิติ</h3>
               <div class="code-block">set cube =  [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]<br><br>print(cube[0][0][0]) <span class="comment"># output: 1</span><br>print(cube[0][1][1]) <span class="comment"># output: 4</span><br>print(cube[1][0][0]) <span class="comment"># output: 5</span><br>print(cube[1][1][1]) <span class="comment"># output: 8</span></div>
 
-              <h3>Mixed Nested Arrays</h3>
+              <h3>อาร์เรย์ซ้อนแบบผสม</h3>
               <div class="code-block">set data =  [[1, "hello"], [true, null], [3.14, [10, 20]]]<br><br>print(data[0][1])   <span class="comment"># output: "hello"</span><br>print(data[1][0])   <span class="comment"># output: true</span><br>print(data[2][1][0]) <span class="comment"># output: 10</span><br>print(data[2][1][1]) <span class="comment"># output: 20</span></div>
 
-              <h3>Loop Through Nested Arrays</h3>
+              <h3>วนลูปผ่านอาร์เรย์ซ้อน</h3>
               <div class="code-block">set scores =  [[90, 85, 92], [78, 88, 95], [82, 91, 87]]<br><br><span class="keyword">for</span> student <span class="keyword">in</span> scores:<br>&nbsp;&nbsp;&nbsp;&nbsp;total = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> score <span class="keyword">in</span> student:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total = total + score<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Average: " + (total / student.length))</div>
 
-              <h3>Nested Array with Objects</h3>
+              <h3>อาร์เรย์ซ้อนที่มีออบเจกต์</h3>
               <div class="code-block">set classroom =  [<br>&nbsp;&nbsp;&nbsp;&nbsp;[{name: "A", grade: 90}, {name: "B", grade: 85}],<br>&nbsp;&nbsp;&nbsp;&nbsp;[{name: "C", grade: 92}, {name: "D", grade: 78}]<br>]<br><br><span class="keyword">for</span> group <span class="keyword">in</span> classroom:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> student <span class="keyword">in</span> group:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(student.name + ": " + student.grade)</div>
 
-              <h3>Array of Arrays with Different Lengths</h3>
+              <h3>อาร์เรย์ที่มีความยาวต่างกัน</h3>
               <div class="code-block">set ragged =  [[1], [2, 3], [4, 5, 6], [7, 8, 9, 10]]<br><br><span class="keyword">for</span> i <span class="keyword">in</span> range(ragged.length):<br>&nbsp;&nbsp;&nbsp;&nbsp;row = ragged[i]<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Row " + i + " has " + row.length + " elements")<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> range(row.length):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("  [" + j + "] = " + row[j])</div>
 
-              <h3>Building Nested Arrays</h3>
+              <h3>การสร้างอาร์เรย์ซ้อน</h3>
               <div class="code-block">set result =  []<br><span class="keyword">for</span> i <span class="keyword">in</span> range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;row = []<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row.append(i * 3 + j)<br>&nbsp;&nbsp;&nbsp;&nbsp;result.append(row)<br><br>print(result) <span class="comment"># [[0, 1, 2], [3, 4, 5], [6, 7, 8]]</span></div>
 
               <div class="note">
-                <strong>Tip:</strong> Nested arrays สามารถเข้าถึงได้หลายระดับ เช่น <code>arr[0][1][2]</code> โดยแต่ละ index จะลดลงหนึ่งระดับจนได้ค่าสุดท้าย
+                <strong>เคล็ดลับ:</strong> อาร์เรย์ซ้อนสามารถเข้าถึงได้หลายระดับ เช่น <code>arr[0][1][2]</code> โดยแต่ละ index จะลดลงหนึ่งระดับจนได้ค่าสุดท้าย
               </div>
             </div>
             <div class="lang-en">
@@ -841,24 +839,31 @@ cd TSL</div>
 
           <section id="objects">
             <div class="lang-th">
-              <h2>Objects</h2>
+              <h2>ออบเจกต์</h2>
 
-              <h3>Declaration</h3>
+              <h3>การประกาศ (Declaration)</h3>
               <div class="code-block">set person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30,<br>&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok"<br>}</div>
 
-              <h3>Multi-line (รองรับ indent)</h3>
+              <h3>หลายบรรทัด (รองรับ indent)</h3>
               <div class="code-block">set config = {<br>&nbsp;&nbsp;&nbsp;&nbsp;"host": "localhost",<br>&nbsp;&nbsp;&nbsp;&nbsp;"port": 8080,<br>&nbsp;&nbsp;&nbsp;&nbsp;"debug": true<br>}</div>
 
-              <h3>Multi-line with trailing comma</h3>
+              <h3>หลายบรรทัดมี trailing comma</h3>
               <div class="code-block">set person = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Alice",<br>&nbsp;&nbsp;&nbsp;&nbsp;age: 30,<br>}</div>
 
-              <h3>Nested objects (multi-line)</h3>
+              <h3>ออบเจกต์ซ้อน (หลายบรรทัด)</h3>
               <div class="code-block">set company = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "TSL Studio",<br>&nbsp;&nbsp;&nbsp;&nbsp;address: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country: "Thailand"<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}</div>
 
-              <h3>Access</h3>
+              <h3>Array in Object (Array ใน Object)</h3>
+              <p>เก็บอาร์เรย์ไว้เป็นค่าของ property ในออบเจกต์ แล้วเข้าถึงด้วย dot notation ต่อด้วย index ได้:</p>
+              <div class="code-block">set team = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "TSL",<br>&nbsp;&nbsp;&nbsp;&nbsp;members: ["Alice", "Bob", "Charlie"]<br>}<br><br>print(team.name)            <span class="comment"># output: "TSL"</span><br>print(team.members[0])      <span class="comment"># output: "Alice"</span><br>print(team.members.length)  <span class="comment"># output: 3</span><br><br><span class="keyword">for</span> member <span class="keyword">in</span> team.members:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(member)</div>
+
+              <h3>Array of Objects ใน Object</h3>
+              <div class="code-block">set store = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Shop",<br>&nbsp;&nbsp;&nbsp;&nbsp;products: [<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{name: "Laptop", price: 25000},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{name: "Phone", price: 15000}<br>&nbsp;&nbsp;&nbsp;&nbsp;]<br>}<br><br>print(store.products[0].name)   <span class="comment"># output: "Laptop"</span><br>print(store.products[1].price)  <span class="comment"># output: 15000</span><br><br><span class="keyword">for</span> product <span class="keyword">in</span> store.products:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(product.name + ": " + product.price)</div>
+
+              <h3>การเข้าถึง (Access)</h3>
               <div class="code-block">print(person.name)<br>print(person["age"])</div>
 
-              <h3>Methods</h3>
+              <h3>เมธอด (Methods)</h3>
               <div class="code-block">set keys =  person.keys()<br>set values =  person.values()</div>
             </div>
             <div class="lang-en">
@@ -876,6 +881,13 @@ cd TSL</div>
               <h3>Nested objects (multi-line)</h3>
               <div class="code-block">set company = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "TSL Studio",<br>&nbsp;&nbsp;&nbsp;&nbsp;address: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country: "Thailand"<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}</div>
 
+              <h3>Array in Object</h3>
+              <p>Store an array as an object property value, then access it with dot notation followed by an index:</p>
+              <div class="code-block">set team = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "TSL",<br>&nbsp;&nbsp;&nbsp;&nbsp;members: ["Alice", "Bob", "Charlie"]<br>}<br><br>print(team.name)            <span class="comment"># output: "TSL"</span><br>print(team.members[0])      <span class="comment"># output: "Alice"</span><br>print(team.members.length)  <span class="comment"># output: 3</span><br><br><span class="keyword">for</span> member <span class="keyword">in</span> team.members:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(member)</div>
+
+              <h3>Array of Objects in Object</h3>
+              <div class="code-block">set store = {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Shop",<br>&nbsp;&nbsp;&nbsp;&nbsp;products: [<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{name: "Laptop", price: 25000},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{name: "Phone", price: 15000}<br>&nbsp;&nbsp;&nbsp;&nbsp;]<br>}<br><br>print(store.products[0].name)   <span class="comment"># output: "Laptop"</span><br>print(store.products[1].price)  <span class="comment"># output: 15000</span><br><br><span class="keyword">for</span> product <span class="keyword">in</span> store.products:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(product.name + ": " + product.price)</div>
+
               <h3>Access</h3>
               <div class="code-block">print(person.name)<br>print(person["age"])</div>
 
@@ -886,16 +898,20 @@ cd TSL</div>
 
           <section id="member-access">
             <div class="lang-th">
-              <h2>Member Access</h2>
+              <h2>การเข้าถึงสมาชิก</h2>
 
-              <h3>Dot Notation</h3>
+              <h3>dot notation (จุด)</h3>
               <div class="code-block">set person = {name: "Bob", age: 25}<br>print(person.name)</div>
 
-              <h3>Bracket Notation</h3>
+              <h3>bracket notation (วงเล็บเหลี่ยม)</h3>
               <div class="code-block">set person = {name: "Bob", age: 25}<br>print(person["name"])</div>
 
-              <h3>Nested Access</h3>
+              <h3>การเข้าถึงแบบซ้อน (Nested Access)</h3>
               <div class="code-block">set company =  {<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "TSL Studio",<br>&nbsp;&nbsp;&nbsp;&nbsp;address: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;city: "Bangkok",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country: "Thailand"<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>print(company.address.city)    <span class="comment"># output: "Bangkok"</span><br>print(company["address"]["country"]) <span class="comment"># output: "Thailand"</span></div>
+
+              <div class="note">
+                อาร์เรย์ในออบเจกต์เข้าถึงด้วย dot ต่อด้วย index ได้ เช่น <code>team.members[0]</code>
+              </div>
             </div>
             <div class="lang-en">
               <h2>Member Access</h2>
@@ -940,22 +956,22 @@ cd TSL</div>
 
           <section id="errors">
             <div class="lang-th">
-              <h2>Error System</h2>
-              <p>Errors are categorized by pipeline stage:</p>
+              <h2>ระบบข้อผิดพลาด</h2>
+              <p>ข้อผิดพลาดถูกจัดหมวดหมู่ตามขั้นตอนของ pipeline:</p>
               <table>
                 <thead>
-                  <tr><th>Category</th><th>Class</th><th>Description</th></tr>
+                  <tr><th>หมวดหมู่</th><th>คลาส</th><th>คำอธิบาย</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Lexer Error</td><td><code>LexerError</code></td><td>Invalid characters or unterminated strings</td></tr>
-                  <tr><td>Parser Error</td><td><code>ParserError</code></td><td>Unexpected tokens or missing syntax</td></tr>
-                  <tr><td>Semantic Error</td><td><code>ValidationError</code></td><td><code>return</code> outside function, <code>break</code>/<code>continue</code> outside loop</td></tr>
-                  <tr><td>Generator Error</td><td><code>GeneratorError</code></td><td>Unknown AST node type</td></tr>
+                  <tr><td>ข้อผิดพลาดของ Lexer</td><td><code>LexerError</code></td><td>อักขระที่ไม่ถูกต้องหรือสตริงที่ปิดไม่จบ</td></tr>
+                  <tr><td>ข้อผิดพลาดของ Parser</td><td><code>ParserError</code></td><td>โทเคนที่ไม่คาดคิดหรือ syntax ไม่ครบ</td></tr>
+                  <tr><td>ข้อผิดพลาดเชิงความหมาย</td><td><code>ValidationError</code></td><td><code>return</code> อยู่นอกฟังก์ชัน, <code>break</code>/<code>continue</code> อยู่นอกลูป</td></tr>
+                  <tr><td>ข้อผิดพลาดของ Generator</td><td><code>GeneratorError</code></td><td>ชนิด AST node ที่ไม่รู้จัก</td></tr>
                 </tbody>
               </table>
 
               <div class="note">
-                Every compiler error includes: filename, line, column, and message.
+                ข้อผิดพลาดของคอมไพเลอร์ทุกครั้งจะระบุ: ชื่อไฟล์ เลขบรรทัด เลขคอลัมน์ และข้อความ
               </div>
             </div>
             <div class="lang-en">
